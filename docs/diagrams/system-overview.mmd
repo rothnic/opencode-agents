@@ -1,0 +1,46 @@
+```mermaid
+flowchart TB
+    subgraph "User Interface"
+        User[Developer] -->|Task Request| TUI[OpenCode TUI]
+    end
+    
+    subgraph "Agent Team"
+        TUI --> Orch[Orchestrator<br/>Primary Agent]
+        
+        Orch -->|Delegate| Code[CodeImplementer<br/>Subagent]
+        Orch -->|Delegate| Test[TestWriter<br/>Subagent]
+        Orch -->|Delegate| Doc[DocuWriter<br/>Subagent]
+        Orch -->|Delegate| Sec[SecurityAuditor<br/>Subagent]
+        Orch -->|Delegate| Ref[RefactorEngine<br/>Subagent]
+        Orch -->|Delegate| Mem[MemoryFormation<br/>Subagent]
+    end
+    
+    subgraph "Tools & Capabilities"
+        Code --> FileOps[File Operations<br/>read/write/edit]
+        Test --> Bash[Command Execution<br/>npm test]
+        Doc --> FileOps
+        Sec --> ReadOnly[Read-Only Access<br/>grep/glob]
+        Mem --> Memory[Memory Tools<br/>store/query]
+    end
+    
+    subgraph "Knowledge Base"
+        FileOps --> Agents[AGENTS.md<br/>Project Rules]
+        Memory --> DB[(Vector DB<br/>Semantic Memory)]
+    end
+    
+    subgraph "Verification"
+        FileOps --> Tests[Test Suite]
+        Tests --> Metrics[Metrics Collection]
+        Metrics --> Report[Performance Report]
+    end
+    
+    Report -->|Feedback| User
+    
+    style Orch fill:#4CAF50,color:#fff
+    style Code fill:#2196F3,color:#fff
+    style Test fill:#FF9800,color:#fff
+    style Doc fill:#9C27B0,color:#fff
+    style Sec fill:#F44336,color:#fff
+    style Ref fill:#00BCD4,color:#fff
+    style Mem fill:#607D8B,color:#fff
+```

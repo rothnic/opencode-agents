@@ -1,0 +1,46 @@
+```mermaid
+sequenceDiagram
+    participant User
+    participant Orchestrator
+    participant CodeImplementer
+    participant TestWriter
+    participant Memory
+    participant Verification
+    
+    User->>Orchestrator: Request: "Create UserService with CRUD"
+    activate Orchestrator
+    
+    Orchestrator->>Orchestrator: Analyze & Decompose Task
+    Note over Orchestrator: 1. Create implementation<br/>2. Write tests<br/>3. Verify
+    
+    Orchestrator->>Memory: Query: "CRUD patterns"
+    Memory-->>Orchestrator: [Past implementations]
+    
+    Orchestrator->>CodeImplementer: @codeimplementer Create UserService
+    activate CodeImplementer
+    CodeImplementer->>CodeImplementer: Read AGENTS.md
+    CodeImplementer->>CodeImplementer: Write src/UserService.js
+    CodeImplementer-->>Orchestrator: ✓ Implementation complete
+    deactivate CodeImplementer
+    
+    Orchestrator->>TestWriter: @testwriter Create tests
+    activate TestWriter
+    TestWriter->>TestWriter: Read implementation
+    TestWriter->>TestWriter: Write tests/UserService.test.js
+    TestWriter->>TestWriter: Run: npm test
+    TestWriter-->>Orchestrator: ✓ Tests pass (85% coverage)
+    deactivate TestWriter
+    
+    Orchestrator->>Verification: Run verification suite
+    activate Verification
+    Verification->>Verification: Check tests pass
+    Verification->>Verification: Collect metrics
+    Verification-->>Orchestrator: ✓ All checks pass
+    deactivate Verification
+    
+    Orchestrator->>Memory: Store: "UserService CRUD pattern"
+    Memory-->>Orchestrator: ✓ Stored
+    
+    Orchestrator-->>User: ✓ Task complete<br/>Files: 2<br/>Tests: 12 (85% coverage)<br/>Tokens: 1847
+    deactivate Orchestrator
+```
