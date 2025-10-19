@@ -4,7 +4,19 @@
  *
  * Identifies potentially duplicate or overlapping documentation files.
  * Helps prevent documentation sprawl where agents create multiple docs
- * about the same topic with different names.
+ * about th  return matrix[str2.length]![str1.length]!;
+}
+
+function setOverlap(set1: string[], set2: string[]): number {
+  if (set1.length === 0 && set2.length === 0) {
+    return 0;
+  }
+
+  const intersection = set1.filter((item: string) => set2.includes(item));
+  const union = new Set([...set1, ...set2]);
+
+  return intersection.length / union.size;
+}with different names.
  *
  * Detection methods:
  * 1. Title similarity (e.g., "test-strategy" vs "testing-approach")
@@ -21,6 +33,34 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+
+// ============================================================================
+// TYPES
+// ============================================================================
+
+interface Document {
+  path: string;
+  title: string;
+  headings: string[];
+  keywords: string[];
+  content: string;
+  lines: number;
+  modified: Date;
+}
+
+interface Overlap {
+  doc1: Document;
+  doc2: Document;
+  similarity: number;
+  reason: string;
+  suggestion: {
+    action: string;
+    keepFile: string;
+    mergeFrom: string;
+    reason: string;
+    steps: string[];
+  };
+}
 
 // ============================================================================
 // CONFIGURATION
@@ -42,13 +82,13 @@ const IGNORE_FILES = [
 // FILE DISCOVERY
 // ============================================================================
 
-function getAllDocs() {
-  const docs = [];
+function getAllDocs(): Document[] {
+  const docs: Document[] = [];
   scanDocsDirectory(DOCS_DIR, docs);
   return docs;
 }
 
-function scanDocsDirectory(dir, docs) {
+function scanDocsDirectory(dir: string, docs: Document[]): void {
   if (!fs.existsSync(dir)) {
     return;
   }
@@ -75,20 +115,22 @@ function scanDocsDirectory(dir, docs) {
   }
 }
 
-function parseDocument(filePath) {
+function parseDocument(filePath: string): Document {
   const content = fs.readFileSync(filePath, 'utf8');
   const lines = content.split('\n');
 
   // Extract title (first h1)
   const titleMatch = content.match(/^#\s+(.+)$/m);
-  const title = titleMatch ? titleMatch[1] : path.basename(filePath, '.md');
+  const title = titleMatch?.[1] ? titleMatch[1] : path.basename(filePath, '.md');
 
   // Extract headings (h2, h3)
-  const headings = [];
+  const headings: string[] = [];
   const headingRegex = /^#{2,3}\s+(.+)$/gm;
   let match = headingRegex.exec(content);
   while (match !== null) {
-    headings.push(match[1].toLowerCase());
+    if (match[1]) {
+      headings.push(match[1].toLowerCase());
+    }
     match = headingRegex.exec(content);
   }
 
@@ -100,12 +142,13 @@ function parseDocument(filePath) {
     title: title.toLowerCase(),
     headings,
     keywords,
+    content,
     lines: lines.length,
     modified: fs.statSync(filePath).mtime,
   };
 }
 
-function extractKeywords(content) {
+function extractKeywords(content: string): string[] {
   // Remove markdown syntax
   const text = content
     .replace(/```[\s\S]*?```/g, '') // Remove code blocks
@@ -118,14 +161,14 @@ function extractKeywords(content) {
   const words = text.match(/\b[a-z]{4,}\b/g) || [];
 
   // Count frequency
-  const frequency = {};
+  const frequency: Record<string, number> = {};
   for (const word of words) {
     frequency[word] = (frequency[word] || 0) + 1;
   }
 
   // Get top 20 keywords
   return Object.entries(frequency)
-    .sort((a, b) => b[1] - a[1])
+    .sort((a, b) => (b[1] as number) - (a[1] as number))
     .slice(0, 20)
     .map(([word]) => word);
 }
@@ -134,7 +177,7 @@ function extractKeywords(content) {
 // SIMILARITY CALCULATION
 // ============================================================================
 
-function calculateSimilarity(doc1, doc2) {
+function calculateSimilarity(doc1: Document, doc2: Document): number {
   // Title similarity (50% weight)
   const titleSim = stringSimilarity(doc1.title, doc2.title);
 
@@ -147,7 +190,7 @@ function calculateSimilarity(doc1, doc2) {
   return titleSim * 0.5 + headingSim * 0.3 + keywordSim * 0.2;
 }
 
-function stringSimilarity(str1, str2) {
+function stringSimilarity(str1: string, str2: string): number {
   // Levenshtein distance normalized to 0-1
   const longer = str1.length > str2.length ? str1 : str2;
   const shorter = str1.length > str2.length ? str2 : str1;
@@ -160,50 +203,62 @@ function stringSimilarity(str1, str2) {
   return (longer.length - distance) / longer.length;
 }
 
-function levenshteinDistance(str1, str2) {
-  const matrix = [];
+function levenshteinDistance(str1: string, str2: string): number {
+  // Initialize matrix with proper dimensions
+  const matrix: number[][] = Array.from({ length: str2.length + 1 }, (_, i) => {
+    const row = new Array(str1.length + 1).fill(0) as number[];
+    row[0] = i;
+    return row;
+  });
 
-  for (let i = 0; i <= str2.length; i++) {
-    matrix[i] = [i];
-  }
-
+  // Initialize first row
   for (let j = 0; j <= str1.length; j++) {
-    matrix[0][j] = j;
+    matrix[0]![j] = j;
   }
 
+  // Calculate distances
   for (let i = 1; i <= str2.length; i++) {
     for (let j = 1; j <= str1.length; j++) {
       if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
-        matrix[i][j] = matrix[i - 1][j - 1];
+        matrix[i]![j] = matrix[i - 1]?.[j - 1]!;
       } else {
-        matrix[i][j] = Math.min(
-          matrix[i - 1][j - 1] + 1,
-          matrix[i][j - 1] + 1,
-          matrix[i - 1][j] + 1,
+        matrix[i]![j] = Math.min(
+          matrix[i - 1]?.[j - 1]! + 1,
+          matrix[i]?.[j - 1]! + 1,
+          matrix[i - 1]?.[j]! + 1,
         );
       }
     }
   }
 
-  return matrix[str2.length][str1.length];
+  return matrix[str2.length]?.[str1.length]!;
 }
 
-function setOverlap(set1, set2) {
+function setOverlap(set1: string[], set2: string[]): number {
   if (set1.length === 0 && set2.length === 0) {
     return 0;
   }
 
-  const intersection = set1.filter(item => set2.includes(item));
-  const union = [...new Set([...set1, ...set2])];
+  const intersection = set1.filter((item: string) => set2.includes(item));
+  const union = new Set([...set1, ...set2]);
 
-  return intersection.length / union.length;
+  return intersection.length / union.size;
 }
 
 // ============================================================================
 // CONSOLIDATION SUGGESTIONS
 // ============================================================================
 
-function suggestConsolidation(doc1, doc2) {
+function suggestConsolidation(
+  doc1: Document,
+  doc2: Document,
+): {
+  action: string;
+  keepFile: string;
+  mergeFrom: string;
+  reason: string;
+  steps: string[];
+} {
   // Prefer longer file (more complete)
   const keepFile = doc1.lines > doc2.lines ? doc1 : doc2;
   const mergeFrom = keepFile === doc1 ? doc2 : doc1;
@@ -226,7 +281,7 @@ function suggestConsolidation(doc1, doc2) {
 // REPORTING
 // ============================================================================
 
-function printResults(overlaps) {
+function printResults(overlaps: Overlap[]): void {
   console.log('═══════════════════════════════════════════════════════');
   console.log('  Document Overlap Detection');
   console.log('═══════════════════════════════════════════════════════');
@@ -275,23 +330,30 @@ function printResults(overlaps) {
 // MAIN
 // ============================================================================
 
-function main() {
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Main function orchestrates multiple checks
+function main(): void {
   const args = process.argv.slice(2);
   const thresholdArg = args.find(arg => arg.startsWith('--threshold='));
-  const threshold = thresholdArg ? parseFloat(thresholdArg.split('=')[1]) : DEFAULT_THRESHOLD;
+  const thresholdStr = thresholdArg?.split('=')[1];
+  const threshold = thresholdStr ? parseFloat(thresholdStr) : DEFAULT_THRESHOLD;
 
   const docs = getAllDocs();
-  const overlaps = [];
+  const overlaps: Overlap[] = [];
 
   // Compare all pairs
   for (let i = 0; i < docs.length; i++) {
     for (let j = i + 1; j < docs.length; j++) {
-      const similarity = calculateSimilarity(docs[i], docs[j]);
+      const doc1 = docs[i];
+      const doc2 = docs[j];
+
+      if (!doc1 || !doc2) continue;
+
+      const similarity = calculateSimilarity(doc1, doc2);
 
       if (similarity >= threshold) {
-        const reasons = [];
-        const titleSim = stringSimilarity(docs[i].title, docs[j].title);
-        const headingSim = setOverlap(docs[i].headings, docs[j].headings);
+        const reasons: string[] = [];
+        const titleSim = stringSimilarity(doc1.title, doc2.title);
+        const headingSim = setOverlap(doc1.headings, doc2.headings);
 
         if (titleSim > 0.6) {
           reasons.push(`Similar titles (${Math.round(titleSim * 100)}%)`);
@@ -301,11 +363,11 @@ function main() {
         }
 
         overlaps.push({
-          doc1: docs[i],
-          doc2: docs[j],
+          doc1,
+          doc2,
           similarity,
           reason: reasons.join(', '),
-          suggestion: suggestConsolidation(docs[i], docs[j]),
+          suggestion: suggestConsolidation(doc1, doc2),
         });
       }
     }
