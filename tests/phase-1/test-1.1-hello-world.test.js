@@ -15,200 +15,199 @@
  * - Success rate: 100%
  */
 
-const fs = require("fs");
-const path = require("path");
-const { executeAgent } = require("../../scripts/run-agent");
+import fs from 'node:fs';
+import path, { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { executeAgent } from '../../scripts/run-agent.js';
 
-describe("Phase 1.1: Single Agent Baseline", () => {
-	const OUTPUT_FILE = path.join(__dirname, "../../src/hello.js");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-	// Clean up before and after tests
-	beforeEach(() => {
-		if (fs.existsSync(OUTPUT_FILE)) {
-			fs.unlinkSync(OUTPUT_FILE);
-		}
-	});
+describe('Phase 1.1: Single Agent Baseline', () => {
+  const OUTPUT_FILE = path.join(__dirname, '../../src/hello.js');
 
-	afterEach(() => {
-		if (fs.existsSync(OUTPUT_FILE)) {
-			fs.unlinkSync(OUTPUT_FILE);
-		}
-	});
+  // Clean up before and after tests
+  beforeEach(() => {
+    if (fs.existsSync(OUTPUT_FILE)) {
+      fs.unlinkSync(OUTPUT_FILE);
+    }
+  });
 
-	describe("Hello World Function Generation", () => {
-		test("agent generates valid hello function", async () => {
-			const result = await executeAgent(
-				"code-implementer",
-				"Create a function called hello(name) that returns 'Hello, {name}!'",
-				{ output: OUTPUT_FILE },
-			);
+  afterEach(() => {
+    if (fs.existsSync(OUTPUT_FILE)) {
+      fs.unlinkSync(OUTPUT_FILE);
+    }
+  });
 
-			// Verify execution succeeded
-			expect(result.success).toBe(true);
+  describe('Hello World Function Generation', () => {
+    test('agent generates valid hello function', async () => {
+      const result = await executeAgent(
+        'code-implementer',
+        "Create a function called hello(name) that returns 'Hello, {name}!'",
+        { output: OUTPUT_FILE },
+      );
 
-			// Verify file was created
-			expect(fs.existsSync(OUTPUT_FILE)).toBe(true);
+      // Verify execution succeeded
+      expect(result.success).toBe(true);
 
-			// Verify file has content
-			const content = fs.readFileSync(OUTPUT_FILE, "utf8");
-			expect(content.length).toBeGreaterThan(0);
+      // Verify file was created
+      expect(fs.existsSync(OUTPUT_FILE)).toBe(true);
 
-			// Verify code is valid JavaScript
-			expect(() => {
-				const vm = require("vm");
-				new vm.Script(content);
-			}).not.toThrow();
-		});
+      // Verify file has content
+      const content = fs.readFileSync(OUTPUT_FILE, 'utf8');
+      expect(content.length).toBeGreaterThan(0);
 
-		test("generated function works correctly", async () => {
-			const result = await executeAgent(
-				"code-implementer",
-				"Create a function called hello(name) that returns 'Hello, {name}!'",
-				{ output: OUTPUT_FILE },
-			);
+      // Verify code is valid JavaScript
+      await expect(async () => {
+        const vm = await import('node:vm');
+        new vm.Script(content);
+      }).resolves.not.toThrow();
+    });
 
-			expect(result.success).toBe(true);
+    test('generated function works correctly', async () => {
+      const result = await executeAgent(
+        'code-implementer',
+        "Create a function called hello(name) that returns 'Hello, {name}!'",
+        { output: OUTPUT_FILE },
+      );
 
-			// Import and test the generated function
-			// Clear require cache to force reload
-			delete require.cache[require.resolve(OUTPUT_FILE)];
-			const { hello } = require(OUTPUT_FILE);
+      expect(result.success).toBe(true);
 
-			// Test function behavior
-			expect(hello("World")).toBe("Hello, World!");
-			expect(hello("Alice")).toBe("Hello, Alice!");
-			expect(hello("Bob")).toBe("Hello, Bob!");
-		});
+      // Import and test the generated function
+      // Use dynamic import for ES modules
+      const module = await import(`file://${OUTPUT_FILE}?update=${Date.now()}`);
+      const { hello } = module;
 
-		test("generated code has proper documentation", async () => {
-			const result = await executeAgent(
-				"code-implementer",
-				"Create a function called hello(name) that returns 'Hello, {name}!'",
-				{ output: OUTPUT_FILE },
-			);
+      // Test function behavior
+      expect(hello('World')).toBe('Hello, World!');
+      expect(hello('Alice')).toBe('Hello, Alice!');
+      expect(hello('Bob')).toBe('Hello, Bob!');
+    });
+    test('generated code has proper documentation', async () => {
+      const result = await executeAgent(
+        'code-implementer',
+        "Create a function called hello(name) that returns 'Hello, {name}!'",
+        { output: OUTPUT_FILE },
+      );
 
-			expect(result.success).toBe(true);
+      expect(result.success).toBe(true);
 
-			const content = fs.readFileSync(OUTPUT_FILE, "utf8");
+      const content = fs.readFileSync(OUTPUT_FILE, 'utf8');
 
-			// Should have JSDoc comments
-			expect(content).toContain("/**");
-			expect(content).toContain("@param");
-			expect(content).toContain("@returns");
-		});
+      // Should have JSDoc comments
+      expect(content).toContain('/**');
+      expect(content).toContain('@param');
+      expect(content).toContain('@returns');
+    });
 
-		test("generated code exports properly", async () => {
-			const result = await executeAgent(
-				"code-implementer",
-				"Create a function called hello(name) that returns 'Hello, {name}!'",
-				{ output: OUTPUT_FILE },
-			);
+    test('generated code exports properly', async () => {
+      const result = await executeAgent(
+        'code-implementer',
+        "Create a function called hello(name) that returns 'Hello, {name}!'",
+        { output: OUTPUT_FILE },
+      );
 
-			expect(result.success).toBe(true);
+      expect(result.success).toBe(true);
 
-			const content = fs.readFileSync(OUTPUT_FILE, "utf8");
+      const content = fs.readFileSync(OUTPUT_FILE, 'utf8');
 
-			// Should have module.exports
-			expect(content).toContain("module.exports");
-			expect(content).toContain("hello");
-		});
-	});
+      // Should have module.exports
+      expect(content).toContain('module.exports');
+      expect(content).toContain('hello');
+    });
+  });
 
-	describe("Metrics Collection", () => {
-		test("metrics are collected during execution", async () => {
-			const result = await executeAgent(
-				"code-implementer",
-				"Create a function called hello(name) that returns 'Hello, {name}!'",
-				{ output: OUTPUT_FILE },
-			);
+  describe('Metrics Collection', () => {
+    test('metrics are collected during execution', async () => {
+      const result = await executeAgent(
+        'code-implementer',
+        "Create a function called hello(name) that returns 'Hello, {name}!'",
+        { output: OUTPUT_FILE },
+      );
 
-			expect(result.success).toBe(true);
-			expect(result.metrics).toBeDefined();
+      expect(result.success).toBe(true);
+      expect(result.metrics).toBeDefined();
 
-			// Verify all required metrics are present
-			expect(result.metrics).toHaveProperty("tokenCount");
-			expect(result.metrics).toHaveProperty("executionTime");
-			expect(result.metrics).toHaveProperty("stepCount");
-			expect(result.metrics).toHaveProperty("successRate");
-			expect(result.metrics).toHaveProperty("timestamp");
-		});
+      // Verify all required metrics are present
+      expect(result.metrics).toHaveProperty('tokenCount');
+      expect(result.metrics).toHaveProperty('executionTime');
+      expect(result.metrics).toHaveProperty('stepCount');
+      expect(result.metrics).toHaveProperty('successRate');
+      expect(result.metrics).toHaveProperty('timestamp');
+    });
 
-		test("token count meets baseline expectation", async () => {
-			const result = await executeAgent(
-				"code-implementer",
-				"Create a function called hello(name) that returns 'Hello, {name}!'",
-				{ output: OUTPUT_FILE },
-			);
+    test('token count meets baseline expectation', async () => {
+      const result = await executeAgent(
+        'code-implementer',
+        "Create a function called hello(name) that returns 'Hello, {name}!'",
+        { output: OUTPUT_FILE },
+      );
 
-			expect(result.success).toBe(true);
+      expect(result.success).toBe(true);
 
-			// Baseline: < 500 tokens
-			expect(result.metrics.tokenCount).toBeLessThan(500);
-		});
+      // Baseline: < 500 tokens
+      expect(result.metrics.tokenCount).toBeLessThan(500);
+    });
 
-		test("execution time meets baseline expectation", async () => {
-			const result = await executeAgent(
-				"code-implementer",
-				"Create a function called hello(name) that returns 'Hello, {name}!'",
-				{ output: OUTPUT_FILE },
-			);
+    test('execution time meets baseline expectation', async () => {
+      const result = await executeAgent(
+        'code-implementer',
+        "Create a function called hello(name) that returns 'Hello, {name}!'",
+        { output: OUTPUT_FILE },
+      );
 
-			expect(result.success).toBe(true);
+      expect(result.success).toBe(true);
 
-			// Baseline: < 30 seconds (30000 ms)
-			expect(result.metrics.executionTime).toBeLessThan(30000);
-		});
+      // Baseline: < 30 seconds (30000 ms)
+      expect(result.metrics.executionTime).toBeLessThan(30000);
+    });
 
-		test("step count meets baseline expectation", async () => {
-			const result = await executeAgent(
-				"code-implementer",
-				"Create a function called hello(name) that returns 'Hello, {name}!'",
-				{ output: OUTPUT_FILE },
-			);
+    test('step count meets baseline expectation', async () => {
+      const result = await executeAgent(
+        'code-implementer',
+        "Create a function called hello(name) that returns 'Hello, {name}!'",
+        { output: OUTPUT_FILE },
+      );
 
-			expect(result.success).toBe(true);
+      expect(result.success).toBe(true);
 
-			// Baseline: 1-2 steps
-			expect(result.metrics.stepCount).toBeGreaterThanOrEqual(1);
-			expect(result.metrics.stepCount).toBeLessThanOrEqual(2);
-		});
+      // Baseline: 1-2 steps
+      expect(result.metrics.stepCount).toBeGreaterThanOrEqual(1);
+      expect(result.metrics.stepCount).toBeLessThanOrEqual(2);
+    });
 
-		test("success rate is 100%", async () => {
-			const result = await executeAgent(
-				"code-implementer",
-				"Create a function called hello(name) that returns 'Hello, {name}!'",
-				{ output: OUTPUT_FILE },
-			);
+    test('success rate is 100%', async () => {
+      const result = await executeAgent(
+        'code-implementer',
+        "Create a function called hello(name) that returns 'Hello, {name}!'",
+        { output: OUTPUT_FILE },
+      );
 
-			expect(result.success).toBe(true);
+      expect(result.success).toBe(true);
 
-			// Baseline: 100% success rate
-			expect(result.metrics.successRate).toBe(1.0);
-		});
-	});
+      // Baseline: 100% success rate
+      expect(result.metrics.successRate).toBe(1.0);
+    });
+  });
 
-	describe("Error Handling", () => {
-		test("fails gracefully for invalid agent", async () => {
-			const result = await executeAgent(
-				"nonexistent-agent",
-				"Create a function",
-				{ output: OUTPUT_FILE },
-			);
+  describe('Error Handling', () => {
+    test('fails gracefully for invalid agent', async () => {
+      const result = await executeAgent('nonexistent-agent', 'Create a function', {
+        output: OUTPUT_FILE,
+      });
 
-			expect(result.success).toBe(false);
-			expect(result.error).toBeDefined();
-		});
+      expect(result.success).toBe(false);
+      expect(result.error).toBeDefined();
+    });
 
-		test("collects metrics even on failure", async () => {
-			const result = await executeAgent(
-				"nonexistent-agent",
-				"Create a function",
-				{ output: OUTPUT_FILE },
-			);
+    test('collects metrics even on failure', async () => {
+      const result = await executeAgent('nonexistent-agent', 'Create a function', {
+        output: OUTPUT_FILE,
+      });
 
-			expect(result.success).toBe(false);
-			expect(result.metrics).toBeDefined();
-			expect(result.metrics.successRate).toBe(0.0);
-		});
-	});
+      expect(result.success).toBe(false);
+      expect(result.metrics).toBeDefined();
+      expect(result.metrics.successRate).toBe(0.0);
+    });
+  });
 });

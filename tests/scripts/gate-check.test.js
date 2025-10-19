@@ -6,312 +6,289 @@
  * Full integration tests would require a more complex test setup with git.
  */
 
-const fs = require("fs");
-const path = require("path");
-const { execSync } = require("child_process");
+import { execSync } from 'node:child_process';
+import fs from 'node:fs';
+import path, { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-describe("Gate Check Orchestrator", () => {
-	const scriptPath = path.join(__dirname, "../../scripts/gate-check.js");
-	const testDir = path.join(__dirname, "../fixtures/gate-check-test");
-	const evidenceDir = path.join(testDir, ".evidence");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-	beforeEach(() => {
-		// Create fresh test directory
-		if (fs.existsSync(testDir)) {
-			fs.rmSync(testDir, { recursive: true, force: true });
-		}
-		fs.mkdirSync(testDir, { recursive: true });
-		fs.mkdirSync(evidenceDir, { recursive: true });
-	});
+describe('Gate Check Orchestrator', () => {
+  const scriptPath = path.join(__dirname, '../../scripts/gates/gate-check.ts');
+  const testDir = path.join(__dirname, '../fixtures/gate-check-test');
+  const evidenceDir = path.join(testDir, '.evidence');
 
-	afterEach(() => {
-		// Cleanup
-		if (fs.existsSync(testDir)) {
-			fs.rmSync(testDir, { recursive: true, force: true });
-		}
-	});
+  beforeEach(() => {
+    // Create fresh test directory
+    if (fs.existsSync(testDir)) {
+      fs.rmSync(testDir, { recursive: true, force: true });
+    }
+    fs.mkdirSync(testDir, { recursive: true });
+    fs.mkdirSync(evidenceDir, { recursive: true });
+  });
 
-	describe("Basic Functionality", () => {
-		test("should exist and be executable", () => {
-			expect(fs.existsSync(scriptPath)).toBe(true);
-		});
+  afterEach(() => {
+    // Cleanup
+    if (fs.existsSync(testDir)) {
+      fs.rmSync(testDir, { recursive: true, force: true });
+    }
+  });
 
-		test("should complete without crashing on clean directory", () => {
-			const gitDir = path.join(testDir, ".git");
-			fs.mkdirSync(gitDir, { recursive: true });
-			fs.writeFileSync(
-				path.join(gitDir, "COMMIT_EDITMSG"),
-				"docs: update readme",
-			);
+  describe('Basic Functionality', () => {
+    test('should exist and be executable', () => {
+      expect(fs.existsSync(scriptPath)).toBe(true);
+    });
 
-			// Should not throw fatal errors
-			try {
-				execSync(`node ${scriptPath}`, {
-					cwd: testDir,
-					encoding: "utf8",
-				});
-			} catch (error) {
-				// Even if it fails, it shouldn't crash
-				expect(error.status).toBeDefined();
-			}
-		});
+    test('should complete without crashing on clean directory', () => {
+      const gitDir = path.join(testDir, '.git');
+      fs.mkdirSync(gitDir, { recursive: true });
+      fs.writeFileSync(path.join(gitDir, 'COMMIT_EDITMSG'), 'docs: update readme');
 
-		test("should produce output", () => {
-			const gitDir = path.join(testDir, ".git");
-			fs.mkdirSync(gitDir, { recursive: true });
-			fs.writeFileSync(
-				path.join(gitDir, "COMMIT_EDITMSG"),
-				"docs: update readme",
-			);
+      // Should not throw fatal errors
+      try {
+        execSync(`npx tsx ${scriptPath}`, {
+          cwd: testDir,
+          encoding: 'utf8',
+        });
+      } catch (error) {
+        // Even if it fails, it shouldn't crash
+        expect(error.status).toBeDefined();
+      }
+    });
 
-			try {
-				const output = execSync(`node ${scriptPath}`, {
-					cwd: testDir,
-					encoding: "utf8",
-				});
+    test('should produce output', () => {
+      const gitDir = path.join(testDir, '.git');
+      fs.mkdirSync(gitDir, { recursive: true });
+      fs.writeFileSync(path.join(gitDir, 'COMMIT_EDITMSG'), 'docs: update readme');
 
-				// Should have some output
-				expect(output.length).toBeGreaterThan(0);
-			} catch (error) {
-				const output = (error.stdout || "") + (error.stderr || "");
-				expect(output.length).toBeGreaterThan(0);
-			}
-		});
-	});
+      try {
+        const output = execSync(`npx tsx ${scriptPath}`, {
+          cwd: testDir,
+          encoding: 'utf8',
+        });
 
-	describe("Result Reporting", () => {
-		test("should report total number of checks", () => {
-			const gitDir = path.join(testDir, ".git");
-			fs.mkdirSync(gitDir, { recursive: true });
-			fs.writeFileSync(
-				path.join(gitDir, "COMMIT_EDITMSG"),
-				"docs: update readme",
-			);
+        // Should have some output
+        expect(output.length).toBeGreaterThan(0);
+      } catch (error) {
+        const output = (error.stdout || '') + (error.stderr || '');
+        expect(output.length).toBeGreaterThan(0);
+      }
+    });
+  });
 
-			try {
-				const output = execSync(`node ${scriptPath}`, {
-					cwd: testDir,
-					encoding: "utf8",
-				});
+  describe('Result Reporting', () => {
+    test('should report total number of checks', () => {
+      const gitDir = path.join(testDir, '.git');
+      fs.mkdirSync(gitDir, { recursive: true });
+      fs.writeFileSync(path.join(gitDir, 'COMMIT_EDITMSG'), 'docs: update readme');
 
-				// Should show total checks run
-				expect(output).toMatch(/Total checks:/i);
-			} catch (error) {
-				const output = (error.stdout || "") + (error.stderr || "");
-				expect(output).toMatch(/Total checks:/i);
-			}
-		});
+      try {
+        const output = execSync(`npx tsx ${scriptPath}`, {
+          cwd: testDir,
+          encoding: 'utf8',
+        });
 
-		test("should count passed and failed checks", () => {
-			const gitDir = path.join(testDir, ".git");
-			fs.mkdirSync(gitDir, { recursive: true });
-			fs.writeFileSync(
-				path.join(gitDir, "COMMIT_EDITMSG"),
-				"docs: update readme",
-			);
+        // Should show total checks run
+        expect(output).toMatch(/Total checks:/i);
+      } catch (error) {
+        const output = (error.stdout || '') + (error.stderr || '');
+        expect(output).toMatch(/Total checks:/i);
+      }
+    });
 
-			try {
-				const output = execSync(`node ${scriptPath}`, {
-					cwd: testDir,
-					encoding: "utf8",
-				});
+    test('should count passed and failed checks', () => {
+      const gitDir = path.join(testDir, '.git');
+      fs.mkdirSync(gitDir, { recursive: true });
+      fs.writeFileSync(path.join(gitDir, 'COMMIT_EDITMSG'), 'docs: update readme');
 
-				// Should show passed/failed breakdown
-				expect(output).toMatch(/Passed:/i);
-				expect(output).toMatch(/Failed:/i);
-			} catch (error) {
-				const output = (error.stdout || "") + (error.stderr || "");
-				expect(output).toMatch(/Passed:/i);
-				expect(output).toMatch(/Failed:/i);
-			}
-		});
-	});
+      try {
+        const output = execSync(`npx tsx ${scriptPath}`, {
+          cwd: testDir,
+          encoding: 'utf8',
+        });
 
-	describe("Exit Codes", () => {
-		test("should exit successfully on clean directory", () => {
-			const gitDir = path.join(testDir, ".git");
-			fs.mkdirSync(gitDir, { recursive: true });
-			fs.writeFileSync(
-				path.join(gitDir, "COMMIT_EDITMSG"),
-				"docs: update readme",
-			);
+        // Should show passed/failed breakdown
+        expect(output).toMatch(/Passed:/i);
+        expect(output).toMatch(/Failed:/i);
+      } catch (error) {
+        const output = (error.stdout || '') + (error.stderr || '');
+        expect(output).toMatch(/Passed:/i);
+        expect(output).toMatch(/Failed:/i);
+      }
+    });
+  });
 
-			try {
-				const output = execSync(`node ${scriptPath}`, {
-					cwd: testDir,
-					encoding: "utf8",
-				});
+  describe('Exit Codes', () => {
+    test('should exit successfully on clean directory', () => {
+      const gitDir = path.join(testDir, '.git');
+      fs.mkdirSync(gitDir, { recursive: true });
+      fs.writeFileSync(path.join(gitDir, 'COMMIT_EDITMSG'), 'docs: update readme');
 
-				// Should indicate success
-				expect(output).toMatch(/PASSED|✅/i);
-			} catch (error) {
-				// If it fails, at least verify we got a status code
-				expect(error.status).toBeDefined();
-			}
-		});
+      try {
+        const output = execSync(`npx tsx ${scriptPath}`, {
+          cwd: testDir,
+          encoding: 'utf8',
+        });
 
-		test("should exit non-zero with violations", () => {
-			// Initialize git repository
-			execSync("git init", { cwd: testDir });
-			execSync('git config user.email "test@example.com"', {
-				cwd: testDir,
-			});
-			execSync('git config user.name "Test User"', { cwd: testDir });
+        // Should indicate success
+        expect(output).toMatch(/PASSED|✅/i);
+      } catch (error) {
+        // If it fails, at least verify we got a status code
+        expect(error.status).toBeDefined();
+      }
+    });
 
-			// Create a file violation
-			const sessionFile = path.join(testDir, "SESSION-NOTES.md");
-			fs.writeFileSync(sessionFile, "# Test\n");
+    test('should exit non-zero with violations', () => {
+      // Initialize git repository
+      execSync('git init', { cwd: testDir });
+      execSync('git config user.email "test@example.com"', {
+        cwd: testDir,
+      });
+      execSync('git config user.name "Test User"', { cwd: testDir });
 
-			fs.writeFileSync(
-				path.join(testDir, ".git", "COMMIT_EDITMSG"),
-				"docs: update readme",
-			);
+      // Create a file violation
+      const sessionFile = path.join(testDir, 'SESSION-NOTES.md');
+      fs.writeFileSync(sessionFile, '# Test\n');
 
-			// Stage the violating file so gate-check will detect it
-			execSync("git add SESSION-NOTES.md", { cwd: testDir });
+      fs.writeFileSync(path.join(testDir, '.git', 'COMMIT_EDITMSG'), 'docs: update readme');
 
-			try {
-				execSync(`node ${scriptPath} 2>&1`, {
-					cwd: testDir,
-					encoding: "utf8",
-				});
-				throw new Error(
-					"Expected gate check to fail with violation (SESSION-NOTES.md in root)",
-				);
-			} catch (error) {
-				// execSync throws on non-zero exit, which is what we want
-				// The exit code might be in error.status or we can check that an error was thrown
-				const exitCode = error.status || (error.code ? 1 : 0);
+      // Stage the violating file so gate-check will detect it
+      execSync('git add SESSION-NOTES.md', { cwd: testDir });
 
-				// If no error was thrown, this is unexpected
-				if (exitCode === 0 && !error.code) {
-					throw new Error(
-						`Gate check should fail when SESSION-NOTES.md is in root, but succeeded.\n` +
-							`Error object: ${JSON.stringify({ status: error.status, code: error.code }, null, 2)}`,
-					);
-				}
+      try {
+        execSync(`npx tsx ${scriptPath} 2>&1`, {
+          cwd: testDir,
+          encoding: 'utf8',
+        });
+        throw new Error('Expected gate check to fail with violation (SESSION-NOTES.md in root)');
+      } catch (error) {
+        // execSync throws on non-zero exit, which is what we want
+        // The exit code might be in error.status or we can check that an error was thrown
+        const exitCode = error.status || (error.code ? 1 : 0);
 
-				// We expect a non-zero exit (error thrown), so this is correct behavior
-				expect(exitCode).not.toBe(0); // When using 2>&1, output goes to stdout
-				const output = error.stdout || error.message || "";
+        // If no error was thrown, this is unexpected
+        if (exitCode === 0 && !error.code) {
+          throw new Error(
+            'Gate check should fail when SESSION-NOTES.md is in root, but succeeded.\n' +
+              `Error object: ${JSON.stringify({ status: error.status, code: error.code }, null, 2)}`,
+          );
+        }
 
-				// Provide clear debugging if test fails
-				if (!output.match(/FAILED|Failed|❌/i)) {
-					throw new Error(
-						`Gate check output should contain failure indicator.\n` +
-							`Expected pattern: /FAILED|Failed|❌/i\n` +
-							`Actual output (first 500 chars):\n${output.substring(0, 500)}\n` +
-							`Output length: ${output.length} chars, Exit code: ${error.status}`,
-					);
-				}
+        // We expect a non-zero exit (error thrown), so this is correct behavior
+        expect(exitCode).not.toBe(0); // When using 2>&1, output goes to stdout
+        const output = error.stdout || error.message || '';
 
-				expect(output).toMatch(/FAILED|Failed|❌/i);
-			} finally {
-				fs.unlinkSync(sessionFile);
-			}
-		});
-	});
+        // Provide clear debugging if test fails
+        if (!output.match(/FAILED|Failed|❌/i)) {
+          throw new Error(
+            'Gate check output should contain failure indicator.\n' +
+              'Expected pattern: /FAILED|Failed|❌/i\n' +
+              `Actual output (first 500 chars):\n${output.substring(0, 500)}\n` +
+              `Output length: ${output.length} chars, Exit code: ${error.status}`,
+          );
+        }
 
-	describe("Phase Detection", () => {
-		test("should skip phase checks for regular commits", () => {
-			const gitDir = path.join(testDir, ".git");
-			fs.mkdirSync(gitDir, { recursive: true });
+        expect(output).toMatch(/FAILED|Failed|❌/i);
+      } finally {
+        fs.unlinkSync(sessionFile);
+      }
+    });
+  });
 
-			const regularMessages = [
-				"docs: update readme",
-				"fix: typo",
-				"refactor: cleanup",
-			];
+  describe('Phase Detection', () => {
+    test('should skip phase checks for regular commits', () => {
+      const gitDir = path.join(testDir, '.git');
+      fs.mkdirSync(gitDir, { recursive: true });
 
-			regularMessages.forEach((message) => {
-				fs.writeFileSync(path.join(gitDir, "COMMIT_EDITMSG"), message);
+      const regularMessages = ['docs: update readme', 'fix: typo', 'refactor: cleanup'];
 
-				try {
-					const output = execSync(`node ${scriptPath}`, {
-						cwd: testDir,
-						encoding: "utf8",
-					});
+      regularMessages.forEach(message => {
+        fs.writeFileSync(path.join(gitDir, 'COMMIT_EDITMSG'), message);
 
-					// Should skip phase requirements
-					expect(output).toMatch(/not a phase completion|skipping/i);
-				} catch (error) {
-					const output = (error.stdout || "") + (error.stderr || "");
+        try {
+          const output = execSync(`npx tsx ${scriptPath}`, {
+            cwd: testDir,
+            encoding: 'utf8',
+          });
 
-					// Should not require test evidence for regular commits
-					expect(output).not.toMatch(/test evidence.*required/i);
-				}
-			});
-		});
+          // Should skip phase requirements
+          expect(output).toMatch(/not a phase completion|skipping/i);
+        } catch (error) {
+          const output = (error.stdout || '') + (error.stderr || '');
 
-		test("should detect phase completion commits", () => {
-			const gitDir = path.join(testDir, ".git");
-			fs.mkdirSync(gitDir, { recursive: true });
+          // Should not require test evidence for regular commits
+          expect(output).not.toMatch(/test evidence.*required/i);
+        }
+      });
+    });
 
-			const phaseMessage = "chore: complete phase-1.0";
-			fs.writeFileSync(path.join(gitDir, "COMMIT_EDITMSG"), phaseMessage);
+    test('should detect phase completion commits', () => {
+      const gitDir = path.join(testDir, '.git');
+      fs.mkdirSync(gitDir, { recursive: true });
 
-			try {
-				execSync(`node ${scriptPath}`, {
-					cwd: testDir,
-					encoding: "utf8",
-				});
-				// If it passes, phase detection might be working
-			} catch (error) {
-				const output = (error.stdout || "") + (error.stderr || "");
+      const phaseMessage = 'chore: complete phase-1.0';
+      fs.writeFileSync(path.join(gitDir, 'COMMIT_EDITMSG'), phaseMessage);
 
-				// Should mention test evidence or phase requirements
-				// (will fail if no evidence exists)
-				expect(output).toMatch(/test evidence|phase|requirement/i);
-			}
-		});
-	});
+      try {
+        execSync(`npx tsx ${scriptPath}`, {
+          cwd: testDir,
+          encoding: 'utf8',
+        });
+        // If it passes, phase detection might be working
+      } catch (error) {
+        const output = (error.stdout || '') + (error.stderr || '');
 
-	describe("Git Integration", () => {
-		test("should handle non-git directories gracefully", () => {
-			const nonGitDir = path.join(testDir, "non-git");
-			fs.mkdirSync(nonGitDir, { recursive: true });
+        // Should mention test evidence or phase requirements
+        // (will fail if no evidence exists)
+        expect(output).toMatch(/test evidence|phase|requirement/i);
+      }
+    });
+  });
 
-			try {
-				const output = execSync(`node ${scriptPath}`, {
-					cwd: nonGitDir,
-					encoding: "utf8",
-				});
+  describe('Git Integration', () => {
+    test('should handle non-git directories gracefully', () => {
+      const nonGitDir = path.join(testDir, 'non-git');
+      fs.mkdirSync(nonGitDir, { recursive: true });
 
-				// Should complete without crashing
-				expect(output).toBeTruthy();
-			} catch (error) {
-				// If it fails, should not be because of crashes
-				const output = (error.stdout || "") + (error.stderr || "");
-				expect(output).not.toMatch(/cannot read|undefined.*property/i);
-			}
-		});
-	});
+      try {
+        const output = execSync(`npx tsx ${scriptPath}`, {
+          cwd: nonGitDir,
+          encoding: 'utf8',
+        });
 
-	describe("Performance", () => {
-		test("should complete in reasonable time", () => {
-			const gitDir = path.join(testDir, ".git");
-			fs.mkdirSync(gitDir, { recursive: true });
-			fs.writeFileSync(
-				path.join(gitDir, "COMMIT_EDITMSG"),
-				"docs: update readme",
-			);
+        // Should complete without crashing
+        expect(output).toBeTruthy();
+      } catch (error) {
+        // If it fails, should not be because of crashes
+        const output = (error.stdout || '') + (error.stderr || '');
+        expect(output).not.toMatch(/cannot read|undefined.*property/i);
+      }
+    });
+  });
 
-			const startTime = Date.now();
+  describe('Performance', () => {
+    test('should complete in reasonable time', () => {
+      const gitDir = path.join(testDir, '.git');
+      fs.mkdirSync(gitDir, { recursive: true });
+      fs.writeFileSync(path.join(gitDir, 'COMMIT_EDITMSG'), 'docs: update readme');
 
-			try {
-				execSync(`node ${scriptPath}`, {
-					cwd: testDir,
-					encoding: "utf8",
-					timeout: 5000,
-				});
-			} catch {
-				// Even if it fails, check the time
-			}
+      const startTime = Date.now();
 
-			const duration = Date.now() - startTime;
+      try {
+        execSync(`npx tsx ${scriptPath}`, {
+          cwd: testDir,
+          encoding: 'utf8',
+          timeout: 5000,
+        });
+      } catch {
+        // Even if it fails, check the time
+      }
 
-			// Should complete in under 5 seconds
-			expect(duration).toBeLessThan(5000);
-		});
-	});
+      const duration = Date.now() - startTime;
+
+      // Should complete in under 5 seconds
+      expect(duration).toBeLessThan(5000);
+    });
+  });
 });

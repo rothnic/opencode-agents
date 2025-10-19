@@ -9,325 +9,329 @@
  * - Properly stores test results and metrics
  */
 
-const fs = require("fs");
-const path = require("path");
+import fs from 'node:fs';
+import path, { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-describe("Test Evidence System", () => {
-	const testDir = path.join(__dirname, "../fixtures/test-evidence");
-	const evidenceDir = path.join(testDir, ".evidence");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-	beforeEach(() => {
-		// Create fresh test directory for each test
-		if (fs.existsSync(testDir)) {
-			fs.rmSync(testDir, { recursive: true, force: true });
-		}
-		fs.mkdirSync(testDir, { recursive: true });
-		fs.mkdirSync(evidenceDir, { recursive: true });
-	});
+describe('Test Evidence System', () => {
+  const testDir = path.join(__dirname, '../fixtures/test-evidence');
+  const evidenceDir = path.join(testDir, '.evidence');
 
-	afterEach(() => {
-		// Cleanup after each test
-		if (fs.existsSync(testDir)) {
-			fs.rmSync(testDir, { recursive: true, force: true });
-		}
-	});
+  beforeEach(() => {
+    // Create fresh test directory for each test
+    if (fs.existsSync(testDir)) {
+      fs.rmSync(testDir, { recursive: true, force: true });
+    }
+    fs.mkdirSync(testDir, { recursive: true });
+    fs.mkdirSync(evidenceDir, { recursive: true });
+  });
 
-	describe("Evidence Recording", () => {
-		test("should create evidence file with timestamp", () => {
-			const evidenceFile = path.join(evidenceDir, "phase-1.0.json");
+  afterEach(() => {
+    // Cleanup after each test
+    if (fs.existsSync(testDir)) {
+      fs.rmSync(testDir, { recursive: true, force: true });
+    }
+  });
 
-			// Create mock evidence
-			const evidence = {
-				timestamp: new Date().toISOString(),
-				phase: "phase-1.0",
-				status: "passed",
-				testResults: {
-					summary: { passed: 5, failed: 0, total: 5 },
-				},
-			};
+  describe('Evidence Recording', () => {
+    test('should create evidence file with timestamp', () => {
+      const evidenceFile = path.join(evidenceDir, 'phase-1.0.json');
 
-			fs.writeFileSync(evidenceFile, JSON.stringify(evidence, null, 2));
+      // Create mock evidence
+      const evidence = {
+        timestamp: new Date().toISOString(),
+        phase: 'phase-1.0',
+        status: 'passed',
+        testResults: {
+          summary: { passed: 5, failed: 0, total: 5 },
+        },
+      };
 
-			// Verify file exists and is valid JSON
-			expect(fs.existsSync(evidenceFile)).toBe(true);
+      fs.writeFileSync(evidenceFile, JSON.stringify(evidence, null, 2));
 
-			const content = JSON.parse(fs.readFileSync(evidenceFile, "utf8"));
-			expect(content.timestamp).toBeDefined();
-			expect(content.phase).toBe("phase-1.0");
-			expect(content.status).toBe("passed");
-		});
+      // Verify file exists and is valid JSON
+      expect(fs.existsSync(evidenceFile)).toBe(true);
 
-		test("should include test summary in evidence", () => {
-			const evidence = {
-				timestamp: new Date().toISOString(),
-				phase: "phase-1.0",
-				status: "passed",
-				testResults: {
-					summary: {
-						passed: 10,
-						failed: 2,
-						total: 12,
-					},
-				},
-			};
+      const content = JSON.parse(fs.readFileSync(evidenceFile, 'utf8'));
+      expect(content.timestamp).toBeDefined();
+      expect(content.phase).toBe('phase-1.0');
+      expect(content.status).toBe('passed');
+    });
 
-			const evidenceFile = path.join(evidenceDir, "phase-1.0.json");
-			fs.writeFileSync(evidenceFile, JSON.stringify(evidence, null, 2));
+    test('should include test summary in evidence', () => {
+      const evidence = {
+        timestamp: new Date().toISOString(),
+        phase: 'phase-1.0',
+        status: 'passed',
+        testResults: {
+          summary: {
+            passed: 10,
+            failed: 2,
+            total: 12,
+          },
+        },
+      };
 
-			const content = JSON.parse(fs.readFileSync(evidenceFile, "utf8"));
-			expect(content.testResults.summary.passed).toBe(10);
-			expect(content.testResults.summary.failed).toBe(2);
-			expect(content.testResults.summary.total).toBe(12);
-		});
+      const evidenceFile = path.join(evidenceDir, 'phase-1.0.json');
+      fs.writeFileSync(evidenceFile, JSON.stringify(evidence, null, 2));
 
-		test("should record ISO 8601 timestamp format", () => {
-			const evidence = {
-				timestamp: new Date().toISOString(),
-				phase: "phase-1.0",
-				status: "passed",
-			};
+      const content = JSON.parse(fs.readFileSync(evidenceFile, 'utf8'));
+      expect(content.testResults.summary.passed).toBe(10);
+      expect(content.testResults.summary.failed).toBe(2);
+      expect(content.testResults.summary.total).toBe(12);
+    });
 
-			const evidenceFile = path.join(evidenceDir, "phase-1.0.json");
-			fs.writeFileSync(evidenceFile, JSON.stringify(evidence, null, 2));
+    test('should record ISO 8601 timestamp format', () => {
+      const evidence = {
+        timestamp: new Date().toISOString(),
+        phase: 'phase-1.0',
+        status: 'passed',
+      };
 
-			const content = JSON.parse(fs.readFileSync(evidenceFile, "utf8"));
+      const evidenceFile = path.join(evidenceDir, 'phase-1.0.json');
+      fs.writeFileSync(evidenceFile, JSON.stringify(evidence, null, 2));
 
-			// Verify ISO 8601 format (YYYY-MM-DDTHH:mm:ss.sssZ)
-			const isoRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
-			expect(content.timestamp).toMatch(isoRegex);
+      const content = JSON.parse(fs.readFileSync(evidenceFile, 'utf8'));
 
-			// Verify timestamp is parseable
-			const date = new Date(content.timestamp);
-			expect(date).toBeInstanceOf(Date);
-			expect(Number.isNaN(date.getTime())).toBe(false);
-		});
-	});
+      // Verify ISO 8601 format (YYYY-MM-DDTHH:mm:ss.sssZ)
+      const isoRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+      expect(content.timestamp).toMatch(isoRegex);
 
-	describe("Evidence Verification", () => {
-		test("should accept evidence less than 10 minutes old", () => {
-			const now = new Date();
-			const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000);
+      // Verify timestamp is parseable
+      const date = new Date(content.timestamp);
+      expect(date).toBeInstanceOf(Date);
+      expect(Number.isNaN(date.getTime())).toBe(false);
+    });
+  });
 
-			const evidence = {
-				timestamp: fiveMinutesAgo.toISOString(),
-				phase: "phase-1.0",
-				status: "passed",
-				testResults: {
-					summary: { passed: 5, failed: 0, total: 5 },
-				},
-			};
+  describe('Evidence Verification', () => {
+    test('should accept evidence less than 10 minutes old', () => {
+      const now = new Date();
+      const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000);
 
-			const evidenceFile = path.join(evidenceDir, "phase-1.0.json");
-			fs.writeFileSync(evidenceFile, JSON.stringify(evidence, null, 2));
+      const evidence = {
+        timestamp: fiveMinutesAgo.toISOString(),
+        phase: 'phase-1.0',
+        status: 'passed',
+        testResults: {
+          summary: { passed: 5, failed: 0, total: 5 },
+        },
+      };
 
-			// Verify the timestamp is within acceptable range
-			const content = JSON.parse(fs.readFileSync(evidenceFile, "utf8"));
-			const timestamp = new Date(content.timestamp);
-			const ageInMinutes = (now - timestamp) / (1000 * 60);
+      const evidenceFile = path.join(evidenceDir, 'phase-1.0.json');
+      fs.writeFileSync(evidenceFile, JSON.stringify(evidence, null, 2));
 
-			expect(ageInMinutes).toBeLessThan(10);
-			expect(ageInMinutes).toBeGreaterThan(0);
-		});
+      // Verify the timestamp is within acceptable range
+      const content = JSON.parse(fs.readFileSync(evidenceFile, 'utf8'));
+      const timestamp = new Date(content.timestamp);
+      const ageInMinutes = (now - timestamp) / (1000 * 60);
 
-		test("should reject evidence older than 10 minutes", () => {
-			const now = new Date();
-			const fifteenMinutesAgo = new Date(now.getTime() - 15 * 60 * 1000);
+      expect(ageInMinutes).toBeLessThan(10);
+      expect(ageInMinutes).toBeGreaterThan(0);
+    });
 
-			const evidence = {
-				timestamp: fifteenMinutesAgo.toISOString(),
-				phase: "phase-1.0",
-				status: "passed",
-				testResults: {
-					summary: { passed: 5, failed: 0, total: 5 },
-				},
-			};
+    test('should reject evidence older than 10 minutes', () => {
+      const now = new Date();
+      const fifteenMinutesAgo = new Date(now.getTime() - 15 * 60 * 1000);
 
-			const evidenceFile = path.join(evidenceDir, "phase-1.0.json");
-			fs.writeFileSync(evidenceFile, JSON.stringify(evidence, null, 2));
+      const evidence = {
+        timestamp: fifteenMinutesAgo.toISOString(),
+        phase: 'phase-1.0',
+        status: 'passed',
+        testResults: {
+          summary: { passed: 5, failed: 0, total: 5 },
+        },
+      };
 
-			// Calculate age
-			const content = JSON.parse(fs.readFileSync(evidenceFile, "utf8"));
-			const timestamp = new Date(content.timestamp);
-			const ageInMinutes = (now - timestamp) / (1000 * 60);
+      const evidenceFile = path.join(evidenceDir, 'phase-1.0.json');
+      fs.writeFileSync(evidenceFile, JSON.stringify(evidence, null, 2));
 
-			// Should be older than 10 minutes
-			expect(ageInMinutes).toBeGreaterThan(10);
-		});
+      // Calculate age
+      const content = JSON.parse(fs.readFileSync(evidenceFile, 'utf8'));
+      const timestamp = new Date(content.timestamp);
+      const ageInMinutes = (now - timestamp) / (1000 * 60);
 
-		test("should handle missing evidence file", () => {
-			const evidenceFile = path.join(evidenceDir, "phase-nonexistent.json");
+      // Should be older than 10 minutes
+      expect(ageInMinutes).toBeGreaterThan(10);
+    });
 
-			// Verify file doesn't exist
-			expect(fs.existsSync(evidenceFile)).toBe(false);
-		});
+    test('should handle missing evidence file', () => {
+      const evidenceFile = path.join(evidenceDir, 'phase-nonexistent.json');
 
-		test("should handle corrupted JSON evidence", () => {
-			const evidenceFile = path.join(evidenceDir, "phase-1.0.json");
+      // Verify file doesn't exist
+      expect(fs.existsSync(evidenceFile)).toBe(false);
+    });
 
-			// Write invalid JSON
-			fs.writeFileSync(evidenceFile, "{ invalid json content }");
+    test('should handle corrupted JSON evidence', () => {
+      const evidenceFile = path.join(evidenceDir, 'phase-1.0.json');
 
-			// Verify it's not valid JSON
-			expect(() => {
-				JSON.parse(fs.readFileSync(evidenceFile, "utf8"));
-			}).toThrow();
-		});
-	});
+      // Write invalid JSON
+      fs.writeFileSync(evidenceFile, '{ invalid json content }');
 
-	describe("Evidence Structure", () => {
-		test("should have required fields: timestamp, phase, status", () => {
-			const evidence = {
-				timestamp: new Date().toISOString(),
-				phase: "phase-1.0",
-				status: "passed",
-				testResults: {
-					summary: { passed: 5, failed: 0, total: 5 },
-				},
-			};
+      // Verify it's not valid JSON
+      expect(() => {
+        JSON.parse(fs.readFileSync(evidenceFile, 'utf8'));
+      }).toThrow();
+    });
+  });
 
-			// Verify all required fields are present
-			expect(evidence.timestamp).toBeDefined();
-			expect(evidence.phase).toBeDefined();
-			expect(evidence.status).toBeDefined();
+  describe('Evidence Structure', () => {
+    test('should have required fields: timestamp, phase, status', () => {
+      const evidence = {
+        timestamp: new Date().toISOString(),
+        phase: 'phase-1.0',
+        status: 'passed',
+        testResults: {
+          summary: { passed: 5, failed: 0, total: 5 },
+        },
+      };
 
-			// Verify types
-			expect(typeof evidence.timestamp).toBe("string");
-			expect(typeof evidence.phase).toBe("string");
-			expect(typeof evidence.status).toBe("string");
-		});
+      // Verify all required fields are present
+      expect(evidence.timestamp).toBeDefined();
+      expect(evidence.phase).toBeDefined();
+      expect(evidence.status).toBeDefined();
 
-		test("should include optional testResults field", () => {
-			const evidence = {
-				timestamp: new Date().toISOString(),
-				phase: "phase-1.0",
-				status: "passed",
-				testResults: {
-					summary: { passed: 5, failed: 0, total: 5 },
-					details: [],
-				},
-			};
+      // Verify types
+      expect(typeof evidence.timestamp).toBe('string');
+      expect(typeof evidence.phase).toBe('string');
+      expect(typeof evidence.status).toBe('string');
+    });
 
-			expect(evidence.testResults).toBeDefined();
-			expect(evidence.testResults.summary).toBeDefined();
-		});
+    test('should include optional testResults field', () => {
+      const evidence = {
+        timestamp: new Date().toISOString(),
+        phase: 'phase-1.0',
+        status: 'passed',
+        testResults: {
+          summary: { passed: 5, failed: 0, total: 5 },
+          details: [],
+        },
+      };
 
-		test("should support metrics field for performance data", () => {
-			const evidence = {
-				timestamp: new Date().toISOString(),
-				phase: "phase-1.0",
-				status: "passed",
-				testResults: {
-					summary: { passed: 5, failed: 0, total: 5 },
-					metrics: {
-						duration: 1234,
-						coverage: 85.5,
-					},
-				},
-			};
+      expect(evidence.testResults).toBeDefined();
+      expect(evidence.testResults.summary).toBeDefined();
+    });
 
-			expect(evidence.testResults.metrics).toBeDefined();
-			expect(evidence.testResults.metrics.duration).toBe(1234);
-			expect(evidence.testResults.metrics.coverage).toBe(85.5);
-		});
-	});
+    test('should support metrics field for performance data', () => {
+      const evidence = {
+        timestamp: new Date().toISOString(),
+        phase: 'phase-1.0',
+        status: 'passed',
+        testResults: {
+          summary: { passed: 5, failed: 0, total: 5 },
+          metrics: {
+            duration: 1234,
+            coverage: 85.5,
+          },
+        },
+      };
 
-	describe("Phase Naming", () => {
-		test("should support standard phase format (phase-X.Y)", () => {
-			const phases = ["phase-0.1", "phase-1.0", "phase-2.5", "phase-10.20"];
+      expect(evidence.testResults.metrics).toBeDefined();
+      expect(evidence.testResults.metrics.duration).toBe(1234);
+      expect(evidence.testResults.metrics.coverage).toBe(85.5);
+    });
+  });
 
-			phases.forEach((phase) => {
-				const evidence = {
-					timestamp: new Date().toISOString(),
-					phase: phase,
-					status: "passed",
-				};
+  describe('Phase Naming', () => {
+    test('should support standard phase format (phase-X.Y)', () => {
+      const phases = ['phase-0.1', 'phase-1.0', 'phase-2.5', 'phase-10.20'];
 
-				const evidenceFile = path.join(evidenceDir, `${phase}.json`);
-				fs.writeFileSync(evidenceFile, JSON.stringify(evidence, null, 2));
+      phases.forEach(phase => {
+        const evidence = {
+          timestamp: new Date().toISOString(),
+          phase: phase,
+          status: 'passed',
+        };
 
-				const content = JSON.parse(fs.readFileSync(evidenceFile, "utf8"));
-				expect(content.phase).toBe(phase);
-			});
-		});
-	});
+        const evidenceFile = path.join(evidenceDir, `${phase}.json`);
+        fs.writeFileSync(evidenceFile, JSON.stringify(evidence, null, 2));
 
-	describe("Status Values", () => {
-		test("should support valid status values", () => {
-			const validStatuses = ["passed", "failed", "skipped", "pending"];
+        const content = JSON.parse(fs.readFileSync(evidenceFile, 'utf8'));
+        expect(content.phase).toBe(phase);
+      });
+    });
+  });
 
-			validStatuses.forEach((status) => {
-				// Verify status is in the valid list
-				expect(["passed", "failed", "skipped", "pending"]).toContain(status);
-			});
-		});
-	});
+  describe('Status Values', () => {
+    test('should support valid status values', () => {
+      const validStatuses = ['passed', 'failed', 'skipped', 'pending'];
 
-	describe("Timestamp Calculations", () => {
-		test("should calculate age in minutes correctly", () => {
-			const testCases = [
-				{ minutesAgo: 0, shouldBeValid: true },
-				{ minutesAgo: 5, shouldBeValid: true },
-				{ minutesAgo: 9, shouldBeValid: true },
-				{ minutesAgo: 10, shouldBeValid: false },
-				{ minutesAgo: 15, shouldBeValid: false },
-				{ minutesAgo: 60, shouldBeValid: false },
-			];
+      validStatuses.forEach(status => {
+        // Verify status is in the valid list
+        expect(['passed', 'failed', 'skipped', 'pending']).toContain(status);
+      });
+    });
+  });
 
-			const now = new Date();
+  describe('Timestamp Calculations', () => {
+    test('should calculate age in minutes correctly', () => {
+      const testCases = [
+        { minutesAgo: 0, shouldBeValid: true },
+        { minutesAgo: 5, shouldBeValid: true },
+        { minutesAgo: 9, shouldBeValid: true },
+        { minutesAgo: 10, shouldBeValid: false },
+        { minutesAgo: 15, shouldBeValid: false },
+        { minutesAgo: 60, shouldBeValid: false },
+      ];
 
-			testCases.forEach(({ minutesAgo, shouldBeValid }) => {
-				const timestamp = new Date(now.getTime() - minutesAgo * 60 * 1000);
-				const ageInMinutes = (now - timestamp) / (1000 * 60);
+      const now = new Date();
 
-				if (shouldBeValid) {
-					expect(ageInMinutes).toBeLessThan(10);
-				} else {
-					expect(ageInMinutes).toBeGreaterThanOrEqual(10);
-				}
-			});
-		});
+      testCases.forEach(({ minutesAgo, shouldBeValid }) => {
+        const timestamp = new Date(now.getTime() - minutesAgo * 60 * 1000);
+        const ageInMinutes = (now - timestamp) / (1000 * 60);
 
-		test("should handle future timestamps gracefully", () => {
-			const now = new Date();
-			const futureTime = new Date(now.getTime() + 5 * 60 * 1000);
+        if (shouldBeValid) {
+          expect(ageInMinutes).toBeLessThan(10);
+        } else {
+          expect(ageInMinutes).toBeGreaterThanOrEqual(10);
+        }
+      });
+    });
 
-			// Future timestamps should be detectable
-			const ageInMinutes = (now - futureTime) / (1000 * 60);
-			expect(ageInMinutes).toBeLessThan(0);
-		});
-	});
+    test('should handle future timestamps gracefully', () => {
+      const now = new Date();
+      const futureTime = new Date(now.getTime() + 5 * 60 * 1000);
 
-	describe("File System Operations", () => {
-		test("should create .evidence directory if missing", () => {
-			// Remove evidence directory
-			if (fs.existsSync(evidenceDir)) {
-				fs.rmSync(evidenceDir, { recursive: true });
-			}
+      // Future timestamps should be detectable
+      const ageInMinutes = (now - futureTime) / (1000 * 60);
+      expect(ageInMinutes).toBeLessThan(0);
+    });
+  });
 
-			expect(fs.existsSync(evidenceDir)).toBe(false);
+  describe('File System Operations', () => {
+    test('should create .evidence directory if missing', () => {
+      // Remove evidence directory
+      if (fs.existsSync(evidenceDir)) {
+        fs.rmSync(evidenceDir, { recursive: true });
+      }
 
-			// Create it
-			fs.mkdirSync(evidenceDir, { recursive: true });
+      expect(fs.existsSync(evidenceDir)).toBe(false);
 
-			expect(fs.existsSync(evidenceDir)).toBe(true);
-		});
+      // Create it
+      fs.mkdirSync(evidenceDir, { recursive: true });
 
-		test("should handle write permissions", () => {
-			const evidenceFile = path.join(evidenceDir, "phase-1.0.json");
-			const evidence = {
-				timestamp: new Date().toISOString(),
-				phase: "phase-1.0",
-				status: "passed",
-			};
+      expect(fs.existsSync(evidenceDir)).toBe(true);
+    });
 
-			// Write and verify we can read it back
-			fs.writeFileSync(evidenceFile, JSON.stringify(evidence, null, 2));
+    test('should handle write permissions', () => {
+      const evidenceFile = path.join(evidenceDir, 'phase-1.0.json');
+      const evidence = {
+        timestamp: new Date().toISOString(),
+        phase: 'phase-1.0',
+        status: 'passed',
+      };
 
-			const content = fs.readFileSync(evidenceFile, "utf8");
-			expect(content).toBeTruthy();
+      // Write and verify we can read it back
+      fs.writeFileSync(evidenceFile, JSON.stringify(evidence, null, 2));
 
-			const parsed = JSON.parse(content);
-			expect(parsed.phase).toBe("phase-1.0");
-		});
-	});
+      const content = fs.readFileSync(evidenceFile, 'utf8');
+      expect(content).toBeTruthy();
+
+      const parsed = JSON.parse(content);
+      expect(parsed.phase).toBe('phase-1.0');
+    });
+  });
 });
