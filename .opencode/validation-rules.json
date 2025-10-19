@@ -1,0 +1,168 @@
+{
+  "$schema": "./validation-rules.schema.json",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-19",
+  "rules": {
+    "outdatedReferences": {
+      "enabled": true,
+      "severity": "warning",
+      "patterns": {
+        "dependencies": {
+          "jest": {
+            "replacement": "vitest",
+            "message": "Jest is outdated. Use Vitest for faster, modern testing.",
+            "searchIn": ["*.json", "*.md", "*.ts", "*.js"]
+          },
+          "eslint": {
+            "replacement": "biome",
+            "message": "ESLint is slower. Use Biome for 10-50x faster linting.",
+            "searchIn": ["*.json", "*.md"]
+          },
+          "prettier": {
+            "replacement": "biome",
+            "message": "Prettier is redundant. Biome handles formatting.",
+            "searchIn": ["*.json", "*.md"]
+          }
+        },
+        "models": {
+          "gpt-4": {
+            "replacement": "gpt-4o-mini",
+            "message": "GPT-4 is outdated. Use gpt-4o-mini (cheaper, faster) or gpt-4o (smarter).",
+            "searchIn": ["*.json", "*.md", "*.ts", "*.js"],
+            "exceptions": ["when specifically discussing gpt-4"]
+          },
+          "gpt-3.5-turbo": {
+            "replacement": "gpt-4o-mini",
+            "message": "GPT-3.5 is outdated. Use gpt-4o-mini (better quality, similar price).",
+            "searchIn": ["*.json", "*.md", "*.ts", "*.js"]
+          },
+          "claude-2": {
+            "replacement": "claude-3-5-sonnet-20241022",
+            "message": "Claude 2 is outdated. Use Claude 3.5 Sonnet (latest).",
+            "searchIn": ["*.json", "*.md", "*.ts", "*.js"]
+          }
+        }
+      }
+    },
+    "backupFiles": {
+      "enabled": true,
+      "severity": "error",
+      "patterns": ["*.backup", "*.old", "*.bak", "*.tmp", "*~", "*.orig"],
+      "message": "Backup files should not be committed. Use git history instead.",
+      "autoFix": "delete"
+    },
+    "statusFreshness": {
+      "enabled": true,
+      "severity": "warning",
+      "file": "STATUS.md",
+      "maxAgeHours": 24,
+      "requiredSections": ["Last Updated", "Current Phase", "In Progress", "Next Steps"],
+      "message": "STATUS.md should be updated regularly to track progress."
+    },
+    "uncommittedChanges": {
+      "enabled": true,
+      "severity": "warning",
+      "maxFiles": 10,
+      "message": "Too many uncommitted changes. Commit incrementally after logical changes.",
+      "excludePatterns": ["node_modules/**", ".git/**", "dist/**", "build/**"]
+    },
+    "requiredFiles": {
+      "enabled": true,
+      "severity": "error",
+      "files": {
+        "AGENTS.md": {
+          "purpose": "Concise guidelines for AI agents",
+          "template": ".opencode/templates/AGENTS.template.md"
+        },
+        "STATUS.md": {
+          "purpose": "Project status tracking",
+          "template": ".opencode/templates/STATUS.template.md"
+        },
+        "CODE-STANDARDS.md": {
+          "purpose": "Comprehensive coding standards",
+          "location": "docs/CODE-STANDARDS.md"
+        }
+      }
+    },
+    "modelDefaults": {
+      "enabled": true,
+      "severity": "info",
+      "recommendations": {
+        "default": "gpt-4o-mini",
+        "reasoning": "claude-3-5-sonnet-20241022",
+        "coding": "gpt-4o",
+        "review": "gpt-4o-mini",
+        "documentation": "gpt-4o-mini"
+      },
+      "message": "Configure default models in opencode.json"
+    },
+    "projectMaturity": {
+      "enabled": true,
+      "levels": {
+        "bootstrap": {
+          "maxCommits": 100,
+          "description": "Early stage - focus on velocity, more lenient rules",
+          "allowances": [
+            "Temporary 'any' types with TODO comments",
+            "Rapid prototyping with cleanup phase",
+            "Fewer test coverage requirements initially"
+          ]
+        },
+        "development": {
+          "maxCommits": 500,
+          "description": "Active development - balanced guardrails",
+          "enforcements": [
+            "Type safety required",
+            "Test coverage >60%",
+            "Documentation for public APIs"
+          ]
+        },
+        "production": {
+          "description": "Mature project - strict enforcement",
+          "enforcements": [
+            "No 'any' types without justification",
+            "Test coverage >80%",
+            "Full documentation",
+            "Security audits required"
+          ]
+        }
+      },
+      "message": "Check maturity with: git rev-list --count HEAD"
+    },
+    "versionSeverity": {
+      "enabled": true,
+      "description": "Rules escalate from warnings to errors at specific version milestones",
+      "milestones": {
+        "0.1.0": {
+          "description": "Initial development - warnings only",
+          "severity": "warning",
+          "rules": ["outdatedReferences", "uncommittedChanges", "statusFreshness"]
+        },
+        "0.5.0": {
+          "description": "Pre-release - some warnings become errors",
+          "escalations": {
+            "outdatedReferences": "error",
+            "statusFreshness": "error"
+          }
+        },
+        "1.0.0": {
+          "description": "Production - strict enforcement",
+          "escalations": {
+            "uncommittedChanges": "error",
+            "requiredFiles": "error"
+          }
+        }
+      },
+      "message": "Check version: npm pkg get version"
+    }
+  },
+  "excludePaths": [
+    "node_modules/**",
+    ".git/**",
+    "dist/**",
+    "build/**",
+    "coverage/**",
+    "*.log",
+    "package-lock.json"
+  ]
+}

@@ -13,12 +13,14 @@ Implements simple, well-defined code tasks. Generates clean, working code with m
 ## Responsibilities
 
 ✅ **Does:**
+
 - Generates functions, classes, and modules from clear specifications
 - Writes idiomatic, readable code
 - Follows project conventions (ESLint, formatting)
 - Creates working implementations on first attempt
 
 ❌ **Does Not:**
+
 - Write tests (separate TestWriter agent)
 - Write documentation (separate DocWriter agent)
 - Make architectural decisions (separate Architect agent)
@@ -27,11 +29,13 @@ Implements simple, well-defined code tasks. Generates clean, working code with m
 ## Inputs
 
 ### Required
+
 - **Task Description**: Clear specification of what to implement
 - **Target File**: Where to create/modify code
 - **Language**: Programming language (JavaScript, Python, etc.)
 
 ### Optional
+
 - **Dependencies**: Libraries or modules to use
 - **Constraints**: Performance, style, or compatibility requirements
 - **Examples**: Sample input/output or usage
@@ -39,11 +43,13 @@ Implements simple, well-defined code tasks. Generates clean, working code with m
 ## Outputs
 
 ### Success
+
 - **File(s) Created/Modified**: Working code files
 - **Summary**: Brief description of what was implemented
 - **Metrics**: Token count, time taken
 
 ### Failure
+
 - **Error Message**: Clear description of what went wrong
 - **Partial Work**: Any code generated before failure
 - **Suggestions**: How to fix or clarify the request
@@ -64,12 +70,14 @@ Implements simple, well-defined code tasks. Generates clean, working code with m
 ## Validation Rules
 
 ### Pre-execution
+
 - [ ] Task description is clear and complete
 - [ ] Target file path is valid
 - [ ] Language is supported
 - [ ] No conflicting files exist (or overwrite is allowed)
 
 ### Post-execution
+
 - [ ] File(s) created/modified successfully
 - [ ] Code is syntactically valid
 - [ ] Code follows project conventions (ESLint passes)
@@ -85,6 +93,7 @@ Implements simple, well-defined code tasks. Generates clean, working code with m
 ## Example Usage
 
 ### Simple Function
+
 ```javascript
 {
   "agent": "CodeImplementer",
@@ -95,6 +104,7 @@ Implements simple, well-defined code tasks. Generates clean, working code with m
 ```
 
 **Expected Output:**
+
 ```javascript
 // src/hello.js
 /**
@@ -110,6 +120,7 @@ module.exports = { hello };
 ```
 
 ### Class Implementation
+
 ```javascript
 {
   "agent": "CodeImplementer",
@@ -120,6 +131,7 @@ module.exports = { hello };
 ```
 
 **Expected Output:**
+
 ```javascript
 // src/calculator.js
 /**
@@ -153,6 +165,7 @@ module.exports = { Calculator };
 ## Error Handling
 
 ### Invalid Input
+
 ```json
 {
   "success": false,
@@ -162,6 +175,7 @@ module.exports = { Calculator };
 ```
 
 ### Syntax Error
+
 ```json
 {
   "success": false,
@@ -172,6 +186,7 @@ module.exports = { Calculator };
 ```
 
 ### File Conflict
+
 ```json
 {
   "success": false,
@@ -192,6 +207,7 @@ The CodeImplementer agent's output must pass:
 ## Baseline Expectations (Phase 1.1)
 
 For the "Hello World" test:
+
 - **Token Count**: < 500 tokens
 - **Execution Time**: < 30 seconds
 - **Step Count**: 1-2 steps

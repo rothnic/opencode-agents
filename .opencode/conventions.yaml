@@ -1,0 +1,74 @@
+version: 1.0.0
+
+documentation:
+  fileOrganization:
+    rules:
+      # Only allow specific top-level docs
+      - id: docs-root-limited
+        level: error
+        description: Only specific files allowed in docs root
+        scope: '^docs/[^/]+\.md$'
+        allowed:
+          - README.md
+          - GETTING-STARTED.md
+          - SUMMARY.md
+        message: Files in docs/ root should be limited to README, GETTING-STARTED, or SUMMARY
+        suggestions:
+          # Architecture-related docs
+          - pattern: architecture|design|system|quality|gate|decision|test
+            directory: docs/architecture/
+          # Planning-related docs
+          - pattern: plan|roadmap|phase|milestone
+            directory: docs/planning/
+          # How-to guides
+          - pattern: guide|how-to|tutorial|config
+            directory: docs/guides/
+
+      # Consistent naming convention
+      - id: consistent-naming
+        level: error
+        description: Documentation files should use lowercase-with-dashes
+        scope: '^docs/.+\.md$'
+        validator: '^[a-z0-9-]+\.md$'
+        exceptions:
+          - README.md
+          - GETTING-STARTED.md
+          - SUMMARY.md
+        message: Use lowercase-with-dashes for documentation files
+
+      # Avoid mixed case
+      - id: no-mixed-case
+        level: error
+        description: Avoid mixed case in documentation filenames
+        scope: '^docs/.+\.md$'
+        validator: '^[a-z0-9-]+\.md$'
+        exceptions:
+          - README.md
+          - GETTING-STARTED.md
+          - SUMMARY.md
+        message: Documentation files should be all lowercase with dashes
+
+      # Blog numbering
+      - id: blog-numbering
+        level: error
+        description: Blog posts must be numbered sequentially
+        scope: '^docs/blog/.+\.md$'
+        validator: '^\d{2}-.+\.md$'
+        message: Blog posts should follow format NN-title-in-lowercase.md
+
+      # Phase structure
+      - id: phase-structure
+        level: warning
+        description: Phase directories should contain README.md
+        scope: '^docs/phases/phase-[0-9.]+/$'
+        validator: '^phase-[0-9.]+$'
+        requiredFile: README.md
+        message: Each phase directory should contain a README.md
+
+      # Template suffix
+      - id: template-suffix
+        level: warning
+        description: Template files should end with -template.md
+        scope: '^docs/templates/.+\.md$'
+        validator: '^.+-template\.md$'
+        message: Template files should follow format name-template.md

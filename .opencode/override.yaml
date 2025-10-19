@@ -1,0 +1,92 @@
+# Override Configuration
+
+This file allows humans to temporarily bypass quality gates for special circumstances.
+**Agents CANNOT create overrides** - only humans can approve exceptions.
+
+## Format
+
+```yaml
+overrides:
+  - id: unique-identifier
+    created: 2025-10-19T14:30:00Z
+    creator: human:username
+    reason: "Clear explanation for why override is needed"
+    skipChecks:
+      - check-name-1
+      - check-name-2
+    branch: feature/branch-name  # or "*" for all branches
+    expiresAt: 2025-10-19T18:00:00Z  # or null for no expiration
+    followUpIssue: "#123"  # GitHub issue to track followup work
+```
+
+## Available Checks to Skip
+
+- `test-coverage` - Skip test coverage requirements
+- `work-verification` - Skip WORK-VERIFICATION.md requirement
+- `docs-conventions` - Skip documentation naming conventions
+- `file-size` - Skip file size limits
+- `document-overlap` - Skip duplicate document detection
+
+## Example: Hotfix Override
+
+```yaml
+overrides:
+  - id: hotfix-2025-10-19-auth-bypass
+    created: 2025-10-19T14:30:00Z
+    creator: human:nroth
+    reason: "Critical auth vulnerability, needs immediate deploy"
+    skipChecks:
+      - test-coverage
+      - work-verification
+    branch: fix/auth-bypass-urgent
+    expiresAt: 2025-10-19T18:00:00Z  # Auto-expires after 4 hours
+    followUpIssue: "#456"  # Must create tests after merge
+```
+
+## Example: Experimental Work
+
+```yaml
+overrides:
+  - id: experiment-new-test-framework
+    created: 2025-10-15T10:00:00Z
+    creator: human:nroth
+    reason: "Exploring new testing approach, existing conventions don't apply"
+    skipChecks:
+      - docs-conventions
+      - test-coverage
+    branch: experiment/new-testing
+    expiresAt: null  # No expiration for experimental branches
+    followUpIssue: null  # No followup needed for experiments
+```
+
+## Agent Instructions
+
+**If you are an agent and need to bypass a quality gate**:
+
+1. **STOP** - Do not proceed
+2. **EXPLAIN** the conflict to the user clearly
+3. **ASK** the user if they want to create an override
+4. **WAIT** for the user to add an override to this file
+5. **ONLY THEN** proceed with the work
+
+**You CANNOT create overrides yourself** - this file can only be modified by humans.
+
+## Creating an Override
+
+### Manual Method
+Edit this file and add an override entry following the format above.
+
+### CLI Helper (Future)
+```bash
+node scripts/create-override.js \
+  --reason "Critical bug needs immediate fix" \
+  --skip test-coverage,work-verification \
+  --expires 4h \
+  --issue "#123"
+```
+
+---
+
+## Active Overrides
+
+<!-- Add your overrides below this line -->
