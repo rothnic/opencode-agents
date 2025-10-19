@@ -2,8 +2,8 @@
 title: Metrics That Matter
 status: stub
 word_count: 150
-phase: unassigned
-last_updated: "2025-10-19"
+phase: phase-1.3
+last_updated: "2025-10-18"
 ---
 
 # Metrics That Matter for AI Agents
