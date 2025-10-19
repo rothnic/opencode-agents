@@ -1,44 +1,80 @@
 {
-	"name": "opencode-agents",
-	"version": "0.1.0",
-	"description": "Test-driven multi-agent development system using OpenCode",
-	"main": "index.js",
-	"scripts": {
-		"test": "jest",
-		"test:scripts": "jest tests/scripts",
-		"test:gates": "jest tests/gates",
-		"test:phase": "jest tests/phase-",
-		"test:watch": "jest --watch",
-		"test:coverage": "jest --coverage",
-		"lint": "eslint .",
-		"gate-check": "node scripts/gate-check.js",
-		"file-check": "node scripts/file-location-check.js",
-		"test-evidence": "node scripts/test-evidence.js",
-		"verify-phase": "npm test && npm run test-evidence"
-	},
-	"keywords": [
-		"opencode",
-		"agents",
-		"multi-agent",
-		"test-driven",
-		"development"
-	],
-	"author": "",
-	"license": "MIT",
-	"devDependencies": {
-		"jest": "^29.0.0",
-		"eslint": "^8.0.0"
-	},
-	"jest": {
-		"testEnvironment": "node",
-		"testMatch": [
-			"**/tests/**/*.test.js",
-			"**/tests/**/*.spec.js"
-		],
-		"collectCoverageFrom": [
-			"src/**/*.js",
-			"scripts/**/*.js",
-			"!**/node_modules/**"
-		]
-	}
+  "name": "opencode-agents",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Test-driven multi-agent development system using OpenCode",
+  "main": "index.js",
+  "scripts": {
+    "// Build & Type Checking": "",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "type-check": "tsc --noEmit",
+    "// Testing": "",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "test:changed": "vitest related",
+    "// Linting & Formatting": "",
+    "lint": "biome check . && markdownlint-cli2 '**/*.md' '#node_modules'",
+    "lint:fix": "biome check --write . && markdownlint-cli2 --fix '**/*.md' '#node_modules'",
+    "lint:staged": "biome check --staged --write",
+    "lint:md": "markdownlint-cli2 '**/*.md' '#node_modules'",
+    "lint:md:fix": "markdownlint-cli2 --fix '**/*.md' '#node_modules'",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "// Security & Quality": "",
+    "audit": "npm audit --audit-level=moderate",
+    "circular": "madge --circular --extensions ts,js .",
+    "security": "npm run audit && npm run circular",
+    "// Git Hooks": "",
+    "precommit": "npm run type-check && npm run lint:staged && npm run test:changed && npm run security",
+    "// CI/CD": "",
+    "ci": "npm run type-check && npm run lint && npm run test:coverage && npm run security",
+    "// Custom Gates & Tools": "",
+    "gate-check": "tsx scripts/gates/gate-check.ts",
+    "file-check": "tsx scripts/gates/file-location-check.ts",
+    "test-evidence": "tsx scripts/testing/test-evidence.ts",
+    "verify-phase": "npm test && npm run test-evidence",
+    "verify": "tsx scripts/utils/verify-tools.ts",
+    "audit-repository": "tsx scripts/validation/audit-repository-state.ts",
+    "version:check": "tsx scripts/validation/version-severity-check.ts check",
+    "version:apply": "tsx scripts/validation/version-severity-check.ts apply",
+    "status": "tsx scripts/utils/project-status.ts"
+  },
+  "keywords": [
+    "opencode",
+    "agents",
+    "multi-agent",
+    "test-driven",
+    "development"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.6",
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@types/node": "^24.8.1",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
+    "js-yaml": "^4.1.0",
+    "madge": "^8.0.0",
+    "markdownlint-cli2": "^0.18.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  },
+  "oldJestConfig": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/tests/**/*.test.js",
+      "**/tests/**/*.spec.js"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "scripts/**/*.js",
+      "!**/node_modules/**"
+    ]
+  }
 }
