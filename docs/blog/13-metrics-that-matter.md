@@ -1,3 +1,11 @@
+---
+title: Metrics That Matter
+status: stub
+word_count: 150
+phase: unassigned
+last_updated: "2025-10-19"
+---
+
 # Metrics That Matter for AI Agents
 
 **Status**: STUB - Throughout project  

@@ -1,3 +1,11 @@
+---
+title: Why Most Ai Coding Projects Fail
+status: published
+word_count: 1152
+phase: unassigned
+last_updated: "2025-10-19"
+---
+
 # Why Most AI Coding Projects Fail (And How to Fix It)
 
 **Status**: DRAFT  

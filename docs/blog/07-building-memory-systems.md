@@ -1,3 +1,11 @@
+---
+title: Building Memory Systems
+status: stub
+word_count: 100
+phase: unassigned
+last_updated: "2025-10-19"
+---
+
 # Building Memory Systems for AI Agents
 
 **Status**: STUB - Awaiting Phase 3.1  

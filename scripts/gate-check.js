@@ -82,7 +82,14 @@ class GateCheck {
 		// 2. Git Status Check
 		this.checkGitStatus();
 
-		// 3. Phase-specific checks
+		// 3. Blog Health Check
+		if (!options.skipBlog) {
+			this.checkBlogHealth();
+		} else {
+			console.log("⏭️  Skipped: Blog health check\n");
+		}
+
+		// 4. Phase-specific checks
 		if (isPhaseCommit && !options.skipTests) {
 			this.checkTestEvidence(`phase-${phase}`);
 			this.checkPhaseRequirements(`phase-${phase}`);
@@ -152,8 +159,46 @@ class GateCheck {
 		}
 	}
 
+	checkBlogHealth() {
+		console.log("3️⃣  Checking blog health...");
+
+		try {
+			// Run the blog maintenance agent validate command
+			const agentPath = path.join(
+				__dirname,
+				"agents/blog-maintenance-agent.js",
+			);
+
+			if (!fs.existsSync(agentPath)) {
+				console.log("⚠️  Blog maintenance agent not found, skipping\n");
+				return;
+			}
+
+			execSync(`node ${agentPath} validate`, {
+				encoding: "utf8",
+				stdio: "pipe",
+			});
+
+			this.addResult(
+				"blog-health",
+				true,
+				"Blog posts are healthy (no stubs for completed phases)",
+			);
+			console.log("✅ Blog health check passed\n");
+		} catch (error) {
+			// The validate command exits non-zero if there are errors
+			this.addResult(
+				"blog-health",
+				false,
+				"Blog health issues detected (stubs for completed phases or missing metadata)",
+				error.message,
+			);
+			console.log("❌ Blog health check failed\n");
+		}
+	}
+
 	checkTestEvidence(phase) {
-		console.log(`3️⃣  Checking test evidence for ${phase}...`);
+		console.log(`4️⃣  Checking test evidence for ${phase}...`);
 
 		try {
 			const passed = verifyTestEvidence(phase, 10);
@@ -175,7 +220,7 @@ class GateCheck {
 	}
 
 	checkPhaseRequirements(phase) {
-		console.log(`4️⃣  Checking phase requirements for ${phase}...`);
+		console.log(`5️⃣  Checking phase requirements for ${phase}...`);
 
 		const phaseDir = `docs/phases/${phase}`;
 		const readmePath = path.join(phaseDir, "README.md");

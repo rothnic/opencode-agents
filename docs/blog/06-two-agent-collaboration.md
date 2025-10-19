@@ -1,3 +1,11 @@
+---
+title: Two Agent Collaboration
+status: stub
+word_count: 101
+phase: unassigned
+last_updated: "2025-10-19"
+---
+
 # Two-Agent Collaboration: Code + Test
 
 **Status**: STUB - Awaiting Phase 2.1  

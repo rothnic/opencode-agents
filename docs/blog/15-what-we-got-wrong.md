@@ -1,3 +1,11 @@
+---
+title: What We Got Wrong
+status: stub
+word_count: 164
+phase: unassigned
+last_updated: "2025-10-19"
+---
+
 # What We Got Wrong About Agent Autonomy
 
 **Status**: STUB - Retrospective  

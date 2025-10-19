@@ -1,3 +1,11 @@
+---
+title: Quality Gates Defense In Depth
+status: stub
+word_count: 1389
+phase: unassigned
+last_updated: "2025-10-19"
+---
+
 # Building Quality Gates for AI Agents: A Defense-in-Depth Approach
 
 **Status**: DRAFT - Ready for review  

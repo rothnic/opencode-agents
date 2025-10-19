@@ -1,3 +1,11 @@
+---
+title: Preventing Agent Drift
+status: stub
+word_count: 143
+phase: unassigned
+last_updated: "2025-10-19"
+---
+
 # Complex Task Testing: Preventing Agent Drift
 
 **Status**: STUB - Awaiting Phase 4.2.1  

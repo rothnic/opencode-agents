@@ -1,3 +1,11 @@
+---
+title: The Gauntlet Full Stack Test
+status: stub
+word_count: 159
+phase: unassigned
+last_updated: "2025-10-19"
+---
+
 # The Gauntlet: A Full-Stack Litmus Test
 
 **Status**: STUB - Awaiting Phase 4.2.3  

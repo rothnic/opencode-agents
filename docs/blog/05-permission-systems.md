@@ -1,3 +1,11 @@
+---
+title: Permission Systems
+status: stub
+word_count: 122
+phase: unassigned
+last_updated: "2025-10-19"
+---
+
 # Permission Systems for AI Agents: Trust but Verify
 
 **Status**: STUB - Awaiting Phase 2.2  

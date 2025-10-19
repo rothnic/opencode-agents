@@ -1,3 +1,11 @@
+---
+title: Context Management
+status: stub
+word_count: 117
+phase: unassigned
+last_updated: "2025-10-19"
+---
+
 # Context Management: When Agents Lose Track
 
 **Status**: STUB - Awaiting Phase 4.2.2  

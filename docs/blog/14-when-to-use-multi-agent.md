@@ -1,3 +1,11 @@
+---
+title: When To Use Multi Agent
+status: stub
+word_count: 227
+phase: unassigned
+last_updated: "2025-10-19"
+---
+
 # When to Use (and Not Use) Multi-Agent Systems
 
 **Status**: STUB - After project completion  

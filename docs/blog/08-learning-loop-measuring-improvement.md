@@ -1,3 +1,11 @@
+---
+title: Learning Loop Measuring Improvement
+status: stub
+word_count: 126
+phase: unassigned
+last_updated: "2025-10-19"
+---
+
 # The Learning Loop: Measuring Improvement
 
 **Status**: STUB - Awaiting Phase 3.2  

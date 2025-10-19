@@ -1,3 +1,11 @@
+---
+title: Documentation For Agents
+status: stub
+word_count: 110
+phase: unassigned
+last_updated: "2025-10-19"
+---
+
 # Documentation That Agents Can Use
 
 **Status**: STUB - Throughout project  

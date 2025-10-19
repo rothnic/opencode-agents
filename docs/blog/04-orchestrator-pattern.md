@@ -1,3 +1,11 @@
+---
+title: Orchestrator Pattern
+status: stub
+word_count: 153
+phase: unassigned
+last_updated: "2025-10-19"
+---
+
 # The Orchestrator Pattern: Decomposing Complex Tasks
 
 **Status**: STUB - Awaiting Phase 1.2  
