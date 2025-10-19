@@ -1,0 +1,44 @@
+{
+	"name": "opencode-agents",
+	"version": "0.1.0",
+	"description": "Test-driven multi-agent development system using OpenCode",
+	"main": "index.js",
+	"scripts": {
+		"test": "jest",
+		"test:scripts": "jest tests/scripts",
+		"test:gates": "jest tests/gates",
+		"test:phase": "jest tests/phase-",
+		"test:watch": "jest --watch",
+		"test:coverage": "jest --coverage",
+		"lint": "eslint .",
+		"gate-check": "node scripts/gate-check.js",
+		"file-check": "node scripts/file-location-check.js",
+		"test-evidence": "node scripts/test-evidence.js",
+		"verify-phase": "npm test && npm run test-evidence"
+	},
+	"keywords": [
+		"opencode",
+		"agents",
+		"multi-agent",
+		"test-driven",
+		"development"
+	],
+	"author": "",
+	"license": "MIT",
+	"devDependencies": {
+		"jest": "^29.0.0",
+		"eslint": "^8.0.0"
+	},
+	"jest": {
+		"testEnvironment": "node",
+		"testMatch": [
+			"**/tests/**/*.test.js",
+			"**/tests/**/*.spec.js"
+		],
+		"collectCoverageFrom": [
+			"src/**/*.js",
+			"scripts/**/*.js",
+			"!**/node_modules/**"
+		]
+	}
+}

@@ -3,7 +3,8 @@
 > Exploring reactive, predictable, and measurable multi-agent coding systems with OpenCode
 
 [![Status](https://img.shields.io/badge/status-in%20development-yellow)]()
-[![Phase](https://img.shields.io/badge/phase-0.1%20complete-green)]()
+[![Phase](https://img.shields.io/badge/phase-0.2%20in%20progress-blue)]()
+[![Blog](https://img.shields.io/badge/blog-16%20posts-green)](docs/blog/)
 
 ## Overview
 
@@ -13,6 +14,8 @@ This project explores building a sophisticated multi-agent orchestration system 
 - **Measurable Progress**: Track token usage, step counts, and success rates  
 - **Incremental Complexity**: Start simple, add complexity gradually
 - **Real Validation**: Boolean checks and performance metrics
+
+📝 **[Blog Series](docs/blog/)**: Follow along as we document the journey, challenges, and measured results from each phase.
 
 ## Project Goals
 
@@ -230,13 +233,34 @@ This is an experimental research project. Contributions, ideas, and feedback are
 3. Include tests for new capabilities
 4. Submit a pull request
 
+## Blog Series
+
+Follow the project journey through our **[blog series](docs/blog/)**:
+
+### Published
+- 🎯 [Why Most AI Coding Projects Fail](docs/blog/01-why-most-ai-coding-projects-fail.md) - The case for test-driven multi-agent development
+- ✅ [Building Quality Gates: A Defense-in-Depth Approach](docs/blog/02-quality-gates-defense-in-depth.md) - How we prevent incomplete work (Phase 0.2)
+
+### Coming Soon
+- Test Evidence: Proving agents actually work (Phase 1.1)
+- The Orchestrator Pattern: Task decomposition (Phase 1.2)
+- Two-Agent Collaboration: Code + Test (Phase 2.1)
+- Permission Systems: Trust but verify (Phase 2.2)
+- Building Memory Systems (Phase 3.1)
+- The Learning Loop (Phase 3.2)
+- Complex Task Testing (Phase 4.2)
+
+[See full series →](docs/blog/README.md)
+
 ## Learnings & Insights
 
-Key insights will be documented as the project progresses:
-- Multi-agent vs single-agent trade-offs
-- Effective orchestration patterns
-- Memory system effectiveness
-- Real-world performance characteristics
+**Early Results (Phase 0.2)**:
+- ✅ Quality gates prevent 100% of designed failure modes
+- ✅ Defense-in-depth creates resilient boundaries
+- ✅ Timestamped test evidence proves execution
+- ✅ Automated enforcement >>> documentation alone
+
+More insights documented as phases complete.
 
 ## License
 
