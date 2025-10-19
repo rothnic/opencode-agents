@@ -22,6 +22,31 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 // ============================================================================
+// TYPES
+// ============================================================================
+
+interface Config {
+  agents: {
+    directory: string;
+  };
+  testing?: Record<string, unknown>;
+  qualityGates?: Record<string, unknown>;
+}
+
+interface AgentSpec {
+  agent: string;
+  model: string;
+  temperature: number;
+  maxTokens: number;
+  timeout: number;
+}
+
+interface ExecutionOptions {
+  output?: string;
+  json?: boolean;
+}
+
+// ============================================================================
 // CONFIGURATION
 // ============================================================================
 
@@ -31,19 +56,20 @@ const CONFIG_FILE = 'opencode.json';
 // LOAD CONFIGURATION
 // ============================================================================
 
-function loadConfig() {
+function loadConfig(): Config {
   if (!fs.existsSync(CONFIG_FILE)) {
     throw new Error(`Configuration file not found: ${CONFIG_FILE}`);
   }
 
   try {
-    return JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
+    return JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8')) as Config;
   } catch (error) {
-    throw new Error(`Invalid configuration file: ${error.message}`);
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Invalid configuration file: ${message}`);
   }
 }
 
-function loadAgentSpec(agentName) {
+function loadAgentSpec(agentName: string): AgentSpec {
   const config = loadConfig();
   const agentFile = path.join(config.agents.directory, `${agentName}.md`);
 
@@ -55,7 +81,7 @@ function loadAgentSpec(agentName) {
 
   // Extract configuration from markdown (look for JSON config block)
   const configMatch = content.match(/```json\s*(\{[\s\S]*?\})\s*```/);
-  if (!configMatch) {
+  if (!configMatch || !configMatch[1]) {
     // Return defaults if no config block found
     return {
       agent: agentName,
@@ -67,9 +93,10 @@ function loadAgentSpec(agentName) {
   }
 
   try {
-    return JSON.parse(configMatch[1]);
+    return JSON.parse(configMatch[1]) as AgentSpec;
   } catch (error) {
-    throw new Error(`Invalid agent configuration JSON: ${error.message}`);
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Invalid agent configuration JSON: ${message}`);
   }
 }
 
@@ -78,6 +105,13 @@ function loadAgentSpec(agentName) {
 // ============================================================================
 
 class MetricsCollector {
+  private startTime: number | null;
+  private endTime: number | null;
+  private tokenCount: number;
+  private stepCount: number;
+  private success: boolean;
+  private error: string | null;
+
   constructor() {
     this.startTime = null;
     this.endTime = null;
@@ -87,25 +121,25 @@ class MetricsCollector {
     this.error = null;
   }
 
-  start() {
+  start(): void {
     this.startTime = Date.now();
   }
 
-  end(success = true, error = null) {
+  end(success = true, error: string | null = null): void {
     this.endTime = Date.now();
     this.success = success;
     this.error = error;
   }
 
-  addTokens(count) {
+  addTokens(count: number): void {
     this.tokenCount += count;
   }
 
-  incrementSteps() {
+  incrementSteps(): void {
     this.stepCount++;
   }
 
-  getExecutionTime() {
+  getExecutionTime(): number {
     if (!this.startTime || !this.endTime) {
       return 0;
     }
@@ -113,12 +147,13 @@ class MetricsCollector {
   }
 
   toJSON() {
+    const startTime = this.startTime ?? Date.now();
     return {
       tokenCount: this.tokenCount,
       stepCount: this.stepCount,
       executionTime: this.getExecutionTime(),
       successRate: this.success ? 1.0 : 0.0,
-      timestamp: new Date(this.startTime).toISOString(),
+      timestamp: new Date(startTime).toISOString(),
       duration: `${(this.getExecutionTime() / 1000).toFixed(2)}s`,
       error: this.error,
     };
@@ -145,7 +180,7 @@ class MetricsCollector {
  * @param {object} options - Execution options
  * @returns {object} Execution result with metrics
  */
-async function executeAgent(agentName, task, options = {}) {
+async function executeAgent(agentName: string, task: string, options: ExecutionOptions = {}) {
   const metrics = new MetricsCollector();
   metrics.start();
 
@@ -178,11 +213,12 @@ async function executeAgent(agentName, task, options = {}) {
       metrics: metrics.toJSON(),
     };
   } catch (error) {
-    metrics.end(false, error.message);
+    const message = error instanceof Error ? error.message : String(error);
+    metrics.end(false, message);
 
     return {
       success: false,
-      error: error.message,
+      error: message,
       metrics: metrics.toJSON(),
     };
   }
@@ -194,7 +230,7 @@ async function executeAgent(agentName, task, options = {}) {
  * This creates the expected output based on the task description.
  * In later phases, this will be replaced with actual agent execution.
  */
-async function simulateAgentExecution(task, options) {
+async function simulateAgentExecution(task: string, options: ExecutionOptions) {
   // Simple pattern matching for Phase 1.1 hello world test
   if (task.toLowerCase().includes('hello') && task.includes('function')) {
     const code = `/**
@@ -232,7 +268,7 @@ export { hello };
 /**
  * Validate generated code output
  */
-async function validateOutput(filePath) {
+async function validateOutput(filePath: string): Promise<void> {
   if (!fs.existsSync(filePath)) {
     throw new Error(`Output file not created: ${filePath}`);
   }
@@ -251,7 +287,8 @@ async function validateOutput(filePath) {
       const vm = await import('node:vm');
       new vm.Script(content);
     } catch (error) {
-      throw new Error(`Syntax error in generated code: ${error.message}`);
+      const message = error instanceof Error ? error.message : String(error);
+      throw new Error(`Syntax error in generated code: ${message}`);
     }
   }
 
@@ -262,7 +299,8 @@ async function validateOutput(filePath) {
 // CLI INTERFACE
 // ============================================================================
 
-async function main() {
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: CLI argument parsing is inherently sequential
+async function main(): Promise<void> {
   const args = process.argv.slice(2);
 
   if (args.length < 2) {
@@ -282,8 +320,13 @@ async function main() {
   const agentName = args[0];
   const task = args[1];
 
+  if (!agentName || !task) {
+    console.error('Error: agent-name and task are required');
+    process.exit(1);
+  }
+
   // Parse options
-  const options = {};
+  const options: ExecutionOptions = {};
   for (let i = 2; i < args.length; i++) {
     if (args[i] === '--output' && args[i + 1]) {
       options.output = args[i + 1];
@@ -319,7 +362,8 @@ async function main() {
 
     process.exit(result.success ? 0 : 1);
   } catch (error) {
-    console.error('Fatal error:', error.message);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Fatal error:', message);
     process.exit(1);
   }
 }
