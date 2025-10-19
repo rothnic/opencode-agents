@@ -8,6 +8,54 @@ This project explores building a **reactive, predictable, and measurable** multi
 - **Measurable Progress**: Track token usage, step counts, and success rates
 - **Incremental Complexity**: Start simple, add complexity gradually
 - **Real Validation**: Boolean checks and performance metrics, not subjective assessment
+- **Controlled Best Practices**: Configurable guardrails with escape hatches
+- **Adaptive Quality**: Rules that evolve with project maturity
+
+## Project Philosophy
+
+This system aims to be **assistants in implementing controlled best practices** with incremental, well-structured workflows that balance:
+
+### Core Principles
+
+1. **Efficiency vs. Quality**: Move fast with automated safety nets
+   - Automated validation catches common mistakes
+   - Self-healing repository detects issues early
+   - Git hooks prevent bad commits
+
+2. **Strictness vs. Flexibility**: Adapt rules based on project maturity
+   - **Bootstrap** (0-100 commits): Lenient, focus on velocity
+   - **Development** (100-500 commits): Balanced guardrails
+   - **Production** (500+ commits): Strict enforcement
+
+3. **Automation vs. Control**: Self-healing, but humans can override
+   - Configuration-driven validation (`.opencode/validation-rules.json`)
+   - Inline directives for exceptions (`// biome-ignore lint/rule: reason`)
+   - Escape hatches with accountability (GitHub issues, expiration dates)
+
+4. **Standards vs. Innovation**: Best practices with room for experimentation
+   - Modern tooling (Vitest, Biome, TypeScript)
+   - Configurable rules that can be updated without code changes
+   - Templates and conventions that guide without constraining
+
+### Vision: Installable Agent Package
+
+**Goal**: Package `opencode-agents` so it can be installed in any new project:
+
+```bash
+npm install opencode-agents
+npx opencode-agents init
+# Interactive setup with agent assistance
+# Configure validation rules, pick tools, set standards
+```
+
+**What you get**:
+
+1. Automated best practices enforcement
+2. Agent team to help implement features
+3. Quality gates that adapt to project maturity
+4. Incremental, well-structured workflows
+5. Configurable rules with escape hatches
+6. Self-healing validation system
 
 ## Project Architecture Overview
 
@@ -74,6 +122,7 @@ gantt
 **Goal**: Establish the foundation for test-driven agent development.
 
 ### Phase 0.1: ✅ Repository & Basic Configuration
+
 **Status**: COMPLETE
 
 - [x] Initialize GitHub repository
@@ -87,16 +136,19 @@ gantt
 ### Phase 0.2: Core Project Files
 
 **Tasks**:
+
 1. Create `opencode.json` with basic configuration
 2. Create `.opencode/` directory structure
 3. Set up `AGENTS.md` with initial project conventions
 4. Create test harness structure
 
 **Test Cases**:
+
 - [ ] `tests/verify-config.test.js` - Validates opencode.json schema
 - [ ] `tests/verify-structure.test.js` - Confirms directory structure exists
 
 **Success Criteria**:
+
 ```javascript
 // Boolean verification
 ✓ opencode.json exists and is valid JSON
@@ -106,6 +158,7 @@ gantt
 ```
 
 **Deliverables**:
+
 - `/opencode.json` - Main configuration
 - `/.opencode/` - Agent and tool directory
 - `/AGENTS.md` - Project conventions
@@ -125,6 +178,7 @@ gantt
 **Complexity Level**: ⭐ (Trivial - establishes baseline)
 
 **Test Case**: Generate a simple Node.js function
+
 ```javascript
 // tests/phase-1/test-1.1-hello-world.js
 describe('Phase 1.1: Simple Code Generation', () => {
@@ -151,12 +205,14 @@ describe('Phase 1.1: Simple Code Generation', () => {
 ```
 
 **Success Metrics Baseline**:
+
 - Token Count: < 500 tokens
 - Step Count: 1-2 steps
 - Success Rate: 100%
 - Execution Time: < 30 seconds
 
 **Deliverables**:
+
 - Simple agent configuration
 - Working test
 - Baseline metrics
@@ -170,6 +226,7 @@ describe('Phase 1.1: Simple Code Generation', () => {
 **Complexity Level**: ⭐⭐ (Simple - tests delegation)
 
 **Test Case**: Orchestrator decomposes a task into sub-tasks
+
 ```javascript
 // tests/phase-1/test-1.2-orchestrator.js
 describe('Phase 1.2: Basic Orchestration', () => {
@@ -201,12 +258,14 @@ describe('Phase 1.2: Basic Orchestration', () => {
 ```
 
 **Success Metrics**:
+
 - Token Count: < 2000 tokens (comparing to single-agent baseline)
 - Step Count: 3-5 steps (plan → implement → test)
 - Task Decomposition: Correctly identifies >= 2 subtasks
 - Success Rate: 100%
 
 **Agent Configuration**:
+
 ```json
 // .opencode/agent/orchestrator.md
 {
@@ -228,6 +287,7 @@ describe('Phase 1.2: Basic Orchestration', () => {
 ```
 
 **Deliverables**:
+
 - Orchestrator agent configuration
 - Task decomposition test
 - Comparison metrics vs baseline
@@ -239,6 +299,7 @@ describe('Phase 1.2: Basic Orchestration', () => {
 ### Phase 1.3: Measurement & Metrics System
 
 **Test Case**: Automated metrics collection
+
 ```javascript
 // tests/phase-1/test-1.3-metrics.js
 describe('Phase 1.3: Metrics System', () => {
@@ -273,6 +334,7 @@ describe('Phase 1.3: Metrics System', () => {
 ```
 
 **Deliverables**:
+
 - `scripts/measure.js` - Metrics collection script
 - `tests/helpers/metrics.js` - Metrics test utilities
 - `.metrics/` - Stored baseline metrics (gitignored)
@@ -291,6 +353,7 @@ describe('Phase 1.3: Metrics System', () => {
 **Complexity Level**: ⭐⭐⭐ (Moderate - tests agent interaction)
 
 **Test Case**: CodeImplementer and TestWriter work together
+
 ```javascript
 // tests/phase-2/test-2.1-code-test-collaboration.js
 describe('Phase 2.1: Code + Test Collaboration', () => {
@@ -342,6 +405,7 @@ describe('Phase 2.1: Code + Test Collaboration', () => {
 ```
 
 **Success Metrics**:
+
 - Token Efficiency: <= 130% of single-agent baseline
 - Test Coverage: >= 80%
 - Agent Delegation: Correctly identifies and invokes 2 agents
@@ -393,6 +457,7 @@ Test files should be placed according to AGENTS.md structure.
 ```
 
 **Deliverables**:
+
 - CodeImplementer agent config
 - TestWriter agent config
 - Updated Orchestrator to delegate
@@ -408,6 +473,7 @@ Test files should be placed according to AGENTS.md structure.
 **Complexity Level**: ⭐⭐ (Simple - tests security)
 
 **Test Case**: Verify agents respect permission boundaries
+
 ```javascript
 // tests/phase-2/test-2.2-permissions.js
 describe('Phase 2.2: Permission Boundaries', () => {
@@ -446,6 +512,7 @@ describe('Phase 2.2: Permission Boundaries', () => {
 ```
 
 **Agent Configuration**:
+
 ```markdown
 <!-- .opencode/agent/securityauditor.md -->
 ---
@@ -470,6 +537,7 @@ You are a security auditor. Your role is to:
 ```
 
 **Success Criteria**:
+
 - All permission tests pass
 - No unauthorized file modifications
 - No unauthorized command executions
@@ -483,6 +551,7 @@ You are a security auditor. Your role is to:
 **Complexity Level**: ⭐⭐⭐⭐ (Complex - tests full orchestration)
 
 **Test Case**: Complex multi-step workflow
+
 ```javascript
 // tests/phase-2/test-2.3-full-team.js
 describe('Phase 2.3: Full Team Integration', () => {
@@ -547,6 +616,7 @@ describe('Phase 2.3: Full Team Integration', () => {
 ```
 
 **Success Metrics**:
+
 - Token Count: < 5000 tokens
 - Step Count: 5-8 steps
 - Agent Invocations: 3-5 agents
@@ -555,6 +625,7 @@ describe('Phase 2.3: Full Team Integration', () => {
 - Success Rate: >= 90%
 
 **Deliverables**:
+
 - Complete agent team (5+ agents)
 - Complex integration test
 - Performance comparison report
@@ -573,6 +644,7 @@ describe('Phase 2.3: Full Team Integration', () => {
 **Complexity Level**: ⭐⭐⭐⭐ (Complex - custom tool development)
 
 **Test Case**: Store and retrieve semantic memories
+
 ```javascript
 // tests/phase-3/test-3.1-memory-tool.js
 describe('Phase 3.1: Memory System', () => {
@@ -620,6 +692,7 @@ describe('Phase 3.1: Memory System', () => {
 ```
 
 **Custom Tool Structure**:
+
 ```javascript
 // .opencode/tool/memory.ts
 import { defineTool } from '@opencode-ai/plugin';
@@ -666,6 +739,7 @@ export const memory_query = defineTool({
 ```
 
 **Deliverables**:
+
 - Memory custom tool implementation
 - ChromaDB or SQLite integration
 - Memory tool tests
@@ -680,6 +754,7 @@ export const memory_query = defineTool({
 **Complexity Level**: ⭐⭐⭐⭐⭐ (Very Complex - tests learning)
 
 **Test Case**: Demonstrate measurable learning improvement
+
 ```javascript
 // tests/phase-3/test-3.2-learning-loop.js
 describe('Phase 3.2: Learning Loop', () => {
@@ -730,6 +805,7 @@ describe('Phase 3.2: Learning Loop', () => {
 ```
 
 **MemoryFormation Agent**:
+
 ```markdown
 <!-- .opencode/agent/memoryformation.md -->
 ---
@@ -754,11 +830,13 @@ Store memories as concise, factual statements.
 ```
 
 **Success Metrics**:
+
 - **Learning Efficiency**: 2nd run uses 20-30% fewer tokens
 - **Quality Improvement**: Fewer revisions on similar tasks
 - **Memory Relevance**: >= 80% recall accuracy on stored patterns
 
 **Deliverables**:
+
 - MemoryFormation agent
 - Learning loop test suite
 - Before/after performance comparison
@@ -814,6 +892,7 @@ describe('Phase 4.1: Performance & Optimization', () => {
 ```
 
 **Deliverables**:
+
 - Performance benchmark suite
 - Optimization recommendations
 - Token usage optimization guide
@@ -830,6 +909,7 @@ describe('Phase 4.1: Performance & Optimization', () => {
 **Test Cases**: Tasks that challenge single-agent approaches
 
 #### Test 4.2.1: "Drift Prevention" - Multi-file Refactoring
+
 ```javascript
 // tests/phase-4/test-4.2.1-drift-prevention.js
 describe('Phase 4.2.1: Multi-file Refactoring (Drift Prevention)', () => {
@@ -864,6 +944,7 @@ describe('Phase 4.2.1: Multi-file Refactoring (Drift Prevention)', () => {
 **Why This Tests Drift**: Single agents often start with one pattern and drift to another halfway through, creating inconsistency. Multi-agent with RefactorEngine should maintain consistency.
 
 #### Test 4.2.2: "Context Management" - API Integration
+
 ```javascript
 // tests/phase-4/test-4.2.2-context-management.js
 describe('Phase 4.2.2: API Integration (Context Management)', () => {
@@ -906,6 +987,7 @@ describe('Phase 4.2.2: API Integration (Context Management)', () => {
 **Why This Tests Context Management**: Complex tasks require maintaining context across multiple domains (payments, security, testing). Single agents often lose track of requirements.
 
 #### Test 4.2.3: "The Gauntlet" - Full Stack Feature
+
 ```javascript
 // tests/phase-4/test-4.2.3-full-stack-feature.js
 describe('Phase 4.2.3: Full Stack Feature Implementation', () => {
@@ -980,6 +1062,7 @@ describe('Phase 4.2.3: Full Stack Feature Implementation', () => {
 ```
 
 **Success Metrics for "The Gauntlet"**:
+
 - **Completeness**: 100% of required files created
 - **Correctness**: All tests pass
 - **Security**: Zero critical vulnerabilities
@@ -988,6 +1071,7 @@ describe('Phase 4.2.3: Full Stack Feature Implementation', () => {
 - **Comparison**: Multi-agent outperforms single-agent on quality metrics
 
 **Deliverables**:
+
 - Complex task test suite
 - Comparison methodology
 - Performance report with graphs
@@ -1175,18 +1259,21 @@ The project is successful when:
 ## Appendix A: Test Scenario Library
 
 ### Simple Scenarios (⭐)
+
 - Hello World function
 - Calculator operations
 - String manipulation
 - Array operations
 
 ### Moderate Scenarios (⭐⭐⭐)
+
 - CRUD API endpoints
 - Data validation
 - File processing
 - Simple algorithms
 
 ### Complex Scenarios (⭐⭐⭐⭐⭐)
+
 - Authentication system
 - Payment integration
 - Multi-step workflows
@@ -1212,6 +1299,7 @@ The project is successful when:
 ## Appendix C: Tool and Agent Configuration Templates
 
 See `docs/templates/` for:
+
 - Agent configuration template
 - Custom tool template
 - Test case template

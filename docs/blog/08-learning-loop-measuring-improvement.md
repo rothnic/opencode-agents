@@ -16,6 +16,7 @@ last_updated: "2025-10-19"
 ## Can AI Agents Actually Learn?
 
 Not "learning" in the training sense. But can they:
+
 - Use past experiences?
 - Improve over repeated tasks?
 - Reduce token usage over time?
@@ -27,12 +28,15 @@ Not "learning" in the training sense. But can they:
 [TODO: Phase 3.2 test design]
 
 ### Task Repetition
+
 Run same task 3 times:
+
 1. First attempt (baseline)
 2. Second attempt (with memory)
 3. Third attempt (with refined memory)
 
 ### Metrics Collected
+
 - Token count per attempt
 - Success rate per attempt
 - Time per attempt

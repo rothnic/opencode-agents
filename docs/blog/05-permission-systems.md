@@ -16,6 +16,7 @@ last_updated: "2025-10-19"
 ## The Problem
 
 AI agents with unlimited permissions can:
+
 - Modify files they should only read
 - Execute dangerous commands
 - Make changes outside their scope
@@ -27,14 +28,17 @@ AI agents with unlimited permissions can:
 [TODO: Define based on agent implementations]
 
 ### Read-Only Agents (SecurityAuditor)
+
 - Can: read, grep, search
 - Cannot: edit, write, bash
 
 ### Limited Execution (TestWriter)
+
 - Can: read, edit, write, npm test
 - Cannot: rm, git push, system commands
 
 ### Full Access (CodeImplementer)
+
 - Can: Most operations
 - Still bounded by project rules
 

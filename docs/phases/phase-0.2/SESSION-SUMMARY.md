@@ -9,6 +9,7 @@
 ## What Was Accomplished
 
 ### ✅ Complete Documentation (2,900+ lines)
+
 - Comprehensive 60+ page project plan
 - Architecture guides
 - 3 Mermaid diagrams
@@ -16,6 +17,7 @@
 - Executive summary
 
 ### ✅ Phase Organization System
+
 - Concise `STATUS.md` in root (easy to update)
 - Detailed `docs/GETTING-STARTED.md` guide
 - Phase working directories created (0.2, 1.1, 1.2, 1.3)
@@ -23,6 +25,7 @@
 - Clear workflow established
 
 ### ✅ Repository Structure
+
 ```
 opencode-agents/
 ├── STATUS.md                    # ← Start here every session
@@ -43,22 +46,25 @@ opencode-agents/
 ```
 
 ### ✅ Git Repository
+
 - **Commits**: 6 total
 - **All changes pushed**: ✅
 - **Branch**: main
-- **URL**: https://github.com/rothnic/opencode-agents
+- **URL**: <https://github.com/rothnic/opencode-agents>
 
 ---
 
 ## System Design
 
 ### Concise Status File
+
 - `STATUS.md` in root - always check first
 - Quick stats, next action, recent completions
 - Easy to update (not too large)
 - References detailed docs
 
 ### Phase Working Directories
+
 - All phase work in `docs/phases/phase-X.Y/`
 - Keeps working docs colocated
 - Draft files stay in phase dir
@@ -66,6 +72,7 @@ opencode-agents/
 - Clean organization, easy to find
 
 ### Clear Workflow
+
 1. Check `STATUS.md` → current state
 2. Go to phase directory → working location
 3. Create `notes.md` + `progress.md` → document work
@@ -93,11 +100,13 @@ opencode-agents/
 ### 📋 Phase 0.2 Checklist
 
 Create in phase directory first (drafts):
+
 - [ ] `draft-opencode.json` - Basic configuration
 - [ ] `draft-AGENTS.md` - Project conventions
 - [ ] Agent configs in `agent-configs/`
 
 Then move to final locations:
+
 - [ ] `/opencode.json`
 - [ ] `/.opencode/agent/`
 - [ ] `/tests/` (structure)
@@ -105,6 +114,7 @@ Then move to final locations:
 - [ ] `/AGENTS.md`
 
 Verify and commit:
+
 - [ ] Test that config is valid
 - [ ] Update `STATUS.md`
 - [ ] Commit with `feat: phase-0.2-project-structure`
@@ -128,21 +138,25 @@ Verify and commit:
 ## Project Philosophy
 
 ### Test-Driven
+
 - Every feature has tests
 - Boolean verification
 - No subjective assessment
 
 ### Incremental
+
 - Small measurable steps
 - Frequent commits
 - Build on previous work
 
 ### Documented
+
 - All decisions in notes.md
 - All progress in progress.md
 - Everything version controlled
 
 ### Organized
+
 - Phase work in phase directories
 - Colocated files
 - Clean structure
@@ -175,6 +189,7 @@ e634580 docs: add concise STATUS.md and phase organization system
 ## Success ✅
 
 The project is now:
+
 - ✅ Fully documented
 - ✅ Well organized
 - ✅ Easy to resume

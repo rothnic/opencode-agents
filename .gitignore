@@ -94,9 +94,14 @@ ehthumbs.db
 Thumbs.db
 
 # ============================================================================
-# TEMPORARY FILES
+# TEMPORARY & BACKUP FILES
 # ============================================================================
 *.tmp
 *.temp
+*.backup
+*.old
+*.bak
+*~
+*.orig
 .scratch/
 scratch/

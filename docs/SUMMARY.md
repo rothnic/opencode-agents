@@ -7,12 +7,15 @@ A comprehensive, **test-driven project plan** for exploring multi-agent software
 ## Key Features
 
 ### 🎯 Test-First Approach
+
 - Every feature includes verification tests with **boolean pass/fail criteria**
 - No subjective assessment - only measurable outcomes
 - Tests validate functionality, not just file existence
 
 ### 📊 Comprehensive Metrics
+
 Track and measure:
+
 - **Token usage** (efficiency)
 - **Step count** (complexity)
 - **Success rate** (reliability)
@@ -20,7 +23,9 @@ Track and measure:
 - **Learning improvement** (memory utilization)
 
 ### 🔄 Incremental Complexity
+
 Progresses from simple to complex:
+
 1. **Phase 0**: Setup & infrastructure
 2. **Phase 1**: Single agent baseline (⭐)
 3. **Phase 2**: Multi-agent collaboration (⭐⭐⭐)
@@ -30,9 +35,11 @@ Progresses from simple to complex:
 ### 🤖 Specialized Agent Team
 
 **Primary Agent:**
+
 - **Orchestrator**: Task decomposition and delegation
 
 **Specialist Subagents:**
+
 - **CodeImplementer**: Write application code
 - **TestWriter**: Generate and run tests
 - **SecurityAuditor**: Scan for vulnerabilities (read-only)
@@ -69,6 +76,7 @@ opencode-agents/
 ## Test Examples
 
 ### Phase 1.1: Hello World (⭐ Baseline)
+
 ```javascript
 it('should generate a valid hello function', async () => {
   const result = await runAgentTask({
@@ -82,6 +90,7 @@ it('should generate a valid hello function', async () => {
 ```
 
 ### Phase 2.3: Full Team Integration (⭐⭐⭐⭐)
+
 ```javascript
 it('should create UserService with CRUD, tests, and docs', async () => {
   const result = await runAgentTask({
@@ -102,7 +111,9 @@ it('should create UserService with CRUD, tests, and docs', async () => {
 ```
 
 ### Phase 4.2: The Gauntlet (⭐⭐⭐⭐⭐)
+
 Complete authentication system with:
+
 - User model + password hashing
 - Registration + login endpoints
 - Password reset flow
@@ -113,6 +124,7 @@ Complete authentication system with:
 - API documentation
 
 **Success Criteria:**
+
 - All tests pass ✅
 - 0 critical vulnerabilities ✅
 - ≥85% coverage ✅
@@ -122,23 +134,28 @@ Complete authentication system with:
 ## What Makes This Different
 
 ### 1. **Verification Over Assumption**
+
 - Don't assume agents completed tasks
 - Test actual functionality
 - Measure quality objectively
 
 ### 2. **Incremental & Measurable**
+
 - Start simple (Hello World)
 - Add complexity gradually
 - Compare each phase to baseline
 - Track improvement over time
 
 ### 3. **Real Test Cases**
+
 Not toy examples - real scenarios where single agents struggle:
+
 - **Drift Prevention**: Multi-file refactoring consistency
 - **Context Management**: Complex API integrations
 - **Full-Stack Features**: Complete systems with multiple concerns
 
 ### 4. **Learning System**
+
 - Vector database for semantic memory
 - MemoryFormation agent extracts patterns
 - Measurable 20-30% improvement on repeat tasks
@@ -163,12 +180,14 @@ The project succeeds when we demonstrate:
 ## Why This Matters
 
 **Problem**: Single coding agents can:
+
 - Drift between patterns mid-task
 - Lose context on complex tasks
 - Lack specialization for security/testing/docs
 - Have no memory between sessions
 
 **Solution**: Multi-agent orchestration with:
+
 - ✅ Specialized expertise
 - ✅ Permission boundaries
 - ✅ Task delegation
@@ -202,12 +221,15 @@ From the research documents:
 ## Visualizations
 
 ### System Architecture
+
 See `docs/diagrams/system-overview.mmd` - shows agent team, tools, and knowledge base
 
 ### Workflow
+
 See `docs/diagrams/workflow.mmd` - sequence diagram of task execution
 
 ### Timeline
+
 See project-plan.md Gantt chart - 4-phase development timeline
 
 ## Next Steps
@@ -221,9 +243,10 @@ See project-plan.md Gantt chart - 4-phase development timeline
 
 ## Repository
 
-**GitHub**: https://github.com/rothnic/opencode-agents
+**GitHub**: <https://github.com/rothnic/opencode-agents>
 
 **Commits**:
+
 1. `61295dc` - Initial commit: Project documentation and architecture
 2. `6f3a93d` - Comprehensive project plan with test-driven approach
 

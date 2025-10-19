@@ -42,6 +42,7 @@ This is the **"hope-driven development"** approach. And it doesn't scale.
 **Agent says**: "I've implemented user authentication with JWT tokens, password hashing, and email verification."
 
 **Reality**: The code compiles, but:
+
 - Password hashing uses MD5 (vulnerable)
 - JWT secret is hardcoded (security issue)
 - Email verification was mentioned but never implemented
@@ -53,6 +54,7 @@ This is the **"hope-driven development"** approach. And it doesn't scale.
 **Task**: Refactor the payment system to support multiple currencies
 
 **Agent does**:
+
 - File 1: Adds currency support ✓
 - File 2: Updates API... but forgets about currency
 - File 3: Starts rewriting unrelated code
@@ -64,6 +66,7 @@ This is the **"hope-driven development"** approach. And it doesn't scale.
 **Agent**: "Tests pass!"
 
 **Reality**:
+
 - Agent never actually ran the tests
 - Tests were written but don't cover edge cases
 - Or tests don't exist at all
@@ -152,6 +155,7 @@ Commit blocked. Run tests first.
 ```
 
 Multiple enforcement layers:
+
 1. Documentation (educate)
 2. Automated scripts (detect)
 3. Git hooks (prevent)
@@ -166,12 +170,14 @@ Multiple enforcement layers:
 **Task**: Create project structure and quality gates
 
 **Deliverables**:
+
 - OpenCode configuration
 - Agent definitions
 - Quality gate scripts
 - Pre-commit hooks
 
 **Verification**:
+
 - Configuration is valid JSON
 - Agents follow template
 - Gate scripts execute correctly
@@ -184,6 +190,7 @@ Multiple enforcement layers:
 **Task**: Generate "Hello World" with tests
 
 **Verification**:
+
 ```javascript
 test('agent generates working code', async () => {
   const result = await runAgent({
@@ -203,6 +210,7 @@ test('agent generates working code', async () => {
 ```
 
 **Metrics Collected**:
+
 - Token count: 342
 - Execution time: 4.2s
 - Success rate: 100%
@@ -214,6 +222,7 @@ This becomes the **baseline** for comparison.
 **Task**: Two agents (Code + Test) work together
 
 **Verification**:
+
 ```javascript
 test('multi-agent creates code AND tests', async () => {
   const result = await runAgent({
@@ -240,6 +249,7 @@ test('multi-agent creates code AND tests', async () => {
 ```
 
 **Comparison to Baseline**:
+
 - Token efficiency: 112% of single agent (acceptable overhead)
 - Test coverage: 85% (vs 0% for single agent without prompting)
 - Quality: Higher (dedicated test agent)
@@ -258,6 +268,7 @@ We don't start with a complex 10-agent system. We build incrementally:
 4. **Phase 4**: Complex tasks (prove robustness)
 
 Each phase has:
+
 - Clear objectives
 - Measurable success criteria
 - Comparison to previous phase
@@ -274,6 +285,7 @@ After just Phase 0 (project setup), we already have:
 **Problem Prevented**: Work marked complete without running tests
 
 **Solution**: Multi-layer defense
+
 - `.gitignore` filters session files
 - `file-location-check.js` validates placement
 - `test-evidence.js` records proof of execution
@@ -281,6 +293,7 @@ After just Phase 0 (project setup), we already have:
 - Pre-commit hook enforces automatically
 
 **Example**:
+
 ```bash
 $ git commit -m "feat: phase-complete"
 ❌ GATE CHECK FAILED
@@ -297,11 +310,13 @@ Commit blocked.
 **Problem Prevented**: Session notes and draft files polluting repository root
 
 **Solution**: Whitelist + validation
+
 - Only specific files allowed in root
 - Session files must be in phase directories
 - Automated detection and remediation
 
 **Example**:
+
 ```bash
 $ git add SESSION-NOTES.md
 ❌ File not allowed in root: SESSION-NOTES.md
@@ -317,6 +332,7 @@ Commit blocked.
 **Problem Prevented**: "Tests pass" without proof
 
 **Solution**: Timestamped evidence files
+
 ```json
 {
   "phase": "phase-1.1",
@@ -336,16 +352,19 @@ Commit blocked.
 ## Why This Matters
 
 ### For Solo Developers
+
 - Confidence that AI agents did what they said
 - Automated prevention of common mistakes
 - Reproducible builds
 
 ### For Teams
+
 - Consistent quality across all agent work
 - Auditable evidence of testing
 - Clear patterns that scale
 
 ### For the Industry
+
 - Moving from "hope-driven" to "test-driven" AI development
 - Measurable improvements over baselines
 - Patterns that work today, not theoretical

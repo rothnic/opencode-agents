@@ -18,6 +18,7 @@ last_updated: "2025-10-19"
 **Task**: Refactor payment system for multi-currency support
 
 **What happens**:
+
 - File 1: ✓ Adds currency field
 - File 2: ✓ Updates API signature
 - File 3: ✗ Forgets about currency, uses old pattern
@@ -35,6 +36,7 @@ This is **context drift** and it kills complex tasks.
 ### Multi-File Refactoring Challenge
 
 Requirements:
+
 - Touch 8+ files
 - Maintain consistency
 - All files reference same pattern

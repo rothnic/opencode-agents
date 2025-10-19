@@ -82,27 +82,32 @@ opencode-agents/
 ## Development Phases
 
 ### Phase 0: Setup & Infrastructure ✅ (In Progress)
+
 - [x] Initialize GitHub repository
 - [x] Create documentation structure
 - [ ] Set up OpenCode configuration
 - [ ] Create test framework
 
 ### Phase 1: Single Agent Foundation
+
 - [ ] Baseline "Hello World" test
 - [ ] Orchestrator pattern implementation
 - [ ] Metrics collection system
 
 ### Phase 2: Multi-Agent Collaboration
+
 - [ ] Two-agent collaboration (Code + Test)
 - [ ] Permission system validation
 - [ ] Full team integration
 
 ### Phase 3: Adaptive Memory
+
 - [ ] Memory tool implementation (Vector DB)
 - [ ] Learning loop with measurable improvement
 - [ ] MemoryFormation agent
 
 ### Phase 4: Optimization & Real-World Testing
+
 - [ ] Performance tuning and stress tests
 - [ ] Complex real-world scenarios
 - [ ] "The Gauntlet" - Full-stack feature test
@@ -112,14 +117,18 @@ See the [Project Plan](docs/project-plan.md) for detailed timelines and test cas
 ## Key Features
 
 ### 🎯 Test-Driven Verification
+
 Every agent capability includes automated tests with boolean verification:
+
 - File existence and syntax validation
 - Functional correctness testing
 - Test coverage requirements
 - Code quality checks
 
 ### 📊 Comprehensive Metrics
+
 Track and compare:
+
 - **Token Count**: Measure efficiency
 - **Step Count**: Track complexity
 - **Quality Scores**: Test coverage, linting, security
@@ -138,6 +147,7 @@ Track and compare:
 | **MemoryFormation** | Extract learnings | Memory tool access |
 
 ### 🧠 Adaptive Memory System
+
 - **Vector Database**: Semantic memory storage
 - **Learning Loop**: Continuous improvement
 - **Context Retrieval**: Reuse past solutions
@@ -145,6 +155,7 @@ Track and compare:
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js >= 18
 - OpenCode CLI installed
 - GitHub Copilot subscription (for model access)
@@ -184,16 +195,19 @@ npm run test:report
 The project uses increasingly complex test scenarios to validate agent capabilities:
 
 ### ⭐ Simple (Baseline)
+
 - Generate basic functions
 - String/array manipulation
 - Simple calculations
 
 ### ⭐⭐⭐ Moderate
+
 - CRUD API endpoints
 - Data validation
 - File processing
 
 ### ⭐⭐⭐⭐⭐ Complex
+
 - Authentication system
 - Payment integration
 - Full-stack features
@@ -212,6 +226,7 @@ See [Test Scenario Library](docs/project-plan.md#appendix-a-test-scenario-librar
 | 4.2   | < 20,000 tokens  | ≥ 90%   | ≥ 85%        |
 
 ### Quality Metrics
+
 - **Test Coverage**: ≥ 80%
 - **Security**: 0 critical vulnerabilities
 - **Documentation**: Complete and accurate
@@ -238,10 +253,12 @@ This is an experimental research project. Contributions, ideas, and feedback are
 Follow the project journey through our **[blog series](docs/blog/)**:
 
 ### Published
+
 - 🎯 [Why Most AI Coding Projects Fail](docs/blog/01-why-most-ai-coding-projects-fail.md) - The case for test-driven multi-agent development
 - ✅ [Building Quality Gates: A Defense-in-Depth Approach](docs/blog/02-quality-gates-defense-in-depth.md) - How we prevent incomplete work (Phase 0.2)
 
 ### Coming Soon
+
 - Test Evidence: Proving agents actually work (Phase 1.1)
 - The Orchestrator Pattern: Task decomposition (Phase 1.2)
 - Two-Agent Collaboration: Code + Test (Phase 2.1)
@@ -255,6 +272,7 @@ Follow the project journey through our **[blog series](docs/blog/)**:
 ## Learnings & Insights
 
 **Early Results (Phase 0.2)**:
+
 - ✅ Quality gates prevent 100% of designed failure modes
 - ✅ Defense-in-depth creates resilient boundaries
 - ✅ Timestamped test evidence proves execution

@@ -72,16 +72,19 @@ last_updated: "2025-10-19"
 ## Call to Action
 
 ### For Researchers
+
 - [What to investigate]
 - [What to measure]
 - [What to publish]
 
 ### For Practitioners
+
 - [What to try]
 - [What to measure]
 - [What to share]
 
 ### For Tool Builders
+
 - [What to build]
 - [What APIs to expose]
 - [What standards to adopt]
@@ -93,16 +96,19 @@ last_updated: "2025-10-19"
 [TODO: Synthesis of entire project]
 
 ### What We Proved
+
 1. [Achievement 1]
 2. [Achievement 2]
 3. [Achievement 3]
 
 ### What We Didn't Prove
+
 1. [Limitation 1]
 2. [Limitation 2]
 3. [Limitation 3]
 
 ### What Needs More Work
+
 1. [Open question 1]
 2. [Open question 2]
 3. [Open question 3]

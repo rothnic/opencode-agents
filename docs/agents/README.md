@@ -44,34 +44,40 @@ agent:
 **Purpose:** Automatically maintain blog post content based on project milestones
 
 **Triggers:**
+
 - Phase completion (commit message contains "phase-X.Y complete")
 - Manual invocation with phase parameter
 - Weekly freshness check
 
 **Responsibilities:**
+
 - Detect stub blog posts (posts with placeholder content)
 - Update blog posts when corresponding phase completes
 - Extract metrics and learnings from phase artifacts
 - Ensure blog post metadata is current (last_updated, status)
 
 **Inputs:**
+
 - Phase completion event (phase ID, completion date)
 - Phase artifacts (README.md, test results, session summary)
 - Blog post templates
 - Existing blog post content
 
 **Outputs:**
+
 - Updated blog post markdown files
 - Blog post metadata (YAML frontmatter)
 - Update log (what changed, why)
 
 **Validation:**
+
 - Blog post status changed from "stub" to "published"
 - last_updated timestamp is current
 - Post contains real data (no "TODO" or "Coming soon" markers)
 - Word count exceeds minimum threshold (500 words)
 
 **Implementation:**
+
 ```bash
 # Trigger
 scripts/agents/blog-maintenance-agent.js --phase phase-1.0
@@ -87,11 +93,13 @@ scripts/agents/validate-blog-freshness.js
 **Purpose:** Continuously monitor project health and detect violations
 
 **Triggers:**
+
 - Daily at 9 AM
 - Pre-commit hook (via gate-check.js)
 - Manual invocation
 
 **Responsibilities:**
+
 - Run all quality gate checks
 - Detect file location violations
 - Check for stale documentation
@@ -99,24 +107,28 @@ scripts/agents/validate-blog-freshness.js
 - Monitor metrics trends
 
 **Inputs:**
+
 - Current project state (files, tests, metrics)
 - Historical metrics (past 30 days)
 - Quality gate configurations
 - Staleness thresholds
 
 **Outputs:**
+
 - Health report (markdown)
 - Violation list (if any)
 - Metrics dashboard data (JSON)
 - Alerts (for critical issues)
 
 **Validation:**
+
 - All quality gates pass
 - No critical violations detected
 - Report generated successfully
 - Metrics within acceptable ranges
 
 **Implementation:**
+
 ```bash
 # Trigger
 scripts/agents/project-health-agent.js --report-path docs/health-report.md
@@ -132,32 +144,38 @@ scripts/agents/project-health-agent.js --report-path docs/health-report.md
 **Purpose:** Automatically capture and validate test execution evidence
 
 **Triggers:**
+
 - Test suite completion (npm test)
 - Phase completion
 - Manual invocation
 
 **Responsibilities:**
+
 - Record test execution timestamp
 - Capture test results (passed/failed/total)
 - Store test metrics (duration, coverage)
 - Validate evidence freshness (< 10 minutes for phase completion)
 
 **Inputs:**
+
 - Test results (from Jest or other test runner)
 - Phase identifier
 - Test execution timestamp
 
 **Outputs:**
+
 - Evidence file (.evidence/phase-X.Y.json)
 - Metrics file (docs/metrics/phase-X.Y-metrics.json)
 - Test summary log
 
 **Validation:**
+
 - Evidence file created with valid JSON
 - Timestamp is current
 - All required fields present (timestamp, phase, status, results)
 
 **Implementation:**
+
 ```bash
 # Integrated with npm test
 npm test && npm run test-evidence -- phase-1.0
@@ -173,26 +191,31 @@ node scripts/test-evidence.js verify phase-1.0
 **Purpose:** Keep documentation in sync with code changes
 
 **Triggers:**
+
 - Code commits that modify API or architecture
 - Manual invocation
 
 **Responsibilities:**
+
 - Detect API changes (new functions, changed signatures)
 - Update API documentation
 - Refresh architecture diagrams
 - Update code examples in docs
 
 **Inputs:**
+
 - Code diffs
 - Existing documentation
 - Diagram sources (Mermaid, PlantUML)
 
 **Outputs:**
+
 - Updated API docs
 - Refreshed diagrams
 - Change log
 
 **Validation:**
+
 - All public APIs documented
 - Diagrams reflect current architecture
 - Code examples compile/run
@@ -222,6 +245,7 @@ State Update / Notifications
 ### Shared State
 
 Agents coordinate through shared state stored in:
+
 - `.evidence/` - Test execution records
 - `docs/metrics/` - Performance and quality metrics
 - `docs/phases/` - Phase artifacts and status
@@ -241,6 +265,7 @@ graph TD
 ## Integration with Quality Gates
 
 Agents enhance quality gates by:
+
 1. **Automating checks:** What was manual is now automatic
 2. **Providing evidence:** Agents generate audit trails
 3. **Closing loops:** Detect → Alert → Fix → Verify
@@ -249,11 +274,13 @@ Agents enhance quality gates by:
 ## Implementation Plan
 
 ### Phase 1: Core Infrastructure (Current)
+
 - ✅ Quality gate scripts (file-location-check, test-evidence, gate-check)
 - ✅ Test suite for infrastructure
 - ⏳ Fix remaining test failures
 
 ### Phase 2: First Agent (Next)
+
 - [ ] Blog Maintenance Agent specification
 - [ ] Blog post metadata schema
 - [ ] Stub detection logic
@@ -261,12 +288,14 @@ Agents enhance quality gates by:
 - [ ] Blog update template engine
 
 ### Phase 3: Monitoring (Future)
+
 - [ ] Project Health Agent
 - [ ] Daily health reports
 - [ ] Metric trending
 - [ ] Alert system
 
 ### Phase 4: Advanced Automation (Future)
+
 - [ ] Documentation Sync Agent
 - [ ] Test Coverage Agent
 - [ ] Dependency Update Agent
@@ -336,6 +365,7 @@ npm run agent:test -- blog-maintenance
 ---
 
 **See Also:**
+
 - [Quality Gates Documentation](quality-gates.md)
 - [Quality Gates Gaps Analysis](QUALITY-GATES-GAPS.md)
 - [Blog Series Implementation](blog/README.md)

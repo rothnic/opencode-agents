@@ -96,12 +96,14 @@ This blog series chronicles the development of **OpenCode Agents**, a project ex
 ## Writing Guidelines
 
 ### Style
+
 - Technical but accessible
 - Code examples over theory
 - Real metrics over claims
 - Honest about failures
 
 ### Structure
+
 - Problem statement
 - Approach with rationale
 - Implementation details
@@ -109,6 +111,7 @@ This blog series chronicles the development of **OpenCode Agents**, a project ex
 - Lessons learned
 
 ### Audience
+
 - Software engineers exploring AI agents
 - Engineering managers evaluating AI tools
 - Researchers in agent systems
@@ -123,6 +126,7 @@ This blog series chronicles the development of **OpenCode Agents**, a project ex
 ## Contributing
 
 As we complete each phase, we'll:
+
 1. Fill in the draft with real data
 2. Add screenshots/diagrams
 3. Include reproducible examples

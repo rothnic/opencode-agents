@@ -101,12 +101,14 @@ Each failure mode has **multiple independent controls** working in layers.
 **Purpose**: Guide developers/agents toward correct behavior
 
 **Components**:
+
 - `docs/quality-gates.md` - 600-line comprehensive guide
 - `docs/test-decision-tree.md` - Concrete requirements per phase
 - `docs/templates/phase-completion-checklist.md` - Manual checklist
 - Phase README files with deliverables
 
 **Example** (from checklist):
+
 ```markdown
 ## Before Marking Phase Complete
 
@@ -137,6 +139,7 @@ Each failure mode has **multiple independent controls** working in layers.
 **What it does**: Validates files are in correct locations
 
 **Configuration**:
+
 ```javascript
 const ALLOWED_ROOT_FILES = [
   'README.md',
@@ -156,6 +159,7 @@ const FORBIDDEN_ROOT_PATTERNS = [
 ```
 
 **Usage**:
+
 ```bash
 # Check all files
 $ node scripts/file-location-check.js
@@ -172,6 +176,7 @@ git mv SESSION-SUMMARY.md docs/phases/phase-X.Y/
 ```
 
 **Real output** (tested):
+
 ```
 ═══════════════════════════════════════════
   File Location Validator
@@ -199,6 +204,7 @@ git mv SESSION-SUMMARY.md docs/phases/phase-X.Y/
 **Why timestamps matter**: Proves tests actually ran, not just that test files exist
 
 **Recording evidence**:
+
 ```bash
 $ npm test && node scripts/test-evidence.js phase-1.1
 
@@ -220,6 +226,7 @@ Summary:
 ```
 
 **Evidence file contents**:
+
 ```json
 {
   "phase": "phase-1.1",
@@ -245,6 +252,7 @@ Summary:
 ```
 
 **Verifying evidence**:
+
 ```bash
 $ node scripts/test-evidence.js --verify phase-1.1
 
@@ -257,6 +265,7 @@ $ node scripts/test-evidence.js --verify phase-1.1
 ```
 
 **If evidence is too old**:
+
 ```bash
 $ node scripts/test-evidence.js --verify phase-1.1
 
@@ -275,6 +284,7 @@ $ node scripts/test-evidence.js --verify phase-1.1
 **What it does**: Orchestrates all validation checks
 
 **Detects phase completion commits**:
+
 ```javascript
 const PHASE_COMMIT_PATTERN = /feat: phase-(\d+\.\d+)/;
 
@@ -286,6 +296,7 @@ if (commitMsg.match(PHASE_COMMIT_PATTERN)) {
 ```
 
 **Validation sequence**:
+
 ```bash
 $ node scripts/gate-check.js --phase=phase-1.1
 
@@ -324,6 +335,7 @@ Total checks: 4
 ```
 
 **If any check fails**:
+
 ```bash
 ═══════════════════════════════════════════
 ❌ GATE CHECK FAILED
@@ -343,6 +355,7 @@ Fix issues before committing.
 ```
 
 **Skip flags for non-phase commits**:
+
 ```bash
 # Documentation-only commit
 $ node scripts/gate-check.js --skip-tests
@@ -358,6 +371,7 @@ $ node scripts/gate-check.js --skip-tests --skip-files
 **Purpose**: Automatically enforce gates before every commit
 
 **Implementation** (`.git/hooks/pre-commit`):
+
 ```bash
 #!/bin/bash
 # Pre-commit hook for OpenCode Agents
@@ -376,11 +390,13 @@ exit 0
 ```
 
 **Made executable**:
+
 ```bash
-$ chmod +x .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
 ```
 
 **In action**:
+
 ```bash
 $ git commit -m "feat: phase-1.1-complete"
 
@@ -398,6 +414,7 @@ Commit blocked automatically.
 ```
 
 **Emergency bypass** (documented but discouraged):
+
 ```bash
 $ git commit --no-verify -m "emergency: critical hotfix"
 
@@ -407,6 +424,7 @@ $ git commit --no-verify -m "emergency: critical hotfix"
 **Why bypass is needed**: Infrastructure changes, control system updates, genuine emergencies
 
 **Audit trail**:
+
 ```bash
 # Find all bypassed commits
 $ git log --grep="--no-verify"
@@ -420,6 +438,7 @@ $ git log --grep="emergency:"
 **Purpose**: Prevent session files from being staged at all
 
 **Configuration**:
+
 ```gitignore
 # Session files blocked at root
 /*SESSION*.md
@@ -436,6 +455,7 @@ $ git log --grep="emergency:"
 ```
 
 **Result**:
+
 ```bash
 $ touch SESSION-SUMMARY.md
 $ git add SESSION-SUMMARY.md
@@ -446,6 +466,7 @@ $ git status
 ```
 
 **Combined with Layer 2**:
+
 - .gitignore prevents accidental staging
 - file-location-check catches force-adds (`git add -f`)
 
@@ -465,6 +486,7 @@ $ git status
 **Layer 4 (N/A)**: Not applicable
 
 **Example**:
+
 ```bash
 $ git commit -m "feat: phase-1.1-complete"
 
@@ -497,6 +519,7 @@ Commit blocked.
 **Layer 4 (Filter)**: `.gitignore` prevents staging
 
 **Example**:
+
 ```bash
 $ touch SESSION-SUMMARY.md
 $ git add SESSION-SUMMARY.md
@@ -536,6 +559,7 @@ Commit blocked.
 **Layer 4 (N/A)**: Not applicable
 
 **Example**:
+
 ```bash
 $ node scripts/gate-check.js --phase=phase-0.2
 
@@ -548,6 +572,7 @@ $ node scripts/gate-check.js --phase=phase-0.2
 ```
 
 **Deliverables extracted from README**:
+
 ```markdown
 ## Deliverables
 
@@ -572,10 +597,12 @@ $ node scripts/gate-check.js --phase=phase-0.2
 **Layer 4 (N/A)**: Not applicable
 
 **Why timestamp matters**:
+
 - File existence: "Test file created yesterday"
 - Timestamp: "Tests actually ran 2 minutes ago"
 
 **Example**:
+
 ```bash
 # Test file exists
 $ ls tests/phase-1/test-1.1-hello-world.js
@@ -622,18 +649,21 @@ $ node scripts/test-evidence.js phase-1.1
 ## Implementation Metrics
 
 ### Development Time
+
 - Design: 2 hours (systems thinking, failure mode analysis)
 - Implementation: 3 hours (4 scripts + hooks + docs)
 - Testing: 30 minutes (manual validation)
 - **Total: ~5.5 hours**
 
 ### Code Size
+
 - Scripts: ~800 lines (JavaScript + comments)
 - Documentation: ~2,000 lines (comprehensive)
 - Templates: ~500 lines
 - **Total: ~3,300 lines**
 
 ### Maintenance Burden
+
 - **Low**: Scripts are self-contained
 - **Clear**: Each failure mode has specific control
 - **Extensible**: New phases add gate tests
@@ -672,6 +702,7 @@ Tells you exactly what to do.
 **1. Setup Complexity**
 
 Requires:
+
 - Node.js
 - Git hooks installation
 - Understanding of system
@@ -770,6 +801,7 @@ chmod +x .git/hooks/pre-commit
 ### 3. Customize Rules
 
 Edit `scripts/file-location-check.js`:
+
 ```javascript
 const ALLOWED_ROOT_FILES = [
   'README.md',
@@ -819,12 +851,14 @@ git commit -m "test: clean"
 Building AI agent systems without quality gates is like building rockets without checklists—eventually, something critical gets forgotten.
 
 **Defense-in-depth works because**:
+
 - No single point of failure
 - Multiple independent verifications
 - Automated enforcement (humans forget)
 - Clear feedback (easy to fix)
 
 **After implementing this system**:
+
 - ✅ 100% prevention of designed failure modes
 - ✅ ~5 hours setup time
 - ✅ Minimal maintenance burden
@@ -837,9 +871,10 @@ Building AI agent systems without quality gates is like building rockets without
 ## Try It Yourself
 
 **Full implementation**:  
-https://github.com/rothnic/opencode-agents
+<https://github.com/rothnic/opencode-agents>
 
 **Key files**:
+
 - `scripts/gate-check.js` - Main orchestrator
 - `scripts/test-evidence.js` - Proof of execution
 - `scripts/file-location-check.js` - File organization

@@ -1,7 +1,6 @@
 
 Mastering opencode: A Comprehensive Guide to Configuration and Customization for the Expert Developer
 
-
 I. Foundational Configuration: The opencode.json Manifest
 
 The core of opencode's adaptability lies in its configuration system, which is architected not merely as a list of settings, but as a declarative manifest for defining an agent's complete operational environment. This "Configuration as Code" approach enables development teams to version control, review, and standardize AI agent behavior with the same rigor applied to application code. For the expert user, mastering this system is the first step toward unlocking the tool's full potential in complex, team-based development environments.
@@ -15,7 +14,7 @@ Global Configuration: A global configuration file located at ~/.config/opencode/
 
 Core Schema Breakdown and Practical Application
 
-The configuration file supports both standard JSON and JSON with Comments (JSONC), a developer-friendly feature that encourages the documentation of complex setups directly within the file.1 Furthermore, opencode provides an official schema, which can be referenced in the configuration file ("$schema": "https://opencode.ai/config.json"). This enables validation and intelligent autocompletion in modern code editors, a critical feature for reducing errors and improving the developer experience when managing a large number of settings.1
+The configuration file supports both standard JSON and JSON with Comments (JSONC), a developer-friendly feature that encourages the documentation of complex setups directly within the file.1 Furthermore, opencode provides an official schema, which can be referenced in the configuration file ("$schema": "<https://opencode.ai/config.json>"). This enables validation and intelligent autocompletion in modern code editors, a critical feature for reducing errors and improving the developer experience when managing a large number of settings.1
 The schema is logically organized into several key areas:
 UI/UX Settings: These options, typically placed in the global configuration, tailor the user interface. They include tui settings like scroll_speed, the overall theme, and custom keybinds to match a user's preferred workflow.1
 Operational Settings: These govern the tool's core behavior. autoupdate controls whether opencode automatically downloads new versions, a feature that might be disabled in controlled enterprise environments to ensure stability.1 The sharing option can be configured to manual (default), auto, or disabled, providing granular control over session privacy and collaboration.1
@@ -33,10 +32,9 @@ The following example demonstrates a project-level opencode.jsonc file designed 
 
 Code snippet
 
-
 //.opencode.jsonc in the monorepo root
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "<https://opencode.ai/config.json>",
 
   // Enforce a specific, powerful model for development tasks to ensure consistency
   // and leverage a smaller model for simple tasks to control costs.
@@ -63,7 +61,6 @@ Code snippet
   "instructions":
 }
 
-
 This configuration manifest demonstrates a mature approach to managing an AI coding assistant within a team. It centralizes critical decisions, automates adherence to project standards, and leverages modularity to keep the configuration maintainable as the project grows.1
 
 II. Managing Intelligence: Providers and Models
@@ -79,7 +76,7 @@ Configuring Commercial vs. Local Models
 
 The configuration process varies between cloud-based commercial providers and locally-hosted models, with opencode providing robust support for both paradigms.
 Commercial Providers: Integrating with enterprise-grade services like Azure OpenAI often requires more than a single API key. For Azure, the configuration necessitates setting the AZURE_RESOURCE_NAME as an environment variable (or in a .env file). Critically, the model deployment name within Azure must exactly match the model name used in the opencode configuration for the connection to succeed.7 These provider-specific details highlight the importance of consulting the documentation for each integration.
-Local Models: A key feature for privacy-conscious developers or those working in offline environments is the ability to connect to local LLMs served by tools like Ollama or LM Studio. opencode achieves this by supporting any OpenAI-compatible API endpoint. This is configured directly in opencode.json by defining a custom provider. The essential fields for this configuration are npm (which should be set to @ai-sdk/openai-compatible), a display name, the options.baseURL pointing to the local server's endpoint (e.g., http://localhost:11434/v1), and a models map that defines the available local models.7 This capability transforms opencode into a powerful client for locally fine-tuned or specialized models.
+Local Models: A key feature for privacy-conscious developers or those working in offline environments is the ability to connect to local LLMs served by tools like Ollama or LM Studio. opencode achieves this by supporting any OpenAI-compatible API endpoint. This is configured directly in opencode.json by defining a custom provider. The essential fields for this configuration are npm (which should be set to @ai-sdk/openai-compatible), a display name, the options.baseURL pointing to the local server's endpoint (e.g., <http://localhost:11434/v1>), and a models map that defines the available local models.7 This capability transforms opencode into a powerful client for locally fine-tuned or specialized models.
 
 Strategic Model Selection
 
@@ -95,10 +92,9 @@ This example illustrates a global opencode.jsonc for a developer who uses a powe
 
 Code snippet
 
-
 // ~/.config/opencode/opencode.jsonc
 {
-  "$schema": "https://opencode.ai/config.json",
+  "$schema": "<https://opencode.ai/config.json>",
 
   // Default to the powerful, company-provided Azure model for complex development.
   // The API key is stored via `opencode auth login` and the resource name via an env var.
@@ -113,7 +109,7 @@ Code snippet
       "npm": "@ai-sdk/openai-compatible",
       "name": "Ollama (Local)",
       "options": {
-        "baseURL": "http://localhost:11434/v1"
+        "baseURL": "<http://localhost:11434/v1>"
       },
       "models": {
         "llama3:8b": { "name": "Llama 3 8B Instruct" },
@@ -122,7 +118,6 @@ Code snippet
     }
   }
 }
-
 
 With this setup, the developer's default agent uses the high-capability Azure model. However, when a session title needs to be generated, opencode transparently uses the local llama3:8b model. The developer can also manually switch to the codegemma:7b model using the /models command when working on a flight or handling sensitive code that cannot leave their machine.
 
@@ -159,7 +154,6 @@ Realistic Example: A "SecurityAuditor" Subagent
 This realistic example showcases a subagent designed for a single, critical task: analyzing code for security vulnerabilities. It is intentionally sandboxed, with its ability to modify the file system or execute commands completely disabled.
 File: ~/.config/opencode/agent/security-auditor.md
 
-
 description: "Performs a security audit on code files, checking for common vulnerabilities like XSS, SQL injection, and insecure configurations. Does not modify code." mode: subagent model: "anthropic/claude-3-5-sonnet-20241022" temperature: 0.1 permission: edit: "deny" write: "deny" bash: "deny" webfetch: "allow" # Allow it to fetch documentation on vulnerabilities.
 
 You are an expert security auditor. Your sole purpose is to review the provided code for security vulnerabilities.
@@ -190,14 +184,13 @@ deny: The agent is completely prohibited from using the tool. Any attempt by the
 Implementing Granular Control
 
 The power of this permission model lies in its granularity and hierarchical application. Agent-specific tool and permission configurations always override the global settings defined in the root of opencode.json.10 This allows a security-conscious developer to establish a highly restrictive global baseline (e.g., denying bash and write for all agents) and then selectively enable specific capabilities only for specialized agents that absolutely require them.
-This granularity extends even to the bash tool itself. The permission system supports defining rules for specific shell commands using glob patterns.4 This is an extremely powerful feature for fine-grained security. For example, a configuration could allow an agent to run safe commands like ls or git status, ask for confirmation before running any other git * command, and explicitly deny dangerous commands like rm -rf *. This level of control allows developers to build powerful automations while establishing robust safety rails against unintended actions.
+This granularity extends even to the bash tool itself. The permission system supports defining rules for specific shell commands using glob patterns.4 This is an extremely powerful feature for fine-grained security. For example, a configuration could allow an agent to run safe commands like ls or git status, ask for confirmation before running any other git *command, and explicitly deny dangerous commands like rm -rf*. This level of control allows developers to build powerful automations while establishing robust safety rails against unintended actions.
 
 Realistic Example: A "DocsWriter" Agent Configuration
 
 This example defines an agent specialized in writing and updating project documentation. Its permissions are carefully crafted to give it the capabilities it needs while preventing it from affecting application code or executing arbitrary commands.
 
 Code snippet
-
 
 // In opencode.json
 "agent": {
@@ -220,7 +213,6 @@ Code snippet
     }
   }
 }
-
 
 This configuration creates a sandboxed environment for the docswriter agent. It can freely read project files to understand the code it is documenting and fetch external resources, but it cannot modify existing code, run any shell commands, or even write a new file without explicit user approval. This is a practical application of the principle of least privilege, demonstrating how opencode's security framework enables the creation of safe, reliable, and specialized AI assistants.
 
@@ -257,7 +249,6 @@ Project Rules for the Phoenix Refactor
 You are assisting in refactoring a legacy Java monolith. Your primary goal is to modernize the code while maintaining 100% backward compatibility.
 
 Core Principles
-
 
 CRITICAL: Do NOT introduce new public APIs without explicit instruction from the user.
 All new code must have complete unit test coverage using JUnit 5.
@@ -324,14 +315,12 @@ Realistic Example: A /test Command
 This command automates the process of running tests for a specific file, capturing the output, and asking the agent to analyze any failures.
 File: .opencode/command/test.md
 
-
 description: "Runs the test suite for a given file and asks the agent to analyze the results." agent: build subtask: true
 
 I am running the test suite for the file located at @$ARGUMENTS.
 Here is the output from the test runner:
 !pnpm test $ARGUMENTS
 Please analyze the test results above. If there are any failures, identify the root cause and suggest specific code changes to fix them.
-
 
 Invocation: /test src/utils/parser.test.ts
 
@@ -382,8 +371,6 @@ export default tool({
   },
 });
 
-
-
 Part C: Deep Integration with Plugins
 
 Plugins represent the deepest level of extensibility, allowing developers to hook into opencode's core event lifecycle to modify or augment its default behavior. They are defined as JavaScript or TypeScript files in the .opencode/plugin/ directory.14
@@ -407,8 +394,6 @@ export const EnvProtection = async ({ project, client, $ }) => {
   };
 };
 
-
-
 VII. Programmatic Control and Integration
 
 The ultimate form of mastery over any developer tool is the ability to script and control it programmatically. opencode is architected from the ground up to support this, moving beyond the paradigm of a simple interactive tool to become an extensible platform for building AI-powered development automation. Its client-server architecture is the key enabler of this capability, allowing opencode to be integrated into CI/CD pipelines, custom scripts, and even alternative user interfaces.
@@ -420,7 +405,7 @@ This architecture is made accessible through the opencode serve command, which a
 
 Interacting with the Headless Server
 
-The opencode server is not a black box; it is a fully specified, modern web service. It exposes an OpenAPI 3.1 specification at its /doc endpoint (e.g., http://localhost:4096/doc).15 This is a critical feature for expert users, as the OpenAPI spec serves as a comprehensive, machine-readable contract for the entire API surface. Using this spec, developers can:
+The opencode server is not a black box; it is a fully specified, modern web service. It exposes an OpenAPI 3.1 specification at its /doc endpoint (e.g., <http://localhost:4096/doc).15> This is a critical feature for expert users, as the OpenAPI spec serves as a comprehensive, machine-readable contract for the entire API surface. Using this spec, developers can:
 Inspect all available endpoints, request bodies, and response types.
 Use tools like Swagger UI to explore and test the API interactively.
 Automatically generate type-safe client libraries in virtually any programming language.
@@ -483,11 +468,7 @@ try {
 
   const responseText = parts.find(p => p.type === 'text')?.content |
 
-
-
 | "";
-
-
 
   // 5. Analyze the response and determine whether to block the commit.
   if (responseText.includes("ISSUE:")) {
@@ -502,6 +483,7 @@ try {
 } finally {
   await stop(); // 6. Ensure the opencode server is shut down.
 }
+
 ```
 
 

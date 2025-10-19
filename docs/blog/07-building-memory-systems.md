@@ -16,6 +16,7 @@ last_updated: "2025-10-19"
 ## The Problem
 
 Agents don't remember:
+
 - Patterns that worked before
 - Common pitfalls
 - Project-specific conventions
@@ -30,6 +31,7 @@ Every task starts from scratch.
 [TODO: Implementation details]
 
 ### What to Store
+
 - Successful code patterns
 - Test strategies
 - Error resolutions

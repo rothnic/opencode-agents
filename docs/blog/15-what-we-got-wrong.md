@@ -38,11 +38,13 @@ last_updated: "2025-10-19"
 [TODO: Document evolution of thinking]
 
 ### Before Project
+
 - [Belief 1]
 - [Belief 2]
 - [Belief 3]
 
 ### After Project
+
 - [Revised belief 1]
 - [Revised belief 2]
 - [Revised belief 3]
@@ -54,14 +56,17 @@ last_updated: "2025-10-19"
 [TODO: Honest retrospective]
 
 ### Design Mistakes
+
 1. [What we got wrong in design]
 2. [What we got wrong in design]
 
 ### Implementation Mistakes
+
 1. [What we got wrong in implementation]
 2. [What we got wrong in implementation]
 
 ### Process Mistakes
+
 1. [What we got wrong in process]
 2. [What we got wrong in process]
 

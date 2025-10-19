@@ -16,6 +16,7 @@ last_updated: "2025-10-18"
 ## Beyond "It Works"
 
 ### Vanity Metrics (Don't Use)
+
 - "The agent completed the task" (subjective)
 - "Code looks good" (subjective)
 - "I think it's working" (subjective)
@@ -23,6 +24,7 @@ last_updated: "2025-10-18"
 ### Actionable Metrics (Use These)
 
 #### 1. Token Efficiency
+
 ```javascript
 tokenCount = totalTokensUsed / task
 baseline = tokenCountFor(singleAgent, sameTask)
@@ -32,6 +34,7 @@ efficiency = (tokenCount / baseline) * 100
 ```
 
 #### 2. Success Rate
+
 ```javascript
 successRate = (tasksPassed / tasksAttempted) * 100
 
@@ -39,6 +42,7 @@ successRate = (tasksPassed / tasksAttempted) * 100
 ```
 
 #### 3. Test Coverage
+
 ```javascript
 coverage = (linesCovered / totalLines) * 100
 
@@ -46,6 +50,7 @@ coverage = (linesCovered / totalLines) * 100
 ```
 
 #### 4. Quality Score
+
 ```javascript
 quality = (testsPass && noCriticalVulns && coverage >= 80) ? 100 : 0
 

@@ -16,6 +16,7 @@ last_updated: "2025-10-19"
 ## The Simplest Multi-Agent Pattern That Works
 
 **Architecture**:
+
 ```
 Orchestrator
   ├─> CodeImplementer (writes src/StringUtils.js)

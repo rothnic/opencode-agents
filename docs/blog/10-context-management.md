@@ -18,6 +18,7 @@ last_updated: "2025-10-19"
 **Task**: Integrate Stripe payment API
 
 **Requirements span multiple domains**:
+
 - Payment processing (finance)
 - Webhook handling (networking)
 - Error handling (reliability)
@@ -36,6 +37,7 @@ Single agents lose context when switching domains.
 ### API Integration Challenge
 
 Full Stripe integration:
+
 - Payment endpoints
 - Webhook listeners
 - Retry logic

@@ -15,7 +15,7 @@ last_updated: "2025-10-19"
 
 ## Cost-Benefit Analysis
 
-### Multi-Agent Systems Are Worth It When:
+### Multi-Agent Systems Are Worth It When
 
 [TODO: Based on measured results]
 
@@ -24,7 +24,7 @@ last_updated: "2025-10-19"
 3. **Consistency needs**: Multiple related changes
 4. **Audit requirements**: Need verification trail
 
-### Single Agent Is Fine When:
+### Single Agent Is Fine When
 
 1. **Simple tasks**: < X files
 2. **Quick prototypes**: No test requirements
@@ -38,6 +38,7 @@ last_updated: "2025-10-19"
 [TODO: Define based on measurements]
 
 **Our data**:
+
 - Simple tasks (< 3 files): Single agent = X tokens, Multi-agent = Y tokens
 - Medium tasks (3-8 files): Single agent = X tokens, Multi-agent = Y tokens
 - Complex tasks (> 8 files): Single agent = X tokens (often fails), Multi-agent = Y tokens
@@ -51,14 +52,17 @@ last_updated: "2025-10-19"
 [TODO: After full project data]
 
 ### Token Cost
+
 - Single agent: [average]
 - Multi-agent overhead: [percentage]
 
 ### Quality Gain
+
 - Single agent test coverage: [average]
 - Multi-agent test coverage: [average]
 
 ### Time Cost
+
 - Single agent: [average execution time]
 - Multi-agent: [average execution time]
 

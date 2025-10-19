@@ -178,21 +178,25 @@ git push
 ## Project Principles
 
 ### Test-Driven Development
+
 - Every feature has verification tests
 - Boolean pass/fail (no subjective assessment)
 - Tests written before or alongside code
 
 ### Incremental Progress
+
 - Small steps with validation
 - Commit frequently
 - Each phase builds on previous
 
 ### Measurable Outcomes
+
 - Track tokens, steps, execution time
 - Compare to baselines
 - Document metrics in phase directories
 
 ### Complete Documentation
+
 - Working docs in phase directories
 - Design decisions in notes.md
 - Detailed progress in progress.md
@@ -203,11 +207,13 @@ git push
 ## Common Tasks
 
 ### Check Current Status
+
 ```bash
 cat STATUS.md
 ```
 
 ### Start Working on Current Phase
+
 ```bash
 cd docs/phases/phase-0.2/  # or current phase
 cat README.md
@@ -215,6 +221,7 @@ touch notes.md progress.md
 ```
 
 ### Reference Project Plan
+
 ```bash
 # Open in editor
 code docs/project-plan.md
@@ -223,6 +230,7 @@ grep -A 50 "Phase 0.2" docs/project-plan.md
 ```
 
 ### Use a Template
+
 ```bash
 # Copy agent template
 cp docs/templates/agent-template.md docs/phases/phase-0.2/draft-agent.md
@@ -230,6 +238,7 @@ cp docs/templates/agent-template.md docs/phases/phase-0.2/draft-agent.md
 ```
 
 ### Update Status After Completion
+
 ```bash
 # Edit STATUS.md
 nano STATUS.md
@@ -240,6 +249,7 @@ nano STATUS.md
 ```
 
 ### Commit Phase
+
 ```bash
 git add -A
 git status  # verify changes
@@ -252,30 +262,35 @@ git push
 ## Next 5 Phases (Quick Reference)
 
 ### Phase 0.2: Create Project Structure (NEXT)
+
 - **Work in**: `docs/phases/phase-0.2/`
 - **Goal**: Set up OpenCode config and test infrastructure
 - **Deliverables**: opencode.json, .opencode/, tests/, scripts/, AGENTS.md
 - **Commit**: `feat: phase-0.2-project-structure`
 
 ### Phase 1.1: Hello World Baseline (⭐)
+
 - **Work in**: `docs/phases/phase-1.1/`
 - **Goal**: Establish baseline metrics
 - **Deliverables**: First test, generated code, metrics
 - **Commit**: `test: phase-1.1-baseline-single-agent`
 
 ### Phase 1.2: Orchestrator Pattern (⭐⭐)
+
 - **Work in**: `docs/phases/phase-1.2/`
 - **Goal**: Task decomposition and delegation
 - **Deliverables**: Orchestrator agent, delegation test
 - **Commit**: `feat: phase-1.2-orchestrator-pattern`
 
 ### Phase 1.3: Metrics System (⭐⭐)
+
 - **Work in**: `docs/phases/phase-1.3/`
 - **Goal**: Automated metrics collection
 - **Deliverables**: Metrics framework, comparison tools
 - **Commit**: `feat: phase-1.3-metrics-system`
 
 ### Phase 2.1: Two-Agent Collaboration (⭐⭐⭐)
+
 - **Work in**: `docs/phases/phase-2.1/`
 - **Goal**: Multi-agent integration
 - **Deliverables**: CodeImplementer + TestWriter working together
@@ -286,12 +301,14 @@ git push
 ## Tips for AI Agents
 
 ### Context for New Sessions
+
 - Read `STATUS.md` first for current state
 - Phase directory contains all relevant work
 - `project-plan.md` has detailed specifications
 - Templates provide boilerplate
 
 ### Best Practices
+
 - Work in phase directory first (drafts)
 - Move to root only when finalized
 - Document all decisions in notes.md
@@ -300,6 +317,7 @@ git push
 - Update STATUS.md after each phase
 
 ### Phase 0.2 Specifics (Next Task)
+
 - Create `opencode.json` with basic config
 - Set up `.opencode/agent/` directory
 - Create minimal `AGENTS.md` with conventions
@@ -313,18 +331,23 @@ git push
 ## Troubleshooting
 
 ### Can't find what's next?
+
 → Check `STATUS.md`, it always shows next action
 
 ### Don't know phase details?
+
 → Read `docs/phases/phase-X.Y/README.md`
 
 ### Need specifications?
+
 → See `docs/project-plan.md` (search for phase number)
 
 ### Need boilerplate?
+
 → Use files in `docs/templates/`
 
 ### Lost context?
+
 → Read phase `notes.md` and `progress.md`
 
 ---
@@ -332,6 +355,7 @@ git push
 ## Project Goals (Reminder)
 
 Build a reactive, predictable, measurable multi-agent coding system that:
+
 - ✅ Demonstrates test-driven development
 - ✅ Shows measurable improvement over single agents
 - ✅ Includes adaptive learning (memory system)
@@ -341,6 +365,7 @@ Build a reactive, predictable, measurable multi-agent coding system that:
 ---
 
 **Ready to start?**  
+
 1. Check `STATUS.md`  
 2. Go to current phase directory  
 3. Create `notes.md` and `progress.md`  

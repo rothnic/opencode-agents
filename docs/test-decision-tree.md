@@ -25,7 +25,9 @@ Before moving to the next step in ANY phase:
 ## Phase 0.2: Project Structure Setup
 
 ### Step 1: Create opencode.json
+
 **Test Before Moving to Step 2**:
+
 ```bash
 # Manual check
 ✓ File exists: opencode.json
@@ -38,7 +40,9 @@ Before moving to the next step in ANY phase:
 ```
 
 ### Step 2: Create .opencode/ directory structure
+
 **Test Before Moving to Step 3**:
+
 ```bash
 # Manual check
 ✓ Directory exists: .opencode/
@@ -50,7 +54,9 @@ Before moving to the next step in ANY phase:
 ```
 
 ### Step 3: Create agent configurations
+
 **Test Before Moving to Step 4**:
+
 ```bash
 # Manual check
 ✓ At least one agent config exists: .opencode/agent/*.md
@@ -63,7 +69,9 @@ Before moving to the next step in ANY phase:
 ```
 
 ### Step 4: Create AGENTS.md
+
 **Test Before Moving to Step 5**:
+
 ```bash
 # Manual check
 ✓ File exists: AGENTS.md
@@ -75,7 +83,9 @@ Before moving to the next step in ANY phase:
 ```
 
 ### Step 5: Create test structure
+
 **Test Before Moving to Phase Completion**:
+
 ```bash
 # Manual check
 ✓ Directory exists: tests/
@@ -88,7 +98,9 @@ Before moving to the next step in ANY phase:
 ```
 
 ### Phase 0.2 Completion Gate
+
 **Test Before Marking Phase Complete**:
+
 ```bash
 # Run ALL Phase 0.2 tests
 ✓ npm test tests/phase-0/
@@ -115,7 +127,9 @@ Before moving to the next step in ANY phase:
 ## Phase 1.1: Hello World Baseline
 
 ### Step 1: Create baseline test
+
 **Test Before Moving to Step 2**:
+
 ```bash
 # Manual check
 ✓ File exists: tests/phase-1/test-1.1-hello-world.js
@@ -128,7 +142,9 @@ Before moving to the next step in ANY phase:
 ```
 
 ### Step 2: Run baseline test
+
 **Test Before Moving to Step 3**:
+
 ```bash
 # Execute test
 ✓ npm test tests/phase-1/test-1.1-hello-world.js
@@ -144,7 +160,9 @@ Before moving to the next step in ANY phase:
 ```
 
 ### Step 3: Collect metrics
+
 **Test Before Phase Completion**:
+
 ```bash
 # Manual check
 ✓ Metrics file exists: docs/metrics/phase-1.1-baseline.json
@@ -158,7 +176,9 @@ Before moving to the next step in ANY phase:
 ```
 
 ### Phase 1.1 Completion Gate
+
 **Test Before Marking Phase Complete**:
+
 ```bash
 # Run ALL Phase 1.1 tests
 ✓ npm test tests/phase-1/
@@ -182,7 +202,9 @@ Before moving to the next step in ANY phase:
 ## Phase 1.2: Orchestrator Pattern
 
 ### Step 1: Create orchestrator config
+
 **Test Before Moving to Step 2**:
+
 ```bash
 # Manual check
 ✓ File exists: .opencode/agent/orchestrator.md
@@ -196,7 +218,9 @@ Before moving to the next step in ANY phase:
 ```
 
 ### Step 2: Create orchestrator test
+
 **Test Before Moving to Step 3**:
+
 ```bash
 # Manual check
 ✓ File exists: tests/phase-1/test-1.2-orchestrator.js
@@ -209,7 +233,9 @@ Before moving to the next step in ANY phase:
 ```
 
 ### Step 3: Run orchestrator test
+
 **Test Before Phase Completion**:
+
 ```bash
 # Execute test
 ✓ npm test tests/phase-1/test-1.2-orchestrator.js
@@ -222,7 +248,9 @@ Before moving to the next step in ANY phase:
 ```
 
 ### Phase 1.2 Completion Gate
+
 **Test Before Marking Phase Complete**:
+
 ```bash
 # Run ALL tests
 ✓ npm test tests/phase-1/
@@ -245,7 +273,9 @@ Before moving to the next step in ANY phase:
 ## Phase 2.1: Two-Agent Collaboration
 
 ### Step 1: Create CodeImplementer agent
+
 **Test Before Moving to Step 2**:
+
 ```bash
 # Manual check
 ✓ File exists: .opencode/agent/codeimplementer.md
@@ -259,7 +289,9 @@ Before moving to the next step in ANY phase:
 ```
 
 ### Step 2: Create TestWriter agent
+
 **Test Before Moving to Step 3**:
+
 ```bash
 # Manual check
 ✓ File exists: .opencode/agent/testwriter.md
@@ -273,7 +305,9 @@ Before moving to the next step in ANY phase:
 ```
 
 ### Step 3: Create collaboration test
+
 **Test Before Moving to Step 4**:
+
 ```bash
 # Manual check
 ✓ File exists: tests/phase-2/test-2.1-code-test-collaboration.js
@@ -287,7 +321,9 @@ Before moving to the next step in ANY phase:
 ```
 
 ### Step 4: Run collaboration test
+
 **Test Before Phase Completion**:
+
 ```bash
 # Execute test
 ✓ npm test tests/phase-2/test-2.1-code-test-collaboration.js
@@ -303,7 +339,9 @@ Before moving to the next step in ANY phase:
 ```
 
 ### Phase 2.1 Completion Gate
+
 **Test Before Marking Phase Complete**:
+
 ```bash
 # Run ALL tests
 ✓ npm test tests/phase-2/
@@ -440,6 +478,7 @@ Before moving to the next step in ANY phase:
 ## Quick Reference Card
 
 ### Before Every Code Change
+
 ```bash
 # 1. Understand requirements
 # 2. Write code
@@ -447,6 +486,7 @@ Before moving to the next step in ANY phase:
 ```
 
 ### Before Every Commit
+
 ```bash
 # 1. Run tests
 npm test
@@ -459,6 +499,7 @@ node scripts/file-location-check.js --staged
 ```
 
 ### Before Every Phase Completion
+
 ```bash
 # 1. Run all phase tests
 npm test tests/phase-X/
@@ -474,6 +515,7 @@ git commit -m "feat: phase-X.Y-description"
 ```
 
 ### If Gate Check Fails
+
 ```bash
 # Read error message carefully
 # Fix reported issues
@@ -482,6 +524,7 @@ git commit -m "feat: phase-X.Y-description"
 ```
 
 ### Emergency Bypass (RARE!)
+
 ```bash
 # Only if absolutely necessary
 git commit --no-verify -m "emergency: {reason}"
@@ -495,21 +538,27 @@ git commit --no-verify -m "emergency: {reason}"
 ## Red Flags (Things That Should Never Happen)
 
 ❌ **Marking phase complete without running tests**
+
 - Gate check will block this
 
 ❌ **Committing session files to root**
+
 - .gitignore + gate check will block this
 
 ❌ **Test evidence > 10 minutes old**
+
 - Gate check will block this
 
 ❌ **Missing deliverables**
+
 - Gate check will block this
 
 ❌ **Tests exist but never executed**
+
 - Lack of evidence will block this
 
 ❌ **Using `--no-verify` for phase completion**
+
 - Policy violation, creates technical debt
 
 ---

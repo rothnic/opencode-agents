@@ -1,7 +1,6 @@
 
 Blueprint for an Autonomous Software Development & Content Team: An Agentic Architecture with opencode
 
-
 Part I: Foundational Architecture: The opencode Agent Ecosystem
 
 The construction of a sophisticated, multi-agent system for software development begins with a mastery of its foundational components. The opencode platform provides a robust set of primitives for defining, governing, and equipping AI agents. This section details the core building blocks: the configuration of individual agents as the atomic units of work, the establishment of a static knowledge base through the AGENTS.md protocol, and the extension of agent capabilities via a spectrum of tooling options.
@@ -111,7 +110,6 @@ anthropic/claude-3-haiku-20240307
 edit, read, patch
 edit: allow
 
-
 2.2 Task Decomposition and Workflow Management
 
 The Orchestrator's primary function is to transform a high-level user request, such as "add a new API endpoint for users," into a structured plan of executable sub-tasks. This process begins with a "chain-of-thought" reasoning step, inspired by advanced prompting techniques, where the agent explicitly formulates a plan before acting.14
@@ -146,7 +144,9 @@ Key Snippets/Tools
 Procedural
 Static, long-term project rules and conventions.
 Project AGENTS.md file(s).
+
 ## Code Style, ## Testing Protocols
+
 Episodic
 Short-term, sequential memory of the current task.
 Built-in session history.
@@ -155,7 +155,6 @@ Semantic
 Persistent, long-term storage of learned facts and patterns.
 External database (SQLite/ChromaDB) via a Custom Tool.
 memory_store, memory_query tools
-
 
 3.2 The MemoryManager Custom Tool: The Gateway to Persistence
 
@@ -219,7 +218,6 @@ add
 /suggest-blog-post $ARGUMENTS
 @ContentPlanner
 
-
 Part V: The Self-Documenting Developer: Automated Content Creation
 
 To transform development work into compelling project demos and improve hiring prospects, the agentic system can be extended to automate content creation. This creates a powerful feedback loop where the act of documenting a project can clarify its goals and showcase capabilities, turning every project into a self-documenting portfolio piece.
@@ -280,36 +278,36 @@ Prompt and Tool Refinement: The system's performance is directly tied to the qua
 Workflow Encapsulation: The efficiency of the system can be improved by observing common task patterns. If a frequent operation requires a long and complex chain of bash commands, that logic should be encapsulated into a single, more efficient Custom Tool, reducing the number of LLM calls and potential points of failure.
 By following this strategic roadmap and continuously tuning the system's performance, a development team can evolve from using AI as a simple code completion tool to partnering with a sophisticated, autonomous team of agents that actively contributes to the entire software development lifecycle.
 Works cited
-Agents - OpenCode, accessed October 17, 2025, https://opencode.ai/docs/agents/
-opencode-ai/opencode: A powerful AI coding agent. Built for the terminal. - GitHub, accessed October 17, 2025, https://github.com/opencode-ai/opencode
-Tools | opencode, accessed October 17, 2025, https://opencode.ai/docs/tools/
-Agents.md Guide for OpenAI Codex - Enhance AI Coding, accessed October 17, 2025, https://agentsmd.net/
-Agents.md: The README for Your AI Coding Agents - Research AIMultiple, accessed October 17, 2025, https://research.aimultiple.com/agents-md/
-AGENTS.md, accessed October 17, 2025, https://agents.md/
-MCP Server - Nuxt UI, accessed October 17, 2025, https://ui.nuxt.com/docs/getting-started/ai/mcp
-MCP servers - OpenCode, accessed October 17, 2025, https://opencode.ai/docs/mcp-servers/
-Local setup • Svelte MCP Docs, accessed October 17, 2025, https://svelte.dev/docs/mcp/local-setup
-Custom Tools - OpenCode, accessed October 17, 2025, https://opencode.ai/docs/custom-tools/
-I Created CUSTOM AI Tools with THIS Simple Trick - Opencode Tools - YouTube, accessed October 17, 2025, https://www.youtube.com/watch?v=jFnrRTNwMLM
-Mastering Claude Agent SDK: Best Practices for Developing AI Agents (2025) - Skywork.ai, accessed October 17, 2025, https://skywork.ai/blog/claude-agent-sdk-best-practices-ai-agents-2025/
-Getting Started with the Claude Code SDK to Orchestrate Multiple AI Instances - Arsturn, accessed October 17, 2025, https://www.arsturn.com/blog/getting-started-with-the-claude-code-sdk-to-orchestrate-multiple-ai-instances
-The "think" tool: Enabling Claude to stop and think in complex tool use situations - Anthropic, accessed October 17, 2025, https://www.anthropic.com/engineering/claude-think-tool
-OpenCode Agents: Another Path to Self-Healing Documentation Pipelines - Medium, accessed October 17, 2025, https://medium.com/@richardhightower/opencode-agents-another-path-to-self-healing-documentation-pipelines-51cd74580fc7
-LangGraph Memory Management - Overview, accessed October 17, 2025, https://langchain-ai.github.io/langgraph/concepts/memory/
-What Is AI Agent Memory? | IBM, accessed October 17, 2025, https://www.ibm.com/think/topics/ai-agent-memory
-Long-Term Memory for LLMs: 2023 – 2025 - Champaign Magazine, accessed October 17, 2025, https://champaignmagazine.com/2025/10/14/long-term-memory-for-llms-2023-2025/
-ruvnet/claude-flow: The leading agent orchestration platform for Claude. Deploy intelligent multi-agent swarms, coordinate autonomous workflows, and build conversational AI systems. Features enterprise-grade architecture, distributed swarm intelligence, RAG integration, and native Claude Code support via MCP protocol. Ranked #1 in agent-based - GitHub, accessed October 17, 2025, https://github.com/ruvnet/claude-flow
-An example showcasing how to create an agent with persistent long-term memory using Atomic Agents - GitHub, accessed October 17, 2025, https://github.com/KennyVaneetvelde/persistent-memory-agent-example
-paulmillr/chokidar: Minimal and efficient cross-platform file watching library - GitHub, accessed October 17, 2025, https://github.com/paulmillr/chokidar
-Chokidar. Watcher For Nodejs | by Ashu Singh - Medium, accessed October 17, 2025, https://medium.com/@ashusingh584/chokidar-11290855e2cb
-sst/opencode: The AI coding agent built for the terminal. - GitHub, accessed October 17, 2025, https://github.com/sst/opencode
-Top 10 Examples of "chokidar in functional component" in JavaScript - CloudDefense.AI, accessed October 17, 2025, https://www.clouddefense.ai/code/javascript/example/chokidar
-Commands - OpenCode, accessed October 17, 2025, https://opencode.ai/docs/commands/
-Providers - OpenCode, accessed October 17, 2025, https://opencode.ai/docs/providers/
-wshobson/agents: Intelligent automation and multi-agent orchestration for Claude Code, accessed October 17, 2025, https://github.com/wshobson/agents
-Writing effective tools for AI agents—using AI agents - Anthropic, accessed October 17, 2025, https://www.anthropic.com/engineering/writing-tools-for-agents
-How to Build a Better AI Content Generation Workflow - HubSpot Community, accessed October 17, 2025, https://community.hubspot.com/t5/Blog-Website-Page-Publishing/How-to-Build-a-Better-AI-Content-Generation-Workflow/m-p/1036220
-Blog Write multi agent AI is a custom multi-agent system designed to autonomously create high-quality, research-driven blogs. Using LangChain, Gemini 2.0-Flash-EXP, and Serper Web Search Tool, it automates planning, writing, and editing to deliver human-like blogs with up-to-date references. - GitHub, accessed October 17, 2025, https://github.com/Abdulbasit110/Blog-writer-multi-agent/
-Automate Blog Writing with AI: A Content Marketer's Guide - Datagrid, accessed October 17, 2025, https://www.datagrid.com/blog/ai-agents-automate-blog-post-writing-content-marketers
-Automated AI Blog Creation: How I Built a Multi-Agent System - Aisa-x, accessed October 17, 2025, https://aisa-x.ai/blog/how-i-built-a-multi-agent-system-for-automated-ai-blog-creation/
-AI Agent Best Practices and Ethical Considerations | Writesonic, accessed October 17, 2025, https://writesonic.com/blog/ai-agents-best-practices
+Agents - OpenCode, accessed October 17, 2025, <https://opencode.ai/docs/agents/>
+opencode-ai/opencode: A powerful AI coding agent. Built for the terminal. - GitHub, accessed October 17, 2025, <https://github.com/opencode-ai/opencode>
+Tools | opencode, accessed October 17, 2025, <https://opencode.ai/docs/tools/>
+Agents.md Guide for OpenAI Codex - Enhance AI Coding, accessed October 17, 2025, <https://agentsmd.net/>
+Agents.md: The README for Your AI Coding Agents - Research AIMultiple, accessed October 17, 2025, <https://research.aimultiple.com/agents-md/>
+AGENTS.md, accessed October 17, 2025, <https://agents.md/>
+MCP Server - Nuxt UI, accessed October 17, 2025, <https://ui.nuxt.com/docs/getting-started/ai/mcp>
+MCP servers - OpenCode, accessed October 17, 2025, <https://opencode.ai/docs/mcp-servers/>
+Local setup • Svelte MCP Docs, accessed October 17, 2025, <https://svelte.dev/docs/mcp/local-setup>
+Custom Tools - OpenCode, accessed October 17, 2025, <https://opencode.ai/docs/custom-tools/>
+I Created CUSTOM AI Tools with THIS Simple Trick - Opencode Tools - YouTube, accessed October 17, 2025, <https://www.youtube.com/watch?v=jFnrRTNwMLM>
+Mastering Claude Agent SDK: Best Practices for Developing AI Agents (2025) - Skywork.ai, accessed October 17, 2025, <https://skywork.ai/blog/claude-agent-sdk-best-practices-ai-agents-2025/>
+Getting Started with the Claude Code SDK to Orchestrate Multiple AI Instances - Arsturn, accessed October 17, 2025, <https://www.arsturn.com/blog/getting-started-with-the-claude-code-sdk-to-orchestrate-multiple-ai-instances>
+The "think" tool: Enabling Claude to stop and think in complex tool use situations - Anthropic, accessed October 17, 2025, <https://www.anthropic.com/engineering/claude-think-tool>
+OpenCode Agents: Another Path to Self-Healing Documentation Pipelines - Medium, accessed October 17, 2025, <https://medium.com/@richardhightower/opencode-agents-another-path-to-self-healing-documentation-pipelines-51cd74580fc7>
+LangGraph Memory Management - Overview, accessed October 17, 2025, <https://langchain-ai.github.io/langgraph/concepts/memory/>
+What Is AI Agent Memory? | IBM, accessed October 17, 2025, <https://www.ibm.com/think/topics/ai-agent-memory>
+Long-Term Memory for LLMs: 2023 – 2025 - Champaign Magazine, accessed October 17, 2025, <https://champaignmagazine.com/2025/10/14/long-term-memory-for-llms-2023-2025/>
+ruvnet/claude-flow: The leading agent orchestration platform for Claude. Deploy intelligent multi-agent swarms, coordinate autonomous workflows, and build conversational AI systems. Features enterprise-grade architecture, distributed swarm intelligence, RAG integration, and native Claude Code support via MCP protocol. Ranked #1 in agent-based - GitHub, accessed October 17, 2025, <https://github.com/ruvnet/claude-flow>
+An example showcasing how to create an agent with persistent long-term memory using Atomic Agents - GitHub, accessed October 17, 2025, <https://github.com/KennyVaneetvelde/persistent-memory-agent-example>
+paulmillr/chokidar: Minimal and efficient cross-platform file watching library - GitHub, accessed October 17, 2025, <https://github.com/paulmillr/chokidar>
+Chokidar. Watcher For Nodejs | by Ashu Singh - Medium, accessed October 17, 2025, <https://medium.com/@ashusingh584/chokidar-11290855e2cb>
+sst/opencode: The AI coding agent built for the terminal. - GitHub, accessed October 17, 2025, <https://github.com/sst/opencode>
+Top 10 Examples of "chokidar in functional component" in JavaScript - CloudDefense.AI, accessed October 17, 2025, <https://www.clouddefense.ai/code/javascript/example/chokidar>
+Commands - OpenCode, accessed October 17, 2025, <https://opencode.ai/docs/commands/>
+Providers - OpenCode, accessed October 17, 2025, <https://opencode.ai/docs/providers/>
+wshobson/agents: Intelligent automation and multi-agent orchestration for Claude Code, accessed October 17, 2025, <https://github.com/wshobson/agents>
+Writing effective tools for AI agents—using AI agents - Anthropic, accessed October 17, 2025, <https://www.anthropic.com/engineering/writing-tools-for-agents>
+How to Build a Better AI Content Generation Workflow - HubSpot Community, accessed October 17, 2025, <https://community.hubspot.com/t5/Blog-Website-Page-Publishing/How-to-Build-a-Better-AI-Content-Generation-Workflow/m-p/1036220>
+Blog Write multi agent AI is a custom multi-agent system designed to autonomously create high-quality, research-driven blogs. Using LangChain, Gemini 2.0-Flash-EXP, and Serper Web Search Tool, it automates planning, writing, and editing to deliver human-like blogs with up-to-date references. - GitHub, accessed October 17, 2025, <https://github.com/Abdulbasit110/Blog-writer-multi-agent/>
+Automate Blog Writing with AI: A Content Marketer's Guide - Datagrid, accessed October 17, 2025, <https://www.datagrid.com/blog/ai-agents-automate-blog-post-writing-content-marketers>
+Automated AI Blog Creation: How I Built a Multi-Agent System - Aisa-x, accessed October 17, 2025, <https://aisa-x.ai/blog/how-i-built-a-multi-agent-system-for-automated-ai-blog-creation/>
+AI Agent Best Practices and Ethical Considerations | Writesonic, accessed October 17, 2025, <https://writesonic.com/blog/ai-agents-best-practices>

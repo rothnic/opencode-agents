@@ -18,12 +18,14 @@ last_updated: "2025-10-19"
 Human documentation ≠ Agent documentation
 
 ### What Doesn't Work
+
 - Prose-heavy explanations
 - Implicit knowledge
 - Tribal knowledge
 - "You know what I mean"
 
 ### What Works
+
 - Structured formats
 - Explicit patterns
 - Code examples

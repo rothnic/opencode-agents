@@ -38,6 +38,7 @@ Implement and test the orchestrator pattern with task decomposition.
 ## Task
 
 Orchestrator should decompose "Create calculator with add/subtract + tests" into:
+
 1. Implement calculator functions
 2. Write tests for calculator
 3. Verify tests pass

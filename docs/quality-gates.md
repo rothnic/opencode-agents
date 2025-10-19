@@ -95,6 +95,7 @@ This project uses a **defense-in-depth** approach to ensure quality and prevent 
 **Enforcement**: Medium (can be skipped)
 
 #### `scripts/file-location-check.js`
+
 Validates file placement rules
 
 ```bash
@@ -109,6 +110,7 @@ node scripts/file-location-check.js --fix
 ```
 
 #### `scripts/test-evidence.js`
+
 Records and verifies test execution
 
 ```bash
@@ -123,6 +125,7 @@ node scripts/test-evidence.js phase-1.1 --force
 ```
 
 #### `scripts/gate-check.js`
+
 Comprehensive pre-commit validation
 
 ```bash
@@ -147,6 +150,7 @@ node scripts/gate-check.js --skip-files
 **Enforcement**: Hard (blocks commits)
 
 #### `.git/hooks/pre-commit`
+
 Runs automatically before every commit
 
 ```bash
@@ -155,6 +159,7 @@ Runs automatically before every commit
 ```
 
 **Bypass (emergency only)**:
+
 ```bash
 git commit --no-verify -m "emergency: {reason}"
 ```
@@ -196,6 +201,7 @@ git commit --no-verify -m "emergency: {reason}"
 4. **Phase Completion Checklist**: Explicit reminder to run tests
 
 **Example**:
+
 ```bash
 $ git commit -m "feat: phase-1.1-complete"
 🔒 Running pre-commit quality gates...
@@ -232,6 +238,7 @@ $ git commit -m "feat: phase-1.1-complete"
 4. **Gate Check**: Comprehensive validation
 
 **Example**:
+
 ```bash
 $ git add SESSION-SUMMARY.md
 $ git commit -m "docs: add session summary"
@@ -262,6 +269,7 @@ $ git commit -m "docs: add session summary"
 4. **Universal Gate Test**: Automated test for all deliverables
 
 **Example**:
+
 ```bash
 $ node scripts/gate-check.js --phase=phase-0.2
 
@@ -288,6 +296,7 @@ $ node scripts/gate-check.js --phase=phase-0.2
 4. **Metrics Collection**: Shows test results, not just existence
 
 **Example**:
+
 ```bash
 $ node scripts/test-evidence.js --verify phase-1.1
 
@@ -361,6 +370,7 @@ npm test tests/gates/test-phase-X.Y-gate.js
 ### Allowed in Root
 
 **Files**:
+
 - `README.md` - Project overview
 - `STATUS.md` - Current state
 - `AGENTS.md` - Project conventions (created in Phase 0.2)
@@ -370,6 +380,7 @@ npm test tests/gates/test-phase-X.Y-gate.js
 - `package.json` - Node dependencies
 
 **Directories**:
+
 - `.git/` - Git repository
 - `.github/` - GitHub configuration
 - `.opencode/` - Agent and tool configurations
@@ -382,6 +393,7 @@ npm test tests/gates/test-phase-X.Y-gate.js
 ### Forbidden in Root
 
 Any file matching these patterns:
+
 - `*SESSION*.md`
 - `*NOTES*.md`
 - `*PROGRESS*.md`

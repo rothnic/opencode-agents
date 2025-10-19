@@ -125,6 +125,7 @@ git push origin main --tags
 ## Common Issues & Solutions
 
 ### Issue: Test evidence too old
+
 ```bash
 # Solution: Re-run tests and record evidence
 npm test
@@ -132,6 +133,7 @@ node scripts/test-evidence.js {PHASE_ID}
 ```
 
 ### Issue: File location violations
+
 ```bash
 # Solution: Check violations and move files
 node scripts/file-location-check.js --fix
@@ -139,6 +141,7 @@ git mv {wrong-location} {correct-location}
 ```
 
 ### Issue: Missing deliverables
+
 ```bash
 # Solution: Check phase README for requirements
 cat docs/phases/{PHASE_ID}/README.md
@@ -146,6 +149,7 @@ cat docs/phases/{PHASE_ID}/README.md
 ```
 
 ### Issue: Gate check fails
+
 ```bash
 # Solution: Run detailed check and fix issues
 node scripts/gate-check.js --phase={PHASE_ID}
@@ -153,6 +157,7 @@ node scripts/gate-check.js --phase={PHASE_ID}
 ```
 
 ### Issue: Session files in root
+
 ```bash
 # Solution: Move to phase directory
 git mv SESSION-SUMMARY.md docs/phases/{PHASE_ID}/session-summary.md
@@ -173,6 +178,7 @@ git commit --no-verify -m "emergency: {reason}"
 ```
 
 **Requirements for emergency bypass:**
+
 1. Document reason in commit message
 2. Create follow-up issue to fix
 3. Fix within 24 hours
@@ -210,9 +216,9 @@ cat docs/phases/{PHASE_ID}/README.md | grep "^\- \`"
 
 Add any phase-specific notes or deviations from standard process:
 
-- 
-- 
-- 
+-
+-
+-
 
 ---
 
