@@ -2,7 +2,7 @@
 title: Test Evidence Proving Agents Work
 status: stub
 word_count: 287
-phase: phase-1.1
+phase: phase-1.2
 last_updated: "2025-10-18"
 ---
 
