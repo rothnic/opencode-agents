@@ -27,6 +27,30 @@ import { verifyTestEvidence } from '../testing/test-evidence.js';
 import { checkStagedFiles } from './file-location-check.js';
 
 // ============================================================================
+// TYPES
+// ============================================================================
+
+interface GateResult {
+  type: string;
+  passed: boolean;
+  message: string;
+  details: string | string[] | null;
+}
+
+interface GateError {
+  type: string;
+  message: string;
+  details: string | string[] | null;
+}
+
+interface GateCheckOptions {
+  skipFiles?: boolean;
+  skipTests?: boolean;
+  skipBlog?: boolean;
+  phase?: string;
+}
+
+// ============================================================================
 // CONFIGURATION
 // ============================================================================
 
@@ -43,26 +67,35 @@ const GATE_TYPES = {
 // ============================================================================
 
 class GateCheck {
+  private results: GateResult[];
+  private errors: GateError[];
+
   constructor() {
     this.results = [];
     this.errors = [];
   }
 
-  addResult(type, passed, message, details = null) {
+  addResult(
+    type: string,
+    passed: boolean,
+    message: string,
+    details: string | string[] | null = null,
+  ): void {
     this.results.push({ type, passed, message, details });
     if (!passed) {
       this.errors.push({ type, message, details });
     }
   }
 
-  run(options = {}) {
+  run(options: GateCheckOptions = {}): boolean {
     console.log('═══════════════════════════════════════════════════════');
     console.log('  Gate Check - OpenCode Agents');
     console.log('═══════════════════════════════════════════════════════\n');
 
     const commitMsg = this.getCommitMessage();
     const isPhaseCommit = commitMsg && PHASE_COMMIT_PATTERN.test(commitMsg);
-    const phase = isPhaseCommit ? commitMsg.match(PHASE_COMMIT_PATTERN)[1] : null;
+    const match = commitMsg?.match(PHASE_COMMIT_PATTERN);
+    const phase = isPhaseCommit && match ? match[1] : null;
 
     if (commitMsg) {
       console.log(`📝 Commit message: "${commitMsg}"`);
@@ -119,12 +152,8 @@ class GateCheck {
         passed ? 'All files in correct locations' : 'File location violations found',
       );
     } catch (error) {
-      this.addResult(
-        GATE_TYPES.FILE_LOCATION,
-        false,
-        'Error checking file locations',
-        error.message,
-      );
+      const message = error instanceof Error ? error.message : String(error);
+      this.addResult(GATE_TYPES.FILE_LOCATION, false, 'Error checking file locations', message);
     }
   }
 
@@ -147,7 +176,8 @@ class GateCheck {
 
       this.addResult(GATE_TYPES.GIT_STATUS, true, 'Git status checked');
     } catch (error) {
-      this.addResult(GATE_TYPES.GIT_STATUS, false, 'Error checking git status', error.message);
+      const message = error instanceof Error ? error.message : String(error);
+      this.addResult(GATE_TYPES.GIT_STATUS, false, 'Error checking git status', message);
     }
   }
 
@@ -172,17 +202,18 @@ class GateCheck {
       console.log('✅ Blog health check passed\n');
     } catch (error) {
       // The validate command exits non-zero if there are errors
+      const message = error instanceof Error ? error.message : String(error);
       this.addResult(
         'blog-health',
         false,
         'Blog health issues detected (stubs for completed phases or missing metadata)',
-        error.message,
+        message,
       );
       console.log('❌ Blog health check failed\n');
     }
   }
 
-  checkTestEvidence(phase) {
+  checkTestEvidence(phase: string): void {
     console.log(`4️⃣  Checking test evidence for ${phase}...`);
 
     try {
@@ -195,16 +226,17 @@ class GateCheck {
           : `Test evidence missing or invalid for ${phase}`,
       );
     } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
       this.addResult(
         GATE_TYPES.TEST_EVIDENCE,
         false,
         `Error verifying test evidence for ${phase}`,
-        error.message,
+        message,
       );
     }
   }
 
-  checkPhaseRequirements(phase) {
+  checkPhaseRequirements(phase: string): void {
     console.log(`5️⃣  Checking phase requirements for ${phase}...`);
 
     const phaseDir = `docs/phases/${phase}`;
@@ -242,7 +274,7 @@ class GateCheck {
     }
 
     // Check each deliverable
-    const missing = [];
+    const missing: string[] = [];
     deliverables.forEach(file => {
       if (!fs.existsSync(file)) {
         missing.push(file);
@@ -271,16 +303,16 @@ class GateCheck {
     }
   }
 
-  extractDeliverables(readme) {
+  extractDeliverables(readme: string): string[] {
     // Extract file paths from README
     // Look for patterns like: - `/path/to/file` or - `path/to/file`
-    const deliverables = [];
+    const deliverables: string[] = [];
     const lines = readme.split('\n');
 
     for (const line of lines) {
       // Match patterns like: - `/opencode.json` or - `/.opencode/agent/`
       const match = line.match(/[-*]\s+`([/.][^`]+)`/);
-      if (match) {
+      if (match?.[1]) {
         let file = match[1];
         // Remove leading slash for file system check
         if (file.startsWith('/')) {
@@ -296,7 +328,7 @@ class GateCheck {
     return deliverables;
   }
 
-  getCommitMessage() {
+  getCommitMessage(): string | null {
     try {
       // Try to get commit message from git commit-msg hook
       if (process.env.GIT_COMMIT_MSG_FILE) {
@@ -306,7 +338,7 @@ class GateCheck {
       // Try to get from command line args
       const msgIndex = process.argv.indexOf('--message');
       if (msgIndex !== -1 && process.argv[msgIndex + 1]) {
-        return process.argv[msgIndex + 1];
+        return process.argv[msgIndex + 1] || null;
       }
 
       // Try to get last commit message
