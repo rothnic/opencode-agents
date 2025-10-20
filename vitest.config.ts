@@ -8,6 +8,10 @@ export default defineConfig({
     // Node environment for our scripts
     environment: 'node',
 
+    // Increased timeout for agent execution (default: 5000ms)
+    testTimeout: 120000, // 120 seconds for container operations
+    hookTimeout: 120000, // 120 seconds for setup/teardown
+
     // Test file patterns (include both .ts and .js for migration)
     include: [
       'tests/**/*.test.ts',
@@ -37,8 +41,8 @@ export default defineConfig({
     // Don't bail on first error - run all tests to see full picture
     // bail: false,
 
-    // Timeout for slow tests (increased for tsx execution)
-    testTimeout: 30000,
+    // Timeout for slow tests (increased for agent execution and evals)
+    // testTimeout: 60000, // Set above
 
     // Retry flaky tests
     retry: 0,

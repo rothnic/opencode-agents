@@ -33,6 +33,9 @@ const ALLOWED_ROOT_FILES = [
   'package-lock.json',
   '.npmrc',
   '.nvmrc',
+  'tsconfig.json',
+  'vitest.config.ts',
+  'biome.json',
 ];
 
 const ALLOWED_ROOT_DIRS = [
@@ -41,6 +44,7 @@ const ALLOWED_ROOT_DIRS = [
   '.opencode',
   'docs',
   'tests',
+  'evals',
   'scripts',
   'node_modules',
   'src',
