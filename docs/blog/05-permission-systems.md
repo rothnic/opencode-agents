@@ -37,7 +37,7 @@ AI agents with unlimited permissions can:
 - Can: read, edit, write, npm test
 - Cannot: rm, git push, system commands
 
-### Full Access (CodeImplementer)
+### Full Access (ContainerTaskExecutor)
 
 - Can: Most operations
 - Still bounded by project rules

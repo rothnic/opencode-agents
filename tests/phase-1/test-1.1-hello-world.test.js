@@ -8,7 +8,7 @@
  * 3. Generated code is valid and works
  * 4. Metrics meet baseline expectations
  *
- * Success Criteria (from CodeImplementer spec):
+ * Success Criteria (from ContainerTaskExecutor spec):
  * - Token count: < 500 tokens
  * - Execution time: < 30 seconds
  * - Step count: 1-2 steps
@@ -42,7 +42,7 @@ describe('Phase 1.1: Single Agent Baseline', () => {
   describe('Hello World Function Generation', () => {
     test('agent generates valid hello function', async () => {
       const result = await executeAgent(
-        'code-implementer',
+        'container-task-executor',
         "Create a function called hello(name) that returns 'Hello, {name}!'",
         { output: OUTPUT_FILE },
       );
@@ -66,7 +66,7 @@ describe('Phase 1.1: Single Agent Baseline', () => {
 
     test('generated function works correctly', async () => {
       const result = await executeAgent(
-        'code-implementer',
+        'container-task-executor',
         "Create a function called hello(name) that returns 'Hello, {name}!'",
         { output: OUTPUT_FILE },
       );
@@ -85,7 +85,7 @@ describe('Phase 1.1: Single Agent Baseline', () => {
     });
     test('generated code has proper documentation', async () => {
       const result = await executeAgent(
-        'code-implementer',
+        'container-task-executor',
         "Create a function called hello(name) that returns 'Hello, {name}!'",
         { output: OUTPUT_FILE },
       );
@@ -102,7 +102,7 @@ describe('Phase 1.1: Single Agent Baseline', () => {
 
     test('generated code exports properly', async () => {
       const result = await executeAgent(
-        'code-implementer',
+        'container-task-executor',
         "Create a function called hello(name) that returns 'Hello, {name}!'",
         { output: OUTPUT_FILE },
       );
@@ -120,7 +120,7 @@ describe('Phase 1.1: Single Agent Baseline', () => {
   describe('Metrics Collection', () => {
     test('metrics are collected during execution', async () => {
       const result = await executeAgent(
-        'code-implementer',
+        'container-task-executor',
         "Create a function called hello(name) that returns 'Hello, {name}!'",
         { output: OUTPUT_FILE },
       );
@@ -138,7 +138,7 @@ describe('Phase 1.1: Single Agent Baseline', () => {
 
     test('token count meets baseline expectation', async () => {
       const result = await executeAgent(
-        'code-implementer',
+        'container-task-executor',
         "Create a function called hello(name) that returns 'Hello, {name}!'",
         { output: OUTPUT_FILE },
       );
@@ -151,7 +151,7 @@ describe('Phase 1.1: Single Agent Baseline', () => {
 
     test('execution time meets baseline expectation', async () => {
       const result = await executeAgent(
-        'code-implementer',
+        'container-task-executor',
         "Create a function called hello(name) that returns 'Hello, {name}!'",
         { output: OUTPUT_FILE },
       );
@@ -164,7 +164,7 @@ describe('Phase 1.1: Single Agent Baseline', () => {
 
     test('step count meets baseline expectation', async () => {
       const result = await executeAgent(
-        'code-implementer',
+        'container-task-executor',
         "Create a function called hello(name) that returns 'Hello, {name}!'",
         { output: OUTPUT_FILE },
       );
@@ -178,7 +178,7 @@ describe('Phase 1.1: Single Agent Baseline', () => {
 
     test('success rate is 100%', async () => {
       const result = await executeAgent(
-        'code-implementer',
+        'container-task-executor',
         "Create a function called hello(name) that returns 'Hello, {name}!'",
         { output: OUTPUT_FILE },
       );

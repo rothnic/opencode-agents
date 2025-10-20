@@ -1,7 +1,7 @@
 sequenceDiagram
     participant User
     participant Orchestrator
-    participant CodeImplementer
+    participant ContainerTaskExecutor
     participant TestWriter
     participant Memory
     participant Verification
@@ -15,12 +15,12 @@ sequenceDiagram
     Orchestrator->>Memory: Query: "CRUD patterns"
     Memory-->>Orchestrator: [Past implementations]
     
-    Orchestrator->>CodeImplementer: @codeimplementer Create UserService
-    activate CodeImplementer
-    CodeImplementer->>CodeImplementer: Read AGENTS.md
-    CodeImplementer->>CodeImplementer: Write src/UserService.js
-    CodeImplementer-->>Orchestrator: ✓ Implementation complete
-    deactivate CodeImplementer
+    Orchestrator->>ContainerTaskExecutor: @codeimplementer Create UserService
+    activate ContainerTaskExecutor
+    ContainerTaskExecutor->>ContainerTaskExecutor: Read AGENTS.md
+    ContainerTaskExecutor->>ContainerTaskExecutor: Write src/UserService.js
+    ContainerTaskExecutor-->>Orchestrator: ✓ Implementation complete
+    deactivate ContainerTaskExecutor
     
     Orchestrator->>TestWriter: @testwriter Create tests
     activate TestWriter

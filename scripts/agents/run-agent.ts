@@ -9,7 +9,7 @@
  *   node scripts/run-agent.js <agent-name> <task-description> [options]
  *
  * Example:
- *   node scripts/run-agent.js code-implementer "Create hello(name) function" --output src/hello.js
+ *   node scripts/run-agent.js container-task-executor "Create hello(name) function" --output src/hello.js
  *
  * Metrics Collected:
  *   - Token count (prompt + completion)
@@ -312,7 +312,7 @@ async function main(): Promise<void> {
     console.error('');
     console.error('Example:');
     console.error(
-      '  node scripts/run-agent.js code-implementer "Create hello function" --output src/hello.js',
+      '  node scripts/run-agent.js container-task-executor "Create hello function" --output src/hello.js',
     );
     process.exit(1);
   }

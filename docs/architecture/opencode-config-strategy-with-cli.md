@@ -118,7 +118,7 @@ This document outlines a complete framework combining **OpenCode's multi-agent o
 ~/.config/opencode/
 ├── agent/                          # Reusable agent definitions
 │   ├── orchestrator.md             # Primary coordinator
-│   ├── code-implementer.md         # Code generation specialist
+│   ├── container-task-executor.md         # Code generation specialist
 │   ├── test-writer.md              # Test generation specialist
 │   ├── security-auditor.md         # Security scanning (read-only)
 │   ├── refactor-engine.md          # Code quality improvements
@@ -695,7 +695,7 @@ jobs:
   },
   "agents": {
     "orchestrator": { "invocations": 1, "tokens": 1200, "success": true },
-    "code-implementer": { "invocations": 3, "tokens": 4500, "success": true },
+    "container-task-executor": { "invocations": 3, "tokens": 4500, "success": true },
     "test-writer": { "invocations": 2, "tokens": 2800, "success": true }
   },
   "quality": {
@@ -796,7 +796,7 @@ function identifyBlockers(status) {
 |------------|------------------|-------|
 | **Lint Errors** | Auto-fix → RefactorEngine → Manual review | RefactorEngine |
 | **Test Failures** | Re-run → Rewrite → Simplify approach | TestWriter |
-| **Type Errors** | Schema validation → Type fixes → Refactor | CodeImplementer |
+| **Type Errors** | Schema validation → Type fixes → Refactor | ContainerTaskExecutor |
 | **Build Failures** | Dependency check → Clean install → Config fix | Orchestrator |
 | **Timeout** | Context injection → Task simplification → Model switch | Orchestrator |
 
@@ -909,7 +909,7 @@ describe('OpenCode Agents Framework', () => {
     
     const result = await session.execute('Create user authentication system');
     
-    expect(result.agentsInvoked).toContain('code-implementer');
+    expect(result.agentsInvoked).toContain('container-task-executor');
     expect(result.agentsInvoked).toContain('test-writer');
     expect(result.agentsInvoked).toContain('security-auditor');
     
@@ -920,7 +920,7 @@ describe('OpenCode Agents Framework', () => {
   });
   
   test('Automatic recovery from agent stall', async () => {
-    const session = await startAgentSession('code-implementer');
+    const session = await startAgentSession('container-task-executor');
     
     // Simulate stall condition
     await session.simulateStall(300000); // 5 minutes

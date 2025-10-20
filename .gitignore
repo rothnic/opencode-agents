@@ -105,3 +105,10 @@ Thumbs.db
 *.orig
 .scratch/
 scratch/
+
+# ============================================================================
+# CONTAINER USE
+# ============================================================================
+# Keep configuration but ignore runtime state
+.container-use/*
+!.container-use/environment.json

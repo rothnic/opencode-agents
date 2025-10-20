@@ -1,10 +1,62 @@
 # OpenCode Agents: Test-Driven Multi-Agent Development
 
-> Exploring reactive, predictable, and measurable multi-agent coding systems with OpenCode
+> Building an installable framework for measurable, multi-agent autonomous software development
 
-[![Status](https://img.shields.io/badge/status-in%20development-yellow)]()
-[![Phase](https://img.shields.io/badge/phase-0.2%20in%20progress-blue)]()
+[![Status](https://img.shields.io/badge/status-framework%20development-yellow)]()
+[![Phase](https://img.shields.io/badge/phase-evalite%20integration-blue)]()
 [![Blog](https://img.shields.io/badge/blog-16%20posts-green)](docs/blog/)
+
+## Vision
+
+Transform any project into an AI-assisted development environment with:
+
+- **Specialized AI Agents**: Orchestrator, code implementer, test writer, and more
+- **Measurable Performance**: Benchmarks with [Evalite](https://www.evalite.dev/)
+- **Quality Gates**: Automated validation and self-healing checks
+- **Configuration-Driven**: Adapt rules to project maturity
+- **Type-Safe Tooling**: ZLI + Zod schemas for CLI and validation
+
+## Quick Start (Coming Soon)
+
+```bash
+# Install globally
+npm install -g opencode-agents
+
+# Initialize in any project
+cd my-project
+opencode-agents init
+
+# Start working with AI agents
+opencode
+
+# Run benchmarks
+opencode-agents benchmark
+
+# Validate quality
+opencode-agents validate
+```
+
+**Current Status**: Building core framework. See [Implementation Roadmap](docs/IMPLEMENTATION-ROADMAP.md) for progress.
+
+## Documentation
+
+### Getting Started
+
+- **[Installation Framework](docs/INSTALLATION-FRAMEWORK.md)** - Complete installation & usage guide
+- **[Implementation Roadmap](docs/IMPLEMENTATION-ROADMAP.md)** - Development plan & next steps
+- **[Current Status](STATUS.md)** - What's happening now
+
+### For Contributors
+
+- **[Agent Guidelines](AGENTS.md)** - Rules for AI agents working on this project
+- **[Code Standards](docs/CODE-STANDARDS.md)** - TypeScript, testing, and quality conventions
+- **[Documentation Plan](docs/DOCUMENTATION-CONSOLIDATION.md)** - How we organize docs
+
+### Deep Dives
+
+- **[Architecture Strategy](docs/architecture/opencode-config-strategy-with-cli.md)** - Complete framework design
+- **[Blog Series](docs/blog/)** - 16 posts documenting the journey
+- **[Diagrams](docs/diagrams/)** - System architecture visualizations
 
 ## Overview
 
@@ -137,7 +189,7 @@ Track and compare:
 | Agent | Role | Permissions |
 |-------|------|-------------|
 | **Orchestrator** | Task decomposition & coordination | Read-only, planning |
-| **CodeImplementer** | Write application code | Full write access |
+| **ContainerTaskExecutor** | Write application code | Full write access |
 | **TestWriter** | Generate and run tests | Write + limited bash |
 | **SecurityAuditor** | Scan for vulnerabilities | Read-only |
 | **RefactorEngine** | Improve code quality | Supervised edits |

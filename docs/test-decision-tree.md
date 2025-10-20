@@ -257,7 +257,7 @@ Before moving to the next step in ANY phase:
 
 ## Phase 2.1: Two-Agent Collaboration
 
-### Step 1: Create CodeImplementer agent
+### Step 1: Create ContainerTaskExecutor agent
 
 **Test Before Moving to Step 2**:
 

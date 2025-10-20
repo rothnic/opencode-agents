@@ -19,7 +19,7 @@ last_updated: "2025-10-19"
 
 ```text
 Orchestrator
-  ├─> CodeImplementer (writes src/StringUtils.js)
+  ├─> ContainerTaskExecutor (writes src/StringUtils.js)
   └─> TestWriter (writes tests/StringUtils.test.js, runs tests)
 ```text
 ---

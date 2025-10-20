@@ -70,7 +70,7 @@ flowchart TB
     end
     
     subgraph "Agent Team"
-        Orch[Orchestrator] --> Code[CodeImplementer]
+        Orch[Orchestrator] --> Code[ContainerTaskExecutor]
         Orch --> TestW[TestWriter]
         Orch --> Doc[DocuWriter]
         Orch --> Sec[SecurityAuditor]
@@ -344,7 +344,7 @@ describe('Phase 1.3: Metrics System', () => {
 
 **Complexity Level**: ⭐⭐⭐ (Moderate - tests agent interaction)
 
-**Test Case**: CodeImplementer and TestWriter work together
+**Test Case**: ContainerTaskExecutor and TestWriter work together
 
 ```javascript
 // tests/phase-2/test-2.1-code-test-collaboration.js
@@ -447,7 +447,7 @@ Test files should be placed according to AGENTS.md structure.
 ```text
 **Deliverables**:
 
-- CodeImplementer agent config
+- ContainerTaskExecutor agent config
 - TestWriter agent config
 - Updated Orchestrator to delegate
 - Multi-agent collaboration test

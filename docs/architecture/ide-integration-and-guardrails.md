@@ -432,7 +432,7 @@ function getSplitSuggestions(file, lines, limit) {
 ```text
 #### 4.2. Agent Instructions
 
-Add to `.opencode/agents/code-implementer.md`:
+Add to `.opencode/agent/container-task-executor.md`:
 
 ```markdown
 ### File Size Guidelines

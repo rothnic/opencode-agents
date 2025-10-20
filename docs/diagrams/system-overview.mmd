@@ -6,7 +6,7 @@ flowchart TB
     subgraph "Agent Team"
         TUI --> Orch[Orchestrator<br/>Primary Agent]
         
-        Orch -->|Delegate| Code[CodeImplementer<br/>Subagent]
+        Orch -->|Delegate| Code[ContainerTaskExecutor<br/>Subagent]
         Orch -->|Delegate| Test[TestWriter<br/>Subagent]
         Orch -->|Delegate| Doc[DocuWriter<br/>Subagent]
         Orch -->|Delegate| Sec[SecurityAuditor<br/>Subagent]

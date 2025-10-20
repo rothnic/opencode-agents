@@ -282,7 +282,7 @@ git push
 
 - **Work in**: `docs/phases/phase-2.1/`
 - **Goal**: Multi-agent integration
-- **Deliverables**: CodeImplementer + TestWriter working together
+- **Deliverables**: ContainerTaskExecutor + TestWriter working together
 - **Commit**: `feat: phase-2.1-two-agent-collaboration`
 
 ---

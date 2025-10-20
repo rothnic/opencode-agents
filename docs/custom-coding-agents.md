@@ -39,7 +39,7 @@ Building upon the foundational components, the next step is to design a collabor
 The most stable and effective agentic systems follow a hub-and-spoke model, where a central Orchestrator agent manages high-level planning and delegates tasks to a team of single-responsibility Specialist sub-agents.12 This architecture promotes a clear separation of concerns, enables parallel workflows for independent tasks, and ultimately leads to higher-quality output by leveraging specialized expertise.29
 The proposed agent team is composed of the following roles:
 Orchestrator (Primary Agent): The central coordinator and main entry point for user requests. Its core prompt focuses on task decomposition, dependency analysis, and delegating work to sub-agents via @ mentions.1 To ensure it acts as a safe planner, it is configured with broad read-access tools but restricted write and execute permissions.
-CodeImplementer (Sub-agent): The primary workhorse for writing and modifying application code. It has full access to edit, write, and patch tools, and its prompt emphasizes strict adherence to the coding standards defined in AGENTS.md.2
+ContainerTaskExecutor (Sub-agent): The primary workhorse for writing and modifying application code. It has full access to edit, write, and patch tools, and its prompt emphasizes strict adherence to the coding standards defined in AGENTS.md.2
 TestWriter (Sub-agent): Specializes in generating, updating, and running tests. It is granted bash access specifically for executing the test commands documented in AGENTS.md.6
 RefactorEngine (Sub-agent): Focuses on improving existing code quality, performance, and readability without altering functionality.
 DocuWriter (Sub-agent): Responsible for generating and updating documentation, including README files and in-line code comments.
@@ -61,7 +61,7 @@ Decomposes tasks and coordinates specialist sub-agents.
 anthropic/claude-3-5-sonnet-20241022
 read, glob, grep, todoread
 edit: deny, bash: ask
-CodeImplementer
+ContainerTaskExecutor
 subagent
 Writes, modifies, and patches code based on specifications.
 anthropic/claude-3-5-sonnet-20241022
@@ -115,7 +115,7 @@ edit: allow
 The Orchestrator's primary function is to transform a high-level user request, such as "add a new API endpoint for users," into a structured plan of executable sub-tasks. This process begins with a "chain-of-thought" reasoning step, inspired by advanced prompting techniques, where the agent explicitly formulates a plan before acting.14
 This plan is then executed through a series of sub-agent invocations. The key technical enabler for this delegation is opencode's support for invoking sub-agents via @ mentions within the chat interface.1 For example, a plan might look like this:
 @TestWriter create a failing integration test for GET /api/users.
-@CodeImplementer create the route and controller to make the test pass.
+@ContainerTaskExecutor create the route and controller to make the test pass.
 @DocuWriter add OpenAPI documentation for the new endpoint.
 This conversational delegation model allows the Orchestrator to act as a project manager, assigning tasks to its team. The opencode TUI facilitates human oversight of this process; a developer can use the Ctrl+Right and Ctrl+Left keybindings to cycle between the main Orchestrator session and the child sessions created by each sub-agent, monitoring both the high-level plan and the detailed execution of each step.1
 True parallelism, however, requires more than simple delegation. It demands that the Orchestrator understand task dependencies. For example, writing a test must precede writing the code to pass it. Therefore, the Orchestrator must function as a state machine or a dependency graph resolver. A proven pattern for this is the use of JSON manifests to track the state of a multi-phase workflow, ensuring each stage is successfully completed before the next begins.15 The Orchestrator should be prompted to first identify task dependencies, creating a directed acyclic graph (DAG) of operations. It can then use a tool like the built-in todowrite or a custom state-management tool to maintain a manifest of completed and pending tasks, dispatching all unblocked tasks simultaneously to the relevant sub-agents.3

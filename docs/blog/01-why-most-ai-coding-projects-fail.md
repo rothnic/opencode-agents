@@ -130,7 +130,7 @@ expect(result.executionTime).toBeLessThan(120000);
 Single "god agent" → Multiple specialized agents
 
 - **Orchestrator**: Decomposes tasks, coordinates team
-- **CodeImplementer**: Writes implementation code
+- **ContainerTaskExecutor**: Writes implementation code
 - **TestWriter**: Writes comprehensive tests
 - **SecurityAuditor**: Reviews for vulnerabilities (read-only)
 - **DocWriter**: Creates documentation

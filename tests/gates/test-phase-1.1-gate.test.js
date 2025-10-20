@@ -5,7 +5,7 @@
  * This phase establishes baseline single-agent functionality with metrics.
  *
  * Phase 1.1 Focus:
- * - Single agent (CodeImplementer) can generate simple code
+ * - Single agent (ContainerTaskExecutor) can generate simple code
  * - Test harness can execute agent and collect metrics
  * - Hello world test validates baseline functionality
  * - Metrics are collected and documented
@@ -25,7 +25,7 @@ const PHASE_DIR = `docs/phases/${PHASE_ID}`;
 // Expected deliverables for Phase 1.1
 const DELIVERABLES = [
   'opencode.json', // Project configuration
-  '.opencode/agents/code-implementer.md', // Agent specification
+  '.opencode/agent/container-task-executor.md', // Agent specification
   'scripts/run-agent.js', // Test harness
   'tests/phase-1/test-1.1-hello-world.test.js', // Baseline test
 ];
@@ -204,18 +204,18 @@ describe(`${PHASE_ID} Specific Requirements`, () => {
   });
 
   describe('Agent Specification', () => {
-    test('CodeImplementer agent spec exists', () => {
-      const agentSpec = '.opencode/agents/code-implementer.md';
+    test('ContainerTaskExecutor agent spec exists', () => {
+      const agentSpec = '.opencode/agent/container-task-executor.md';
       expect(fs.existsSync(agentSpec)).toBe(true);
 
       const content = fs.readFileSync(agentSpec, 'utf8');
-      expect(content).toContain('CodeImplementer');
+      expect(content).toContain('ContainerTaskExecutor');
       expect(content).toContain('Purpose');
       expect(content).toContain('Responsibilities');
     });
 
     test('agent spec defines validation rules', () => {
-      const agentSpec = '.opencode/agents/code-implementer.md';
+      const agentSpec = '.opencode/agent/container-task-executor.md';
       const content = fs.readFileSync(agentSpec, 'utf8');
 
       expect(content).toContain('Validation Rules');
@@ -224,7 +224,7 @@ describe(`${PHASE_ID} Specific Requirements`, () => {
     });
 
     test('agent spec defines baseline metrics', () => {
-      const agentSpec = '.opencode/agents/code-implementer.md';
+      const agentSpec = '.opencode/agent/container-task-executor.md';
       const content = fs.readFileSync(agentSpec, 'utf8');
 
       expect(content).toContain('Baseline Expectations');
@@ -288,7 +288,7 @@ describe(`${PHASE_ID} Specific Requirements`, () => {
       const metricsFile = path.join(PHASE_DIR, '.evidence', 'metrics.json');
       const metrics = JSON.parse(fs.readFileSync(metricsFile, 'utf8'));
 
-      // From CodeImplementer spec baseline
+      // From ContainerTaskExecutor spec baseline
       expect(metrics.tokenCount).toBeLessThan(500);
       expect(metrics.executionTime).toBeLessThan(30000); // 30 seconds
       expect(metrics.stepCount).toBeLessThanOrEqual(2);

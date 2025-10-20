@@ -40,7 +40,7 @@ Progresses from simple to complex:
 
 **Specialist Subagents:**
 
-- **CodeImplementer**: Write application code
+- **ContainerTaskExecutor**: Write application code
 - **TestWriter**: Generate and run tests
 - **SecurityAuditor**: Scan for vulnerabilities (read-only)
 - **RefactorEngine**: Improve code quality
