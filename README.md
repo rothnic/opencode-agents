@@ -2,8 +2,8 @@
 
 > Building an installable framework for measurable, multi-agent autonomous software development
 
-[![Status](https://img.shields.io/badge/status-framework%20development-yellow)]()
-[![Phase](https://img.shields.io/badge/phase-evalite%20integration-blue)]()
+[![Status](https://img.shields.io/badge/status-framework%20development-yellow)](/STATUS.md)
+[![Phase](https://img.shields.io/badge/phase-evalite%20integration-blue)](docs/phases/)
 [![Blog](https://img.shields.io/badge/blog-16%20posts-green)](docs/blog/)
 
 ## Vision
