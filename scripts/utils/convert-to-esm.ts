@@ -11,7 +11,7 @@ import { extname, join } from 'node:path';
 
 const SKIP_DIRS = ['node_modules', 'dist', 'build', 'coverage', '.git'];
 
-function convertFile(filePath) {
+function convertFile(filePath: string) {
   console.log(`Converting: ${filePath}`);
 
   let content = readFileSync(filePath, 'utf8');
@@ -67,7 +67,7 @@ function convertFile(filePath) {
   return false;
 }
 
-function processDirectory(dir, depth = 0) {
+function processDirectory(dir: string, depth = 0) {
   const files = readdirSync(dir);
   let convertedCount = 0;
 

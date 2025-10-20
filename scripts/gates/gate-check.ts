@@ -331,8 +331,8 @@ class GateCheck {
   getCommitMessage(): string | null {
     try {
       // Try to get commit message from git commit-msg hook
-      if (process.env.GIT_COMMIT_MSG_FILE) {
-        return fs.readFileSync(process.env.GIT_COMMIT_MSG_FILE, 'utf8').trim();
+      if (process.env['GIT_COMMIT_MSG_FILE']) {
+        return fs.readFileSync(process.env['GIT_COMMIT_MSG_FILE'], 'utf8').trim();
       }
 
       // Try to get from command line args

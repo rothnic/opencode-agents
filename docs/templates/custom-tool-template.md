@@ -44,8 +44,7 @@ export const [function_name] = defineTool({
 export const [another_function] = defineTool({
   // ... another tool definition
 });
-```
-
+```text
 ## Tool Design Guidelines
 
 1. **Single Responsibility**: Each tool should do one thing well
@@ -81,4 +80,4 @@ describe('[Tool Name]', () => {
     expect(result.error).toBeDefined();
   });
 });
-```
+```text

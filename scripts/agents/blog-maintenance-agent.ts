@@ -16,6 +16,8 @@ import fs from 'node:fs';
 import path, { dirname } from 'node:path';
 
 import { fileURLToPath } from 'node:url';
+import type { BlogMetadata } from '../schemas/blog-schema.js';
+import { parseFrontmatterMetadata } from '../schemas/blog-schema.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -36,38 +38,42 @@ const STALE_DAYS = 30;
 /**
  * Parse YAML frontmatter from a markdown file
  */
-function parseFrontmatter(content) {
+function parseFrontmatter(content: string): { metadata: BlogMetadata; body: string } {
   const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   if (!match) {
-    return { metadata: {}, body: content };
+    return { metadata: {} as BlogMetadata, body: content };
   }
 
-  const [, yamlContent, body] = match;
-  const metadata = {};
+  const [, yamlContent, bodyMatch] = match;
+  const metadataRaw: Record<string, unknown> = {};
 
-  yamlContent.split('\n').forEach(line => {
-    const colonIndex = line.indexOf(':');
-    if (colonIndex === -1) return;
+  String(yamlContent)
+    .split('\n')
+    .forEach((line: string) => {
+      const colonIndex = line.indexOf(':');
+      if (colonIndex === -1) return;
 
-    const key = line.substring(0, colonIndex).trim();
-    const value = line.substring(colonIndex + 1).trim();
+      const key = line.substring(0, colonIndex).trim();
+      const value = line.substring(colonIndex + 1).trim();
 
-    // Remove quotes if present
-    metadata[key] = value.replace(/^["']|["']$/g, '');
-  });
+      // Remove quotes if present
+      metadataRaw[key] = value.replace(/^['"]|['"]$/g, '');
+    });
 
-  return { metadata, body };
+  const bodyStr = String(bodyMatch ?? '');
+  const metadata = parseFrontmatterMetadata(metadataRaw);
+  return { metadata, body: bodyStr };
 }
 
 /**
  * Generate frontmatter from metadata object
  */
-function generateFrontmatter(metadata) {
-  const lines = ['---'];
+function generateFrontmatter(metadata: Record<string, unknown>): string {
+  const lines: string[] = ['---'];
   Object.entries(metadata).forEach(([key, value]) => {
     // Quote strings that contain special characters
-    const needsQuotes = typeof value === 'string' && /[:#{}[\],&*?|-]/.test(value);
-    const formattedValue = needsQuotes ? `"${value}"` : value;
+    const needsQuotes = typeof value === 'string' && /[:#{}[\],&*?|-]/.test(value as string);
+    const formattedValue = needsQuotes ? `"${String(value)}"` : String(value);
     lines.push(`${key}: ${formattedValue}`);
   });
   lines.push('---');
@@ -77,7 +83,7 @@ function generateFrontmatter(metadata) {
 /**
  * Count words in content (excluding frontmatter and code blocks)
  */
-function countWords(body) {
+function countWords(body: string): number {
   // Remove code blocks
   const withoutCode = body.replace(/```[\s\S]*?```/g, '');
   // Remove inline code
@@ -86,26 +92,36 @@ function countWords(body) {
   const words = withoutInlineCode
     .trim()
     .split(/\s+/)
-    .filter(w => w.length > 0);
+    .filter((w: string) => w.length > 0);
   return words.length;
 }
 
 /**
  * Check if a post is a stub
  */
-function isStub(body, metadata) {
+function isStub(body: string, metadata: BlogMetadata): boolean {
   const wordCount = countWords(body);
   const hasStubIndicators =
     /coming soon|todo|tbd|placeholder/i.test(body) || body.trim().length < 100;
+  const status = String(metadata.status ?? '');
 
-  return wordCount < MIN_WORD_COUNT || hasStubIndicators || metadata.status === 'stub';
+  return wordCount < MIN_WORD_COUNT || hasStubIndicators || status === 'stub';
 }
 
 /**
  * Get all blog posts with their metadata
  */
-function getBlogPosts() {
-  const posts = [];
+interface BlogPost {
+  filename: string;
+  filepath: string;
+  metadata: BlogMetadata;
+  body: string;
+  wordCount: number;
+  isStub: boolean;
+}
+
+function getBlogPosts(): BlogPost[] {
+  const posts: BlogPost[] = [];
   const files = fs
     .readdirSync(BLOG_DIR)
     .filter(f => f.endsWith('.md') && f !== 'README.md' && f !== 'IMPLEMENTATION-SUMMARY.md');
@@ -132,8 +148,8 @@ function getBlogPosts() {
 /**
  * Get completed phases
  */
-function getCompletedPhases() {
-  const phases = [];
+function getCompletedPhases(): string[] {
+  const phases: string[] = [];
   if (!fs.existsSync(PHASE_DIR)) return phases;
 
   const phaseDirs = fs.readdirSync(PHASE_DIR).filter(d => d.startsWith('phase-'));
@@ -160,12 +176,13 @@ function getCompletedPhases() {
 /**
  * Check if a post is stale (not updated in STALE_DAYS)
  */
-function isStale(metadata) {
-  if (!metadata.last_updated) return true;
+function isStale(metadata: BlogMetadata): boolean {
+  const last = metadata.last_updated;
+  if (!last) return true;
 
-  const lastUpdated = new Date(metadata.last_updated);
-  const now = new Date();
-  const daysSince = (now - lastUpdated) / (1000 * 60 * 60 * 24);
+  const lastUpdated = new Date(String(last));
+  const now = Date.now();
+  const daysSince = (now - lastUpdated.getTime()) / (1000 * 60 * 60 * 24);
 
   return daysSince > STALE_DAYS;
 }
@@ -177,7 +194,12 @@ function isStale(metadata) {
 /**
  * List all blog posts with their status
  */
-function listPosts() {
+function listPosts(): {
+  posts: BlogPost[];
+  stubCount: number;
+  staleCount: number;
+  publishedCount: number;
+} {
   console.log('\n📝 Blog Post Status\n');
   console.log('═'.repeat(60));
 
@@ -188,14 +210,15 @@ function listPosts() {
   let staleCount = 0;
   let publishedCount = 0;
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Post summary formatting requires multiple checks
   posts.forEach(post => {
     const status = post.isStub ? '🟡 STUB' : '✅ PUBLISHED';
     const stale = !post.isStub && isStale(post.metadata) ? ' ⚠️  STALE' : '';
-    const phase = post.metadata.phase || 'unassigned';
+    const phase = String(post.metadata.phase ?? 'unassigned');
 
     console.log(`${status}${stale} ${post.filename}`);
     console.log(`  Phase: ${phase} | Words: ${post.wordCount}`);
-    console.log(`  Title: ${post.metadata.title || 'No title'}`);
+    console.log(`  Title: ${String(post.metadata.title ?? 'No title')}`);
 
     if (post.isStub) {
       stubCount++;
@@ -226,20 +249,23 @@ function listPosts() {
 /**
  * Update post metadata (add frontmatter if missing)
  */
-function updateMetadata(filename, updates) {
+function updateMetadata(
+  filename: string,
+  updates: Record<string, unknown>,
+): Record<string, unknown> {
   const filepath = path.join(BLOG_DIR, filename);
   const content = fs.readFileSync(filepath, 'utf8');
   const { metadata, body } = parseFrontmatter(content);
 
   // Merge updates
-  const newMetadata = {
+  const newMetadata: Record<string, unknown> & BlogMetadata = {
     ...metadata,
     ...updates,
     last_updated: new Date().toISOString().split('T')[0], // YYYY-MM-DD
   };
 
   // Recalculate word count if body changed
-  if (!updates.word_count) {
+  if (!('word_count' in updates)) {
     newMetadata.word_count = countWords(body);
   }
 
@@ -254,20 +280,20 @@ function updateMetadata(filename, updates) {
 /**
  * Validate blog health (check for violations)
  */
-function validate() {
+function validate(): { errors: string[]; warnings: string[]; passed: boolean } {
   console.log('\n🔍 Validating Blog Health\n');
   console.log('═'.repeat(60));
 
   const posts = getBlogPosts();
   const completedPhases = getCompletedPhases();
-  const errors = [];
-  const warnings = [];
+  const errors: string[] = [];
+  const warnings: string[] = [];
 
   posts.forEach(post => {
     const phase = post.metadata.phase;
 
     // ERROR: Stub exists for completed phase
-    if (post.isStub && completedPhases.includes(phase)) {
+    if (post.isStub && typeof phase === 'string' && completedPhases.includes(phase)) {
       errors.push(`❌ ${post.filename}: Phase ${phase} complete but post is still a stub`);
     }
 
@@ -386,27 +412,19 @@ function main() {
   console.log('  Blog Maintenance Agent - OpenCode Agents');
   console.log('═'.repeat(60));
 
-  switch (command) {
-    case 'list':
-      listPosts();
-      break;
-    case 'validate': {
-      const result = validate();
-      process.exit(result.passed ? 0 : 1);
-      break;
-    }
-    case 'init':
-      initializeMetadata();
-      break;
-    case 'help':
-    case '--help':
-    case '-h':
-      printUsage();
-      break;
-    default:
-      console.log(`\n❌ Unknown command: ${command}\n`);
-      printUsage();
-      process.exit(1);
+  if (command === 'list') {
+    listPosts();
+  } else if (command === 'validate') {
+    const result = validate();
+    process.exit(result.passed ? 0 : 1);
+  } else if (command === 'init') {
+    initializeMetadata();
+  } else if (command === 'help' || command === '--help' || command === '-h') {
+    printUsage();
+  } else {
+    console.log(`\n❌ Unknown command: ${command}\n`);
+    printUsage();
+    process.exit(1);
   }
 }
 

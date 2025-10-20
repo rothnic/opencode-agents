@@ -22,74 +22,74 @@ This blog series chronicles the development of **OpenCode Agents**, a project ex
    - The problem with "agent autonomy without accountability"
    - The case for test-driven multi-agent development
 
-2. **[DRAFT] Building Quality Gates for AI Agents: A Defense-in-Depth Approach**
+1. **[DRAFT] Building Quality Gates for AI Agents: A Defense-in-Depth Approach**
    - Published: 2025-10-18
    - How to prevent incomplete work and maintain code quality when agents are doing the work
 
-3. **[DRAFT] Test Evidence: Proving Your AI Agents Actually Work**
+1. **[DRAFT] Test Evidence: Proving Your AI Agents Actually Work**
    - Why "the agent said it's done" isn't enough
    - Timestamped proof of execution
 
 ### Multi-Agent Patterns Series
 
-4. **[DRAFT] The Orchestrator Pattern: Decomposing Complex Tasks**
+1. **[DRAFT] The Orchestrator Pattern: Decomposing Complex Tasks**
    - How specialized agents outperform generalist agents
    - Measurable token efficiency gains
 
-5. **[DRAFT] Permission Systems for AI Agents: Trust but Verify**
+1. **[DRAFT] Permission Systems for AI Agents: Trust but Verify**
    - Read-only agents that can't modify code
    - Command whitelisting for security
 
-6. **[DRAFT] Two-Agent Collaboration: Code + Test**
+1. **[DRAFT] Two-Agent Collaboration: Code + Test**
    - The simplest multi-agent pattern that works
    - Measured improvements over single-agent
 
 ### Adaptive Systems Series
 
-7. **[DRAFT] Building Memory Systems for AI Agents**
+1. **[DRAFT] Building Memory Systems for AI Agents**
    - Vector databases for agent learning
    - Patterns that improve over time
 
-8. **[DRAFT] The Learning Loop: Measuring Improvement**
+1. **[DRAFT] The Learning Loop: Measuring Improvement**
    - Before and after metrics
    - Demonstrating actual learning
 
 ### Real-World Testing Series
 
-9. **[DRAFT] Complex Task Testing: Preventing Agent Drift**
+1. **[DRAFT] Complex Task Testing: Preventing Agent Drift**
    - Multi-file refactoring challenges
    - Keeping agents on track
 
-10. **[DRAFT] Context Management: When Agents Lose Track**
+1. **[DRAFT] Context Management: When Agents Lose Track**
     - API integration case studies
     - Multi-domain coordination
 
-11. **[DRAFT] The Gauntlet: A Full-Stack Litmus Test**
+1. **[DRAFT] The Gauntlet: A Full-Stack Litmus Test**
     - Complete authentication system
     - The ultimate multi-agent challenge
 
 ### Best Practices Series
 
-12. **[DRAFT] Documentation That Agents Can Use**
+1. **[DRAFT] Documentation That Agents Can Use**
     - Structured docs for code generation
     - Markdown conventions that work
 
-13. **[DRAFT] Metrics That Matter for AI Agents**
+1. **[DRAFT] Metrics That Matter for AI Agents**
     - Token efficiency
     - Success rates
     - Coverage and quality
 
-14. **[DRAFT] When to Use (and Not Use) Multi-Agent Systems**
+1. **[DRAFT] When to Use (and Not Use) Multi-Agent Systems**
     - Cost-benefit analysis
     - Complexity thresholds
 
 ### Lessons Learned Series
 
-15. **[DRAFT] What We Got Wrong About Agent Autonomy**
+1. **[DRAFT] What We Got Wrong About Agent Autonomy**
     - Early mistakes and corrections
     - Revised mental models
 
-16. **[DRAFT] The Future of Test-Driven AI Development**
+1. **[DRAFT] The Future of Test-Driven AI Development**
     - Where this is heading
     - Open problems and opportunities
 

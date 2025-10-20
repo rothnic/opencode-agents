@@ -23,6 +23,12 @@
 
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
+import type {
+  PreMergeConfig,
+  ValidationMessage,
+  ValidationResultData,
+} from '../schemas/gates/pre-merge.schema.js';
+import { PreMergeConfigSchema } from '../schemas/gates/pre-merge.schema.js';
 
 // ============================================================================
 // CONFIGURATION
@@ -35,26 +41,28 @@ const CONFIG_FILE = 'opencode.json';
 // LOAD CONFIGURATION
 // ============================================================================
 
-function loadConfig() {
+function loadConfig(): PreMergeConfig {
   if (!fs.existsSync(CONFIG_FILE)) {
     return getDefaultConfig();
   }
 
   try {
-    const config = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
-    return config.git?.preMerge || getDefaultConfig();
+    const data = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8')) as Record<string, unknown>;
+    const git = data['git'] as Record<string, unknown> | undefined;
+    const preMerge = git?.['preMerge'] as Record<string, unknown> | undefined;
+    return preMerge ? PreMergeConfigSchema.parse(preMerge) : getDefaultConfig();
   } catch {
     return getDefaultConfig();
   }
 }
 
-function getDefaultConfig() {
-  return {
+function getDefaultConfig(): PreMergeConfig {
+  return PreMergeConfigSchema.parse({
     requireWorkVerification: true,
     requireTests: true,
     minCoverageIncrease: 0,
     allowedWithoutTests: ['docs/', 'chore/'],
-  };
+  });
 }
 
 // ============================================================================
@@ -71,7 +79,7 @@ function getCurrentBranch() {
   }
 }
 
-function getBranchType(branchName) {
+function getBranchType(branchName: string): string {
   const prefixes = ['feature/', 'fix/', 'refactor/', 'docs/', 'test/', 'chore/'];
 
   for (const prefix of prefixes) {
@@ -88,34 +96,59 @@ function getBranchType(branchName) {
 // ============================================================================
 
 class ValidationResult {
+  private data: ValidationResultData;
+
   constructor() {
-    this.errors = [];
-    this.warnings = [];
-    this.info = [];
+    this.data = {
+      errors: [],
+      warnings: [],
+      info: [],
+    };
   }
 
-  addError(message, fix = null) {
-    this.errors.push({ message, fix });
+  addError(message: string, fix: string | null = null): void {
+    this.data.errors.push({ message, fix });
   }
 
-  addWarning(message) {
-    this.warnings.push({ message });
+  addWarning(message: string): void {
+    this.data.warnings.push({ message });
   }
 
-  addInfo(message) {
-    this.info.push({ message });
+  addInfo(message: string): void {
+    this.data.info.push({ message });
   }
 
-  hasErrors() {
-    return this.errors.length > 0;
+  hasErrors(): boolean {
+    return this.data.errors.length > 0;
   }
 
-  isValid() {
+  isValid(): boolean {
     return !this.hasErrors();
+  }
+
+  getErrors(): ValidationMessage[] {
+    return this.data.errors;
+  }
+
+  getWarnings(): ValidationMessage[] {
+    return this.data.warnings;
+  }
+
+  getInfo(): ValidationMessage[] {
+    return this.data.info;
+  }
+
+  getData(): ValidationResultData {
+    return this.data;
   }
 }
 
-function validateWorkVerification(config, branchType, results) {
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Legacy function, will refactor in migration
+function validateWorkVerification(
+  config: PreMergeConfig,
+  branchType: string,
+  results: ValidationResult,
+): void {
   // Check if work verification is required
   if (!config.requireWorkVerification) {
     results.addInfo('Work verification not required');
@@ -225,7 +258,11 @@ function validateWorkVerification(config, branchType, results) {
   }
 }
 
-function validateTests(config, branchType, results) {
+function validateTests(
+  config: PreMergeConfig,
+  branchType: string,
+  results: ValidationResult,
+): void {
   // Check if tests are required
   if (!config.requireTests) {
     results.addInfo('Tests not required');
@@ -251,15 +288,21 @@ function validateTests(config, branchType, results) {
     const passMatch = output.match(/Tests:\s+(\d+) passed/);
     const failMatch = output.match(/(\d+) failed/);
 
-    if (failMatch && parseInt(failMatch[1], 10) > 0) {
-      results.addError(`${failMatch[1]} tests failing`, 'Fix failing tests before merging');
+    if (failMatch?.[1]) {
+      const failCount = Number.parseInt(failMatch[1], 10);
+      if (failCount > 0) {
+        results.addError(`${failCount} tests failing`, 'Fix failing tests before merging');
+      }
     } else if (passMatch) {
       results.addInfo(`✓ All ${passMatch[1]} tests passing`);
     }
   } catch (error) {
-    const output = error.stdout || error.stderr || '';
+    const errorOutput =
+      error && typeof error === 'object' && 'stdout' in error && 'stderr' in error
+        ? (error.stdout as string) || (error.stderr as string) || ''
+        : '';
 
-    if (output.includes('failed')) {
+    if (errorOutput.includes('failed')) {
       results.addError('Tests are failing', 'Fix failing tests before merging');
     } else {
       results.addError('Could not run tests', "Ensure 'npm test' works correctly");
@@ -271,7 +314,7 @@ function validateTests(config, branchType, results) {
 // REPORTING
 // ============================================================================
 
-function printResults(branchName, results) {
+function printResults(branchName: string, results: ValidationResult): void {
   console.log('═══════════════════════════════════════════════════════');
   console.log('  Pre-Merge Validation');
   console.log('═══════════════════════════════════════════════════════');
@@ -279,24 +322,25 @@ function printResults(branchName, results) {
   console.log(`Branch: ${branchName}`);
   console.log('');
 
-  if (results.info.length > 0) {
-    for (const info of results.info) {
+  const data = results.getData();
+  if (data.info.length > 0) {
+    for (const info of data.info) {
       console.log(`  ${info.message}`);
     }
     console.log('');
   }
 
-  if (results.warnings.length > 0) {
+  if (data.warnings.length > 0) {
     console.log('⚠️  WARNINGS:\n');
-    for (const warning of results.warnings) {
+    for (const warning of data.warnings) {
       console.log(`⚠️  ${warning.message}`);
     }
     console.log('');
   }
 
-  if (results.errors.length > 0) {
+  if (data.errors.length > 0) {
     console.log('🚨 ERRORS:\n');
-    for (const error of results.errors) {
+    for (const error of data.errors) {
       console.log(`❌ ${error.message}`);
       if (error.fix) {
         console.log(`   Fix: ${error.fix}`);
@@ -312,7 +356,7 @@ function printResults(branchName, results) {
     console.log('All validation checks passed!');
   } else {
     console.log('❌ CANNOT MERGE');
-    console.log(`Fix ${results.errors.length} error(s) before merging`);
+    console.log(`Fix ${data.errors.length} error(s) before merging`);
   }
 
   console.log('═══════════════════════════════════════════════════════');

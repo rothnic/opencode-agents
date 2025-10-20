@@ -49,8 +49,7 @@ In response to your excellent questions about making the system more maintainabl
 ```bash
 node scripts/gate-check-file-size.js        # Check all files
 node scripts/gate-check-file-size.js --staged  # Check only staged files
-```
-
+```text
 **Current Violations Found**:
 
 - `docs/blog/02-quality-gates-defense-in-depth.md` (861 lines, limit 800)
@@ -76,8 +75,7 @@ node scripts/gate-check-file-size.js --staged  # Check only staged files
 ```bash
 node scripts/check-document-overlap.js                # Default 70% threshold
 node scripts/check-document-overlap.js --threshold=0.6  # Custom threshold
-```
-
+```text
 **Current Status**: ✅ No overlapping documents detected in repository
 
 ---
@@ -106,8 +104,7 @@ overrides:
       - work-verification
     expiresAt: 2025-10-19T18:00:00Z  # Auto-expires after 4 hours
     followUpIssue: "#123"  # Must create issue to track skipped work
-```
-
+```text
 **Agent Protocol**:
 
 1. Agent encounters guardrail blocking work
@@ -164,14 +161,12 @@ The design document (`docs/architecture/ide-integration-and-guardrails.md`) incl
 
 ```bash
 npm run gate:file-size  # (add this script to package.json)
-```
-
+```text
 **Detect duplicate docs**:
 
 ```bash
 npm run check:overlap  # (add this script to package.json)
-```
-
+```text
 **Create an override (when needed)**:
 Edit `.opencode/override.yaml` and add an override entry
 
@@ -186,14 +181,12 @@ Edit `.opencode/override.yaml` and add an override entry
 
 ```bash
 node scripts/check-document-overlap.js
-```
-
+```text
 **Before editing a large file**: Check size
 
 ```bash
 wc -l <file>  # If >500 lines for JSON or >800 for MD, propose split
-```
-
+```text
 **If guardrail blocks you**:
 
 1. Stop and explain the conflict
@@ -221,8 +214,7 @@ await runCheck("blog-health", "scripts/gate-check-blog-health.js");
 await runCheck("file-size", "scripts/gate-check-file-size.js", "warning");
 await runCheck("overlap", "scripts/check-document-overlap.js", "warning");
 await runCheck("conventions", "scripts/docs-conventions.js --staged", "error");
-```
-
+```text
 **Or add to `package.json` scripts**:
 
 ```json
@@ -233,8 +225,7 @@ await runCheck("conventions", "scripts/docs-conventions.js --staged", "error");
     "check:conventions": "node scripts/docs-conventions.js --staged"
   }
 }
-```
-
+```text
 ---
 
 ## Current Repository Status
@@ -310,15 +301,15 @@ await runCheck("conventions", "scripts/docs-conventions.js --staged", "error");
 
 1. **YAML vs JSON**: Should we deprecate `.json` files entirely or keep both?
 
-2. **File Size Limits**: Are the limits reasonable? (JSON: 500, MD: 800, JS: 600, YAML: 400)
+1. **File Size Limits**: Are the limits reasonable? (JSON: 500, MD: 800, JS: 600, YAML: 400)
 
-3. **IDE Extension**: Do you want the VS Code extension for real-time feedback, or are the scripts sufficient?
+1. **IDE Extension**: Do you want the VS Code extension for real-time feedback, or are the scripts sufficient?
 
-4. **Integration Timeline**: Should we integrate the new checks into quality gates now (as warnings) or test them manually first?
+1. **Integration Timeline**: Should we integrate the new checks into quality gates now (as warnings) or test them manually first?
 
-5. **Override Workflow**: Is the `.opencode/override.yaml` approach good, or would you prefer a CLI tool to create overrides?
+1. **Override Workflow**: Is the `.opencode/override.yaml` approach good, or would you prefer a CLI tool to create overrides?
 
-6. **Current Violations**: Should I split the 2 large files now, or do you want to handle that separately?
+1. **Current Violations**: Should I split the 2 large files now, or do you want to handle that separately?
 
 ---
 

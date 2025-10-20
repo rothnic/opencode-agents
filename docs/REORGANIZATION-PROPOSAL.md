@@ -24,7 +24,7 @@ This document proposes a comprehensive reorganization to address multiple qualit
 
 **Current State**:
 
-```
+```text
 scripts/
 ├── agents/ (1 subdir)
 ├── audit-repository-state.ts
@@ -41,8 +41,7 @@ scripts/
 ├── test-evidence.js
 ├── verify-tools.ts
 └── version-severity-check.ts
-```
-
+```text
 **Root Cause**: As project grows, we add scripts without grouping them logically.
 
 **Impact**:
@@ -58,12 +57,11 @@ scripts/
 
 **Current State**:
 
-```
+```text
 scripts/*.js:           10 files
 tests/*.js:             6+ files
 agents/*.js:            1+ files
-```
-
+```text
 **Root Cause**: Incomplete migration, no automated check to prevent `.js` in new PRs
 
 **Impact**:
@@ -79,14 +77,13 @@ agents/*.js:            1+ files
 
 **Current State**:
 
-```
+```text
 .opencode/
 ├── conventions.json        # Naming conventions
 ├── conventions.yaml        # Duplicate in YAML?
 ├── override.yaml           # Override mechanism unclear
 └── validation-rules.json   # Main validation config
-```
-
+```text
 **Root Cause**: Organic growth without unified design
 
 **Impact**:
@@ -171,7 +168,7 @@ agents/*.js:            1+ files
 
 **New Structure**:
 
-```
+```text
 scripts/
 ├── agents/                      # AI agent implementations
 │   ├── blog-maintenance-agent.js → .ts
@@ -195,8 +192,7 @@ scripts/
     ├── project-status.ts
     ├── sync-models.ts (NEW)
     └── verify-tools.ts
-```
-
+```text
 **Categorization Rules**:
 
 - **agents/**: Runs AI agents or agent workflows
@@ -253,15 +249,14 @@ function checkMixedExtensions(dir: string): Issue[] {
   }
   return [];
 }
-```
-
+```text
 ### Solution 3: Unified Configuration System
 
 **Goal**: Single, extensible configuration in `.opencode/validation-rules.json`
 
 **New Structure**:
 
-```
+```text
 .opencode/
 ├── config/                      # Archived/legacy configs
 │   ├── conventions.json         # Archive: merged into validation-rules
@@ -271,8 +266,7 @@ function checkMixedExtensions(dir: string): Issue[] {
 ├── tools/                       # Custom tool definitions
 │   └── ...                      # (existing)
 └── validation-rules.json        # Single source of truth
-```
-
+```text
 **Enhanced validation-rules.json Schema**:
 
 ```json
@@ -312,8 +306,7 @@ function checkMixedExtensions(dir: string): Issue[] {
     }
   }
 }
-```
-
+```text
 **Migration**:
 
 1. Parse conventions.json → merge into namingConventions
@@ -357,8 +350,7 @@ const checks: OrganizationCheck[] = [
     check: () => checkBackupFiles(),
   },
 ];
-```
-
+```text
 **Integration**:
 
 - Add to `npm run audit-repository`
@@ -419,8 +411,7 @@ async function syncModels() {
   
   console.log(`✅ Synced ${transformed.models.length} models from models.dev`);
 }
-```
-
+```text
 **Usage**:
 
 - `npm run sync-models` - Manual sync
@@ -440,23 +431,21 @@ async function syncModels() {
     }
   }
 }
-```
-
+```text
 ### Solution 6: Comprehensive Test Suite
 
 **Create**: `tests/validation/` directory
 
 **Test Files**:
 
-```
+```text
 tests/validation/
 ├── organization-rules.test.ts      # File count, extensions, structure
 ├── config-merging.test.ts          # Validation rules merging
 ├── model-validation.test.ts        # Model sync and validation
 ├── naming-conventions.test.ts      # File/folder naming
 └── integration.test.ts             # Full validation flow
-```
-
+```text
 **Coverage Goals**:
 
 - Organization rules: 100% (critical for maintaining quality)
@@ -486,8 +475,7 @@ describe('Organization Rules', () => {
     expect(issues[0].message).toContain('Mixed .js and .ts');
   });
 });
-```
-
+```text
 ### Solution 7: Agent Test Framework Architecture
 
 **Document**: `docs/testing-strategy.md`
@@ -523,8 +511,7 @@ interface TaskResult {
   duration: number;
   iterations: number;
 }
-```
-
+```text
 **Example Scenario**:
 
 ```typescript
@@ -549,8 +536,7 @@ const authScenario: AgentTestScenario = {
     { name: 'test-coverage', target: '>80%' },
   ],
 };
-```
-
+```text
 **Implementation Phases**:
 
 1. **Phase 1**: Document architecture (this document)
@@ -573,13 +559,13 @@ const authScenario: AgentTestScenario = {
    - Test all scripts
    - Update imports
 
-2. **Convert .js → .ts** (3-4 hours)
+1. **Convert .js → .ts** (3-4 hours)
    - Prioritize scripts/
    - Then tests/
    - Add Biome rule to prevent new .js
    - Update CI
 
-3. **Add organization validation** (2 hours)
+1. **Add organization validation** (2 hours)
    - Create validate-organization.ts
    - Add file count checks
    - Add extension checks
@@ -589,14 +575,14 @@ const authScenario: AgentTestScenario = {
 
 **Priority: HIGH**
 
-4. **Unified config system** (4-5 hours)
+1. **Unified config system** (4-5 hours)
    - Design final schema
    - Merge existing configs
    - Archive old files
    - Update all consumers
    - Add JSON schema validation
 
-5. **Model sync script** (2-3 hours)
+1. **Model sync script** (2-3 hours)
    - Implement sync-models.ts
    - Fetch and transform models.dev data
    - Store in .opencode/models.json
@@ -607,7 +593,7 @@ const authScenario: AgentTestScenario = {
 
 **Priority: HIGH**
 
-6. **Test suite for validation** (4-6 hours)
+1. **Test suite for validation** (4-6 hours)
    - Organization rules tests
    - Config merging tests
    - Model validation tests
@@ -618,13 +604,13 @@ const authScenario: AgentTestScenario = {
 
 **Priority: MEDIUM**
 
-7. **Agent test framework design** (2-3 hours)
+1. **Agent test framework design** (2-3 hours)
    - Document architecture in testing-strategy.md
    - Define interfaces
    - Create example scenarios
    - Plan implementation phases
 
-8. **Update documentation** (2 hours)
+1. **Update documentation** (2 hours)
    - Update AGENTS.md with new structure
    - Document config system
    - Update STATUS.md

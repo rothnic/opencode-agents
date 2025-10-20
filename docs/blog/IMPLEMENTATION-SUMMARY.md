@@ -9,7 +9,7 @@
 
 ### Directory Structure
 
-```
+```text
 docs/blog/
 ├── README.md                                    # Series overview
 ├── 01-why-most-ai-coding-projects-fail.md     # DRAFT (ready)
@@ -28,8 +28,7 @@ docs/blog/
 ├── 14-when-to-use-multi-agent.md              # STUB (Phase 4+)
 ├── 15-what-we-got-wrong.md                     # STUB (retrospective)
 └── 16-future-of-test-driven-ai.md             # STUB (conclusion)
-```
-
+```text
 **Total**: 17 files (1 overview + 16 posts)
 
 ---
@@ -50,9 +49,9 @@ docs/blog/
 
 **Theme**: How specialized agents outperform generalist approaches
 
-4. **Orchestrator**: Task decomposition pattern
-5. **Permissions**: Security through constraints
-6. **Collaboration**: Two-agent case study
+1. **Orchestrator**: Task decomposition pattern
+2. **Permissions**: Security through constraints
+3. **Collaboration**: Two-agent case study
 
 **Status**: All stubs, awaiting Phases 1.2 and 2.1-2.2
 
@@ -60,8 +59,8 @@ docs/blog/
 
 **Theme**: Making agents that learn and improve
 
-7. **Memory**: Vector database integration
-8. **Learning Loop**: Measured improvement
+1. **Memory**: Vector database integration
+2. **Learning Loop**: Measured improvement
 
 **Status**: All stubs, awaiting Phase 3.1-3.2
 
@@ -69,9 +68,9 @@ docs/blog/
 
 **Theme**: Complex tasks that challenge single agents
 
-9. **Drift Prevention**: Multi-file consistency
-10. **Context Management**: Multi-domain coordination
-11. **The Gauntlet**: Complete authentication system
+1. **Drift Prevention**: Multi-file consistency
+2. **Context Management**: Multi-domain coordination
+3. **The Gauntlet**: Complete authentication system
 
 **Status**: All stubs, awaiting Phase 4.2
 
@@ -79,11 +78,11 @@ docs/blog/
 
 **Theme**: Lessons learned and future directions
 
-12. **Documentation**: What works for agents
-13. **Metrics**: What to measure
-14. **When to Use**: Cost-benefit analysis
-15. **Mistakes**: What we got wrong
-16. **Future**: Where this is heading
+1. **Documentation**: What works for agents
+2. **Metrics**: What to measure
+3. **When to Use**: Cost-benefit analysis
+4. **Mistakes**: What we got wrong
+5. **Future**: Where this is heading
 
 **Status**: All stubs, to be filled throughout and after project
 
@@ -304,7 +303,7 @@ Patterns that work today with current tools (OpenCode, GPT-4, etc.)
 
 ### Documentation Structure ✅
 
-```
+```text
 docs/
 ├── blog/                    # ← NEW
 │   ├── README.md
@@ -313,8 +312,7 @@ docs/
 ├── quality-gates.md
 ├── GETTING-STARTED.md
 └── ...
-```
-
+```text
 ### Maintains Clean Root ✅
 
 - All blog content in `docs/blog/`

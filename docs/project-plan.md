@@ -22,17 +22,17 @@ This system aims to be **assistants in implementing controlled best practices** 
    - Self-healing repository detects issues early
    - Git hooks prevent bad commits
 
-2. **Strictness vs. Flexibility**: Adapt rules based on project maturity
+1. **Strictness vs. Flexibility**: Adapt rules based on project maturity
    - **Bootstrap** (0-100 commits): Lenient, focus on velocity
    - **Development** (100-500 commits): Balanced guardrails
    - **Production** (500+ commits): Strict enforcement
 
-3. **Automation vs. Control**: Self-healing, but humans can override
+1. **Automation vs. Control**: Self-healing, but humans can override
    - Configuration-driven validation (`.opencode/validation-rules.json`)
    - Inline directives for exceptions (`// biome-ignore lint/rule: reason`)
    - Escape hatches with accountability (GitHub issues, expiration dates)
 
-4. **Standards vs. Innovation**: Best practices with room for experimentation
+1. **Standards vs. Innovation**: Best practices with room for experimentation
    - Modern tooling (Vitest, Biome, TypeScript)
    - Configurable rules that can be updated without code changes
    - Templates and conventions that guide without constraining
@@ -46,8 +46,7 @@ npm install opencode-agents
 npx opencode-agents init
 # Interactive setup with agent assistance
 # Configure validation rules, pick tools, set standards
-```
-
+```text
 **What you get**:
 
 1. Automated best practices enforcement
@@ -84,8 +83,7 @@ flowchart TB
         Metrics --> Success[Success Rate]
         Metrics --> Time[Execution Time]
     end
-```
-
+```text
 ## Project Phases & Timeline
 
 ```mermaid
@@ -113,8 +111,7 @@ gantt
     section Phase 4: Optimization
     Performance Tuning           :p4-1, after p3-2, 4d
     Complex Task Testing         :p4-2, after p4-1, 4d
-```
-
+```text
 ---
 
 ## Phase 0: Project Setup & Infrastructure
@@ -155,8 +152,7 @@ gantt
 ✓ .opencode/ directory exists
 ✓ AGENTS.md follows template structure
 ✓ Test framework is executable
-```
-
+```text
 **Deliverables**:
 
 - `/opencode.json` - Main configuration
@@ -202,8 +198,7 @@ describe('Phase 1.1: Simple Code Generation', () => {
     });
   });
 });
-```
-
+```text
 **Success Metrics Baseline**:
 
 - Token Count: < 500 tokens
@@ -255,8 +250,7 @@ describe('Phase 1.2: Basic Orchestration', () => {
     expect(result.testsPass).toBe(true);
   });
 });
-```
-
+```text
 **Success Metrics**:
 
 - Token Count: < 2000 tokens (comparing to single-agent baseline)
@@ -284,8 +278,7 @@ describe('Phase 1.2: Basic Orchestration', () => {
     "bash": "ask"
   }
 }
-```
-
+```text
 **Deliverables**:
 
 - Orchestrator agent configuration
@@ -331,8 +324,7 @@ describe('Phase 1.3: Metrics System', () => {
     expect(current.metrics.tokenCount).toBeLessThan(baseline.tokenCount * 1.2);
   });
 });
-```
-
+```text
 **Deliverables**:
 
 - `scripts/measure.js` - Metrics collection script
@@ -402,8 +394,7 @@ describe('Phase 2.1: Code + Test Collaboration', () => {
     expect(efficiency).toBeLessThan(1.3); // Allow 30% overhead max
   });
 });
-```
-
+```text
 **Success Metrics**:
 
 - Token Efficiency: <= 130% of single-agent baseline
@@ -433,8 +424,7 @@ You are a code implementation specialist. Your role is to:
 4. Do NOT write tests (that's TestWriter's job)
 
 Always check AGENTS.md before implementing code.
-```
-
+```text
 ```markdown
 <!-- .opencode/agent/testwriter.md -->
 ---
@@ -454,8 +444,7 @@ You are a test implementation specialist. Your role is to:
 4. Do NOT modify implementation code
 
 Test files should be placed according to AGENTS.md structure.
-```
-
+```text
 **Deliverables**:
 
 - CodeImplementer agent config
@@ -509,8 +498,7 @@ describe('Phase 2.2: Permission Boundaries', () => {
     );
   });
 });
-```
-
+```text
 **Agent Configuration**:
 
 ```markdown
@@ -534,8 +522,7 @@ You are a security auditor. Your role is to:
 2. Reference CWE numbers
 3. Provide detailed reports with remediation guidance
 4. NEVER modify code - only report findings
-```
-
+```text
 **Success Criteria**:
 
 - All permission tests pass
@@ -613,8 +600,7 @@ describe('Phase 2.3: Full Team Integration', () => {
     );
   });
 });
-```
-
+```text
 **Success Metrics**:
 
 - Token Count: < 5000 tokens
@@ -689,8 +675,7 @@ describe('Phase 3.1: Memory System', () => {
     expect(code).toMatch(/exponential.*backoff/i);
   });
 });
-```
-
+```text
 **Custom Tool Structure**:
 
 ```javascript
@@ -736,8 +721,7 @@ export const memory_query = defineTool({
     return results;
   }
 });
-```
-
+```text
 **Deliverables**:
 
 - Memory custom tool implementation
@@ -802,8 +786,7 @@ describe('Phase 3.2: Learning Loop', () => {
     expect(run2.metrics.revisionCount).toBeLessThanOrEqual(run1.metrics.revisionCount);
   });
 });
-```
-
+```text
 **MemoryFormation Agent**:
 
 ```markdown
@@ -827,8 +810,7 @@ You are a learning specialist. Your role is to:
 4. Focus on reusable knowledge, not task-specific details
 
 Store memories as concise, factual statements.
-```
-
+```text
 **Success Metrics**:
 
 - **Learning Efficiency**: 2nd run uses 20-30% fewer tokens
@@ -889,8 +871,7 @@ describe('Phase 4.1: Performance & Optimization', () => {
     expect(lastAvg).toBeLessThanOrEqual(firstAvg * 1.1); // Allow 10% variance
   });
 });
-```
-
+```text
 **Deliverables**:
 
 - Performance benchmark suite
@@ -939,8 +920,7 @@ describe('Phase 4.2.1: Multi-file Refactoring (Drift Prevention)', () => {
     expect(result.testsPass).toBe(true);
   });
 });
-```
-
+```text
 **Why This Tests Drift**: Single agents often start with one pattern and drift to another halfway through, creating inconsistency. Multi-agent with RefactorEngine should maintain consistency.
 
 #### Test 4.2.2: "Context Management" - API Integration
@@ -982,8 +962,7 @@ describe('Phase 4.2.2: API Integration (Context Management)', () => {
     expect(result.securityReport.criticalIssues).toEqual([]);
   });
 });
-```
-
+```text
 **Why This Tests Context Management**: Complex tasks require maintaining context across multiple domains (payments, security, testing). Single agents often lose track of requirements.
 
 #### Test 4.2.3: "The Gauntlet" - Full Stack Feature
@@ -1059,8 +1038,7 @@ describe('Phase 4.2.3: Full Stack Feature Implementation', () => {
     expect(multiAgent.docQuality).toBeGreaterThan(singleAgent.docQuality);
   });
 });
-```
-
+```text
 **Success Metrics for "The Gauntlet"**:
 
 - **Completeness**: 100% of required files created
@@ -1114,8 +1092,7 @@ const MetricsCollector = {
   memoryHits: 0,
   memoryUtilization: 0
 };
-```
-
+```text
 ### Visualization Dashboard
 
 ```mermaid
@@ -1136,8 +1113,7 @@ flowchart LR
         Report --> JSON[JSON Export]
         Report --> Graph[Charts/Graphs]
     end
-```
-
+```text
 ### Success Criteria Matrix
 
 | Phase | Token Efficiency | Quality Score | Success Rate | Comparison to Baseline |
@@ -1155,7 +1131,7 @@ flowchart LR
 
 ### Test Organization
 
-```
+```text
 tests/
 ├── phase-1/
 │   ├── test-1.1-hello-world.js
@@ -1177,8 +1153,7 @@ tests/
 │   └── test-utils.js
 └── fixtures/
     └── sample-codebases/
-```
-
+```text
 ### Test Execution
 
 ```bash
@@ -1196,15 +1171,14 @@ npm run test:compare
 
 # Generate report
 npm run test:report
-```
-
+```text
 ---
 
 ## Git Strategy
 
 ### Commit Convention
 
-```
+```text
 <type>: <phase>-<description>
 
 Types:
@@ -1214,19 +1188,17 @@ Types:
 - docs: Documentation update
 - fix: Bug fix
 - refactor: Code refactoring
-```
-
+```text
 ### Milestone Branches
 
-```
+```text
 main
 ├── phase-0-setup
 ├── phase-1-foundation
 ├── phase-2-multi-agent
 ├── phase-3-memory
 └── phase-4-optimization
-```
-
+```text
 ### Merge Strategy
 
 - Each phase is a separate branch

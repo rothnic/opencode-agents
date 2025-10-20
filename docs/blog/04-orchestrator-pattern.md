@@ -28,10 +28,9 @@ Single AI agents struggle with complex, multi-step tasks. They either:
 
 **Core Idea**: One agent decomposes tasks, coordinates specialists
 
-```
+```text
 User Request → Orchestrator → Specialist Agents → Verified Output
-```
-
+```text
 ### Orchestrator Responsibilities
 
 [TODO: Define based on Phase 1.2 implementation]

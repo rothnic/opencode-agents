@@ -27,7 +27,7 @@ This project explores building a sophisticated multi-agent orchestration system 
 
 ## Architecture
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │              User / Developer                    │
 └────────────────┬────────────────────────────────┘
@@ -50,13 +50,12 @@ This project explores building a sophisticated multi-agent orchestration system 
           │   Tests &    │
           │   Metrics    │
           └──────────────┘
-```
-
+```text
 See [System Architecture](docs/diagrams/system-overview.mmd) for detailed diagrams.
 
 ## Project Structure
 
-```
+```text
 opencode-agents/
 ├── docs/
 │   ├── project-plan.md           # Comprehensive project plan
@@ -77,8 +76,7 @@ opencode-agents/
 ├── scripts/
 │   └── measure.js                # Metrics collection
 └── opencode.json                 # OpenCode configuration
-```
-
+```text
 ## Development Phases
 
 ### Phase 0: Setup & Infrastructure ✅ (In Progress)
@@ -172,8 +170,7 @@ npm install
 
 # Configure OpenCode
 opencode auth login
-```
-
+```text
 ### Running Tests
 
 ```bash
@@ -188,8 +185,7 @@ npm run test:measured
 
 # Generate report
 npm run test:report
-```
-
+```text
 ## Test Scenarios
 
 The project uses increasingly complex test scenarios to validate agent capabilities:

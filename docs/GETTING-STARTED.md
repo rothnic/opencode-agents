@@ -16,7 +16,7 @@
 
 ## Project Structure
 
-```
+```text
 opencode-agents/
 ├── STATUS.md                 # ← Start here! Current state
 ├── README.md                 # Project overview
@@ -34,8 +34,7 @@ opencode-agents/
 ├── .opencode/               # (Created in Phase 0.2)
 ├── tests/                   # (Created in Phase 0.2)
 └── scripts/                 # (Created in Phase 0.2)
-```
-
+```text
 ---
 
 ## Phase Working Directory Pattern
@@ -46,7 +45,7 @@ Each phase has a dedicated folder: `docs/phases/phase-X.Y/`
 
 ### Standard Files
 
-```
+```text
 docs/phases/phase-X.Y/
 ├── README.md           # Phase overview (already created)
 ├── notes.md            # Design decisions (you create)
@@ -54,8 +53,7 @@ docs/phases/phase-X.Y/
 ├── draft-*.md          # Draft configs/code (as needed)
 ├── issues.md           # Problems & solutions (as needed)
 └── metrics.json        # Test results (if applicable)
-```
-
+```text
 ### Why This Pattern?
 
 - **Colocated**: All phase-related files in one place
@@ -81,8 +79,7 @@ cat README.md
 
 # Create working files
 touch notes.md progress.md
-```
-
+```text
 ### 2. Work on Phase
 
 ```bash
@@ -101,8 +98,7 @@ touch draft-opencode.json
 
 # Use templates
 # docs/templates/*.md
-```
-
+```text
 ### 3. Complete Phase
 
 ```bash
@@ -123,8 +119,7 @@ git push
 
 # Update TODO list (in GitHub Copilot)
 # Mark phase as complete, move to next
-```
-
+```text
 ---
 
 ## Key References
@@ -210,16 +205,14 @@ git push
 
 ```bash
 cat STATUS.md
-```
-
+```text
 ### Start Working on Current Phase
 
 ```bash
 cd docs/phases/phase-0.2/  # or current phase
 cat README.md
 touch notes.md progress.md
-```
-
+```text
 ### Reference Project Plan
 
 ```bash
@@ -227,16 +220,14 @@ touch notes.md progress.md
 code docs/project-plan.md
 # Or view specific phase
 grep -A 50 "Phase 0.2" docs/project-plan.md
-```
-
+```text
 ### Use a Template
 
 ```bash
 # Copy agent template
 cp docs/templates/agent-template.md docs/phases/phase-0.2/draft-agent.md
 # Edit for your needs
-```
-
+```text
 ### Update Status After Completion
 
 ```bash
@@ -246,8 +237,7 @@ nano STATUS.md
 # - Last Updated date
 # - Current Phase (mark complete, set next)
 # - Quick Stats (increment commits, etc.)
-```
-
+```text
 ### Commit Phase
 
 ```bash
@@ -255,8 +245,7 @@ git add -A
 git status  # verify changes
 git commit -m "feat: phase-X.Y-description"
 git push
-```
-
+```text
 ---
 
 ## Next 5 Phases (Quick Reference)

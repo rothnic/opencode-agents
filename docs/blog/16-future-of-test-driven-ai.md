@@ -64,7 +64,7 @@ last_updated: "2025-10-19"
    - What experiments would help
    - Potential impact
 
-2. **[Research question 2]**
+1. **[Research question 2]**
    [Same structure]
 
 ---

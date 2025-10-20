@@ -35,8 +35,7 @@ agent:
   validation:                     # How to verify agent succeeded
     - check: string
       expected: string
-```
-
+```text
 ## Core Agents
 
 ### 1. Blog Maintenance Agent
@@ -84,8 +83,7 @@ scripts/agents/blog-maintenance-agent.js --phase phase-1.0
 
 # Validation
 scripts/agents/validate-blog-freshness.js
-```
-
+```text
 ---
 
 ### 2. Project Health Monitor Agent
@@ -135,8 +133,7 @@ scripts/agents/project-health-agent.js --report-path docs/health-report.md
 
 # Daily cron
 0 9 * * * cd /path/to/opencode-agents && npm run agent:health
-```
-
+```text
 ---
 
 ### 3. Test Evidence Recorder Agent
@@ -182,8 +179,7 @@ npm test && npm run test-evidence -- phase-1.0
 
 # Validation
 node scripts/test-evidence.js verify phase-1.0
-```
-
+```text
 ---
 
 ### 4. Documentation Sync Agent (Future)
@@ -226,7 +222,7 @@ node scripts/test-evidence.js verify phase-1.0
 
 ### Event Flow
 
-```
+```text
 User Action (commit, test, etc.)
     ↓
 Trigger Detection
@@ -240,8 +236,7 @@ Output Generation
 Validation Checks
     ↓
 State Update / Notifications
-```
-
+```text
 ### Shared State
 
 Agents coordinate through shared state stored in:
@@ -260,8 +255,7 @@ graph TD
     A --> D[Blog Maintenance Agent]
     D --> C
     C --> E[Test Execution]
-```
-
+```text
 ## Integration with Quality Gates
 
 Agents enhance quality gates by:
@@ -315,8 +309,7 @@ git commit -m "chore: complete phase-1.0"
 # → runs gate-check.js
 # → triggers blog-maintenance-agent
 # → updates docs/blog/03-corresponding-post.md
-```
-
+```text
 ### Daily Health Check
 
 ```bash
@@ -329,8 +322,7 @@ npm run agent:health
 # - Stale documentation
 # - Test coverage metrics
 # - Blog freshness status
-```
-
+```text
 ### Verifying Agent System
 
 ```bash
@@ -342,8 +334,7 @@ npm run agents:validate
 
 # Test a specific agent
 npm run agent:test -- blog-maintenance
-```
-
+```text
 ## Next Steps
 
 1. **Implement Blog Maintenance Agent**
@@ -352,12 +343,12 @@ npm run agent:test -- blog-maintenance
    - Create phase artifact parser
    - Write integration tests
 
-2. **Add Agent Registry**
+1. **Add Agent Registry**
    - Create `agents/registry.json` with all agent definitions
    - Build agent discovery system
    - Add agent validation tool
 
-3. **Integrate with CI/CD**
+1. **Integrate with CI/CD**
    - Run health agent on every push
    - Block merges if critical violations found
    - Generate health badges for README

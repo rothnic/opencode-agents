@@ -65,8 +65,7 @@ Implements simple, well-defined code tasks. Generates clean, working code with m
   "timeout": 30000,
   "retries": 1
 }
-```
-
+```text
 ## Validation Rules
 
 ### Pre-execution
@@ -101,8 +100,7 @@ Implements simple, well-defined code tasks. Generates clean, working code with m
   "targetFile": "src/hello.js",
   "language": "javascript"
 }
-```
-
+```text
 **Expected Output:**
 
 ```javascript
@@ -117,8 +115,7 @@ function hello(name) {
 }
 
 module.exports = { hello };
-```
-
+```text
 ### Class Implementation
 
 ```javascript
@@ -128,8 +125,7 @@ module.exports = { hello };
   "targetFile": "src/calculator.js",
   "language": "javascript"
 }
-```
-
+```text
 **Expected Output:**
 
 ```javascript
@@ -160,8 +156,7 @@ class Calculator {
 }
 
 module.exports = { Calculator };
-```
-
+```text
 ## Error Handling
 
 ### Invalid Input
@@ -172,8 +167,7 @@ module.exports = { Calculator };
   "error": "Task description missing or unclear",
   "suggestion": "Provide a clear description of what function/class to create"
 }
-```
-
+```text
 ### Syntax Error
 
 ```json
@@ -183,8 +177,7 @@ module.exports = { Calculator };
   "details": "Unexpected token on line 5",
   "suggestion": "Retry with simplified requirements"
 }
-```
-
+```text
 ### File Conflict
 
 ```json
@@ -193,8 +186,7 @@ module.exports = { Calculator };
   "error": "Target file already exists: src/hello.js",
   "suggestion": "Use overwrite: true or choose a different file name"
 }
-```
-
+```text
 ## Integration with Quality Gates
 
 The CodeImplementer agent's output must pass:

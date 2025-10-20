@@ -41,4 +41,4 @@ Generate a simple Node.js function that passes this test:
 ```javascript
 const hello = require('../src/hello.js');
 expect(hello.hello('World')).toBe('Hello, World!');
-```
+```text

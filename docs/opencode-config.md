@@ -239,6 +239,23 @@ opencode.json instructions Array: This is the recommended and most robust approa
 Manual @ References in AGENTS.md: Within the AGENTS.md file itself, it is possible to reference other files using the syntax @path/to/file.md.6 The agent is specifically instructed to treat these references as pointers and to use its read tool to load their content on a "need-to-know basis." This lazy-loading approach is highly efficient, as it prevents the context window from being flooded with irrelevant information, loading detailed guidelines only when the current task requires them.6
 These modularization features create a powerful feedback loop: well-structured, up-to-date documentation becomes essential not just for human developers but as a direct input for improving the AI's performance. This, in turn, incentivizes teams to treat their documentation as a first-class, machine-readable asset.
 
+Schema-first validation (recommended)
+------------------------------------
+
+When configuration or project-provided JSON is consumed at runtime, prefer a small, explicit schema and parser to ad-hoc casting. We recommend using Zod to define schemas, parse runtime JSON, and export TypeScript types. This has several benefits:
+
+- Fail-fast parsing with clear error messages instead of scattered runtime exceptions.
+- A single source of truth for the expected shape of configuration objects (used across scripts and validators).
+- Generated TypeScript types reduce noisy casts and make refactors safer.
+
+Suggested workflow:
+
+1. Add a lightweight schema file, e.g. `scripts/schemas/conventions-schema.ts`, that defines the Zod schema for the parts of `.opencode/conventions.json` you rely on.
+2. Export both the parsed types (via `z.infer<typeof Schema>`) and a small helper `parseConventionsFromFile()` that validates and returns the typed object.
+3. Import the parser in validators (e.g. `scripts/validation/docs-conventions.ts`) and narrow dynamic JSON to the schema-derived types.
+
+If adding Zod as a dependency is not acceptable for your environment, keep the same pattern but implement a minimal runtime parser that performs the same narrow validation and returns well-typed objects (see `scripts/schemas/conventions-schema.ts` for an example).
+
 Realistic Example: AGENTS.md for a Legacy Codebase
 
 This example demonstrates how AGENTS.md can be used to guide an agent working on a sensitive refactoring project within a legacy application. It sets clear boundaries and points the agent to critical documentation.
@@ -484,9 +501,7 @@ try {
   await stop(); // 6. Ensure the opencode server is shut down.
 }
 
-```
-
-
+```text
 This script demonstrates how opencode can be seamlessly integrated into a core developer workflow, acting as an automated quality gate. It showcases the true potential of the tool's server architecture: opencode is not just a tool to be used, but a platform to be built upon.
 
 VIII. Conclusion

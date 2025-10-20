@@ -31,32 +31,28 @@ baseline = tokenCountFor(singleAgent, sameTask)
 efficiency = (tokenCount / baseline) * 100
 
 // Goal: Multi-agent ≤ 130% of baseline
-```
-
+```text
 #### 2. Success Rate
 
 ```javascript
 successRate = (tasksPassed / tasksAttempted) * 100
 
 // Goal: ≥ 95% for production systems
-```
-
+```text
 #### 3. Test Coverage
 
 ```javascript
 coverage = (linesCovered / totalLines) * 100
 
 // Goal: ≥ 80%
-```
-
+```text
 #### 4. Quality Score
 
 ```javascript
 quality = (testsPass && noCriticalVulns && coverage >= 80) ? 100 : 0
 
 // Boolean: either meets criteria or doesn't
-```
-
+```text
 ---
 
 ## Our Metrics Dashboard

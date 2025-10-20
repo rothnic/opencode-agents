@@ -29,8 +29,7 @@ export function loadConfig() {
 }
 
 export default class MyClass {}
-```
-
+```text
 ❌ **Incorrect** (CommonJS):
 
 ```javascript
@@ -42,8 +41,7 @@ function loadConfig() {
 }
 
 module.exports = { loadConfig };  // ERROR: Use export instead
-```
-
+```text
 ### Node.js Built-in Imports
 
 **Rule**: Always use `node:` protocol for Node.js built-in modules.
@@ -54,14 +52,12 @@ module.exports = { loadConfig };  // ERROR: Use export instead
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { execSync } from 'node:child_process';
-```
-
+```text
 ❌ **Incorrect**:
 
 ```javascript
 import { readFileSync } from 'fs';  // Missing node: protocol
-```
-
+```text
 **Enforcement**: Biome rule `useNodejsImportProtocol` set to `error` level.
 
 ## Inline Directives (Temporary Waivers)
@@ -72,8 +68,7 @@ Sometimes you need to temporarily bypass a linting rule. Use Biome ignore commen
 
 ```javascript
 // biome-ignore lint/rule/name: Reason for waiver (Issue: #123, Expires: 2025-11-01)
-```
-
+```text
 ### Required Fields
 
 1. **Reason**: Clear explanation of why the rule is bypassed
@@ -87,8 +82,7 @@ Sometimes you need to temporarily bypass a linting rule. Use Biome ignore commen
 ```javascript
 // biome-ignore lint/style/noCommonJs: Legacy script needs refactor (Issue: #456, Expires: 2025-11-15)
 const legacyModule = require('./legacy.js');
-```
-
+```text
 ✅ **Correct** (Permanent exception with justification):
 
 ```javascript
@@ -96,15 +90,13 @@ const legacyModule = require('./legacy.js');
 function parseApiResponse(data: any) {
   return data;
 }
-```
-
+```text
 ❌ **Incorrect** (Missing metadata):
 
 ```javascript
 // biome-ignore lint/style/noCommonJs: TODO fix later
 const fs = require('fs');
-```
-
+```text
 ### Creating GitHub Issues for Waivers
 
 When adding a temporary waiver:
@@ -128,8 +120,7 @@ Description:
 Context:
 Added temporary waiver in commit abc123. Script needs ES module refactor
 but blocked by [reason]. Should be completed by expiration date.
-```
-
+```text
 ## Cognitive Complexity
 
 **Rule**: Functions should have cognitive complexity ≤ 15.
@@ -147,8 +138,7 @@ function checkFileLocations(fix = false) {
   // 150 lines of nested if/else and loops
   // Cognitive complexity: 21
 }
-```
-
+```text
 ✅ **Refactored**:
 
 ```javascript
@@ -169,8 +159,7 @@ function findViolations() {
 function fixViolations(violations) {
   // Focused: just fixing
 }
-```
-
+```text
 ## TypeScript Strict Mode
 
 **Rule**: All TypeScript code must pass strict type checking.
@@ -188,16 +177,14 @@ function fixViolations(violations) {
 function processUser(user: User): string {
   return user.name.toUpperCase();
 }
-```
-
+```text
 ❌ **Incorrect**:
 
 ```typescript
 function processUser(user) {  // ERROR: Implicit 'any' type
   return user.name.toUpperCase();
 }
-```
-
+```text
 ## Quality Gates
 
 All code must pass these gates before merge:
@@ -285,8 +272,7 @@ const configPath = join(__dirname, 'config.json');
 # Step 6: Verify
 npm run type-check
 npm test
-```
-
+```text
 ## References
 
 - [Biome Lint Rules](https://biomejs.dev/linter/rules/)

@@ -29,14 +29,14 @@ function getCurrentBranch() {
   }
 }
 
-function getFeatureName(branchName) {
+function getFeatureName(branchName: string): string {
   // Extract feature name from branch
   // feature/documentation-conventions -> Documentation Conventions
   const parts = branchName.split('/');
-  if (parts.length > 1) {
+  if (parts.length > 1 && parts[1]) {
     return parts[1]
       .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   }
   return branchName;
@@ -50,7 +50,7 @@ function getCurrentDate() {
 // TEMPLATE GENERATION
 // ============================================================================
 
-function generateTemplate(branchName, featureName) {
+function generateTemplate(branchName: string, featureName: string): string {
   return `# Work Verification: ${featureName}
 
 **Branch**: \`${branchName}\`  
@@ -184,17 +184,18 @@ _Any additional context, decisions, or information about this work:_
 
 function main() {
   const args = process.argv.slice(2);
-  let branchName = args[0];
+  let branchName: string | undefined = args[0];
 
   if (!branchName) {
-    branchName = getCurrentBranch();
-    if (!branchName) {
+    const currentBranch = getCurrentBranch();
+    if (!currentBranch) {
       console.error('❌ Could not determine current git branch');
       console.error(
         '   Provide branch name: node scripts/init-work-verification.js feature/my-feature',
       );
       process.exit(1);
     }
+    branchName = currentBranch;
   }
 
   if (branchName === 'main') {

@@ -22,8 +22,7 @@ Check your project's maturity:
 
 ```bash
 git rev-list --count HEAD
-```
-
+```text
 ## Configuration Files
 
 ### `.opencode/validation-rules.json`
@@ -57,8 +56,7 @@ Central configuration for all validation rules:
     }
   }
 }
-```
-
+```text
 **Benefits**:
 
 - Update rules without code changes
@@ -78,8 +76,7 @@ Backup file patterns are automatically added:
 *.bak
 *~
 *.orig
-```
-
+```text
 These patterns are **configurable** in `validation-rules.json` so different projects can define their own unwanted patterns.
 
 ## TypeScript Type Safety
@@ -92,8 +89,7 @@ These patterns are **configurable** in `validation-rules.json` so different proj
 // BAD: Hiding the problem
 const data = JSON.parse(response) as any;
 const result = someFunction() as any;
-```
-
+```text
 ✅ **DO THIS INSTEAD**:
 
 ```typescript
@@ -109,8 +105,7 @@ const result: unknown = someFunction();
 if (typeof result === 'object' && result !== null) {
   // Type narrowing
 }
-```
-
+```text
 ### When `any` is Acceptable
 
 Only use `any` in these scenarios:
@@ -140,8 +135,7 @@ Run comprehensive checks:
 ```bash
 npm run audit-repository        # Check all issues
 npm run audit-repository --fix  # Auto-fix what's possible
-```
-
+```text
 **Detects**:
 
 - ✓ Outdated dependencies (jest → vitest, eslint → biome)
@@ -167,15 +161,13 @@ npm run type-check      # TypeScript errors
 npm run lint:staged     # Biome linting
 npm run test:changed    # Related tests
 npm run security        # Vulnerabilities
-```
-
+```text
 Commit message format enforcement:
 
 ```bash
 # .git/hooks/commit-msg
 # Validates conventional commit format
-```
-
+```text
 ## Escape Hatches
 
 ### Inline Directives
@@ -187,8 +179,7 @@ Temporarily override rules:
 function complexFunction() {
   // ...
 }
-```
-
+```text
 **Best Practices**:
 
 - Always add reason after colon
@@ -207,8 +198,7 @@ Adjust rules in `validation-rules.json`:
     }
   }
 }
-```
-
+```text
 ## Installation Vision
 
 **Future Goal**: Install in any new project:
@@ -226,8 +216,7 @@ npx opencode-agents init
 # - Validation rules customization
 # - Git hooks setup
 # - Initial project structure
-```
-
+```text
 **What you get**:
 
 1. Automated best practices enforcement

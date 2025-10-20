@@ -74,16 +74,18 @@ const CORRECT_LOCATIONS = {
 // MAIN LOGIC
 // ============================================================================
 
-function checkFileLocations(fix = false) {
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Legacy function, will refactor in migration
+function checkFileLocations(fix = false): boolean {
   console.log('🔍 Checking file locations...\n');
 
-  const violations = [];
-  let rootFiles;
+  const violations: Array<{ file: string; type: string; reason: string; suggestion?: string }> = [];
+  let rootFiles: string[];
 
   try {
     rootFiles = fs.readdirSync('.');
   } catch (error) {
-    console.error('❌ Error reading root directory:', error.message);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error('❌ Error reading root directory:', errorMessage);
     process.exit(1);
   }
 
@@ -154,7 +156,7 @@ function checkFileLocations(fix = false) {
   }
 }
 
-function getSuggestion(filename) {
+function getSuggestion(filename: string): string {
   // Determine correct location based on filename pattern
   for (const [pattern, location] of Object.entries(CORRECT_LOCATIONS)) {
     if (filename.toUpperCase().includes(pattern)) {
@@ -169,10 +171,10 @@ function getSuggestion(filename) {
 // CHECK STAGED FILES (for pre-commit hook)
 // ============================================================================
 
-function checkStagedFiles() {
+function checkStagedFiles(): boolean {
   console.log('🔍 Checking staged files...\n');
 
-  let stagedFiles;
+  let stagedFiles: string[];
   try {
     const output = execSync('git diff --cached --name-only', {
       encoding: 'utf8',
@@ -242,7 +244,7 @@ function main() {
   console.log('  File Location Validator - OpenCode Agents');
   console.log('═══════════════════════════════════════════════════════\n');
 
-  let success;
+  let success: boolean;
 
   if (staged) {
     success = checkStagedFiles();

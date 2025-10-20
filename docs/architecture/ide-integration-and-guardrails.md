@@ -85,8 +85,7 @@ export class ConventionDiagnostics {
     this.diagnosticCollection.set(document.uri, diagnostics);
   }
 }
-```
-
+```text
 #### Approach B: ESLint-Style Configuration (Simpler)
 
 Use existing linting infrastructure:
@@ -122,8 +121,7 @@ Use existing linting infrastructure:
   "opencode.conventions.showInProblems": true,
   "opencode.conventions.level": "warning" // or "error"
 }
-```
-
+```text
 ---
 
 ## 2. Document Consolidation Detection
@@ -208,8 +206,7 @@ function suggestConsolidation(doc1, doc2) {
     ]
   };
 }
-```
-
+```text
 #### Integration with WORK-VERIFICATION.md
 
 Add consolidation check to pre-merge validation:
@@ -220,8 +217,7 @@ Add consolidation check to pre-merge validation:
 - [ ] No duplicate/overlapping documents detected
 - [ ] All new documents have clear, unique purpose
 - [ ] Existing documents reviewed for consolidation opportunities
-```
-
+```text
 #### Agent Prompts
 
 Add to `.opencode/agents/*.md`:
@@ -240,8 +236,7 @@ Add to `.opencode/agents/*.md`:
 Can you describe this document's purpose in ONE sentence that doesn't overlap with existing docs?
 - ✅ YES → Create new document
 - ❌ NO → Update existing document or consolidate
-```
-
+```text
 ---
 
 ## 3. Human Override Mechanism
@@ -281,8 +276,7 @@ overrides:
       - docs-conventions
     branch: experiment/new-test-framework
     expiresAt: null  # No expiration for experimental branches
-```
-
+```text
 #### Pre-Merge Check Integration
 
 ```javascript
@@ -315,8 +309,7 @@ function checkForOverride(branchName, checkType) {
   
   return null;
 }
-```
-
+```text
 #### Agent Rules
 
 Add to agent specifications:
@@ -338,8 +331,7 @@ Add to agent specifications:
 - Issue labeled `urgent` + `skip-guardrails`
 - User message contains "skip guardrails" or "emergency deploy"
 - Agent must still create follow-up issue for any skipped checks
-```
-
+```text
 #### CLI Helper
 
 ```bash
@@ -349,8 +341,7 @@ node scripts/create-override.js \
   --skip test-coverage,work-verification \
   --expires 4h \
   --issue "#123"
-```
-
+```text
 ---
 
 ## 4. File Size Limits
@@ -438,8 +429,7 @@ function getSplitSuggestions(file, lines, limit) {
   
   return ['Consider splitting this file into smaller, focused files'];
 }
-```
-
+```text
 #### 4.2. Agent Instructions
 
 Add to `.opencode/agents/code-implementer.md`:
@@ -451,8 +441,7 @@ Add to `.opencode/agents/code-implementer.md`:
 
 ```bash
 wc -l <file>  # Count lines
-```
-
+```text
 **Limits**:
 
 - JSON: 500 lines max → Use YAML instead
@@ -473,8 +462,7 @@ wc -l <file>  # Count lines
 - **Documentation**: One topic per file, link between them
 - **Code**: One module/class per file, clear responsibilities
 
-```
-
+```text
 ---
 
 ## 5. YAML over JSON
@@ -518,8 +506,7 @@ YAML advantages:
     }
   }
 }
-```
-
+```text
 **After** (conventions.yaml - ~70 lines, 33% reduction):
 
 ```yaml
@@ -560,8 +547,7 @@ documentation:
           - GETTING-STARTED.md
           - SUMMARY.md
         message: Use lowercase-with-dashes for documentation files
-```
-
+```text
 Benefits:
 
 - Inline comments explain each rule
@@ -592,8 +578,7 @@ function loadConventions() {
   
   throw new Error('No conventions file found (.yaml or .json)');
 }
-```
-
+```text
 #### 5.3. Migration Plan
 
 1. **Install js-yaml**: `npm install --save-dev js-yaml`
@@ -665,8 +650,7 @@ All agent specs (`.opencode/agents/*.md`) need these additions:
 - Your edits will show real-time validation in the IDE
 - Pay attention to diagnostics in Problems panel
 - Fix violations before committing
-```
-
+```text
 ---
 
 ## 8. Configuration
@@ -680,8 +664,7 @@ All agent specs (`.opencode/agents/*.md`) need these additions:
   "opencode.documentOverlap.enabled": true,
   "opencode.preferYaml": true
 }
-```
-
+```text
 ### .opencode/quality-gates.yaml
 
 ```yaml
@@ -698,8 +681,7 @@ gates:
     script: scripts/docs-conventions.js
     args: [--staged]
     level: error
-```
-
+```text
 ---
 
 ## Success Metrics

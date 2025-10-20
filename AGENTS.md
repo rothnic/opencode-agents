@@ -30,8 +30,7 @@ npm run ci                # Full CI checks (type + lint + test + security)
 npm run verify            # Verify all tools installed
 npm run audit-repository  # Check for outdated refs, backup files, etc.
 npm run version:check     # Check version milestones and severity escalations
-```
-
+```text
 ## Commit Format
 
 Use [Conventional Commits](https://www.conventionalcommits.org/):
@@ -42,8 +41,7 @@ Use [Conventional Commits](https://www.conventionalcommits.org/):
 [optional body]
 
 [optional footer]
-```
-
+```text
 **Types**: `feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `perf`, `ci`, `build`
 
 **Examples**:
@@ -130,8 +128,7 @@ This ensures quality increases incrementally without blocking early development.
 // BAD: Hiding the real problem
 const data = JSON.parse(response) as any;
 const result = someFunction() as any;
-```
-
+```text
 ✅ **DO THIS INSTEAD**:
 
 ```typescript
@@ -147,8 +144,7 @@ const result: unknown = someFunction();
 if (typeof result === 'object' && result !== null) {
   // Type narrowing here
 }
-```
-
+```text
 ### When `any` is Acceptable
 
 Only use `any` when:

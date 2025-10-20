@@ -47,8 +47,7 @@
 ```bash
 npm run version:check       # Show milestone status
 npm run version:apply       # Preview escalations
-```
-
+```text
 ### 3. Markdown-Specific Scripts
 
 **New npm scripts**:
@@ -56,8 +55,7 @@ npm run version:apply       # Preview escalations
 ```bash
 npm run lint:md             # Check markdown only
 npm run lint:md:fix         # Fix markdown only (faster)
-```
-
+```text
 **Why separate?**
 
 - Faster for agents (don't run full lint)
@@ -73,9 +71,9 @@ npm run lint:md:fix         # Fix markdown only (faster)
    - DavidAnson.vscode-markdownlint
    - vitest.explorer
 
-2. **Reload VS Code**
+1. **Reload VS Code**
 
-3. **Edit any .md file** - Auto-fixes on save!
+1. **Edit any .md file** - Auto-fixes on save!
 
 ### For AI Agents
 
@@ -89,8 +87,7 @@ npm run lint:fix            # Fix everything
 # Check quality gates
 npm run audit-repository    # Full audit
 npm run version:check       # Milestone status
-```
-
+```text
 ## How It Saves Tokens
 
 ### Before (Manual Fixes)
@@ -146,8 +143,7 @@ Agent workflow:
     }
   }
 }
-```
-
+```text
 ### `.opencode/validation-rules.json`
 
 ```json
@@ -163,8 +159,7 @@ Agent workflow:
     }
   }
 }
-```
-
+```text
 ## Version Escalation Details
 
 ### Current State (0.1.0)
@@ -207,16 +202,14 @@ Pre-commit hook respects version-based severity:
 
 ```bash
 npm run precommit  # Runs with current version severity
-```
-
+```text
 ### CI/CD
 
 CI pipeline enforces current milestone:
 
 ```bash
 npm run ci  # Full checks with version-based errors
-```
-
+```text
 ### Agent Instructions
 
 Updated in `AGENTS.md`:
@@ -239,8 +232,7 @@ Updated in `AGENTS.md`:
 
 ```bash
 npm run version:check
-```
-
+```text
 Should show:
 
 ```text
@@ -249,8 +241,7 @@ Should show:
 
 ⏳ Upcoming (at v0.5.0)
    ...
-```
-
+```text
 ## Benefits Summary
 
 ### For Development Speed

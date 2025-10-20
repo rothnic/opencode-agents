@@ -41,7 +41,7 @@ A lint-style system for documentation with:
 
 ### Directory Structure
 
-```
+```text
 docs/
 ├── README.md              # Project documentation index
 ├── GETTING-STARTED.md     # Quick start guide
@@ -56,8 +56,7 @@ docs/
 ├── metrics/               # Performance analysis
 ├── phases/                # Phase-specific work
 └── templates/             # Reusable document templates
-```
-
+```text
 ### Rules
 
 1. **docs-root-limited** (ERROR)
@@ -65,16 +64,16 @@ docs/
    - Content documents must go in subdirectories
    - Auto-suggests correct subdirectory based on content
 
-2. **consistent-naming** (ERROR)
+1. **consistent-naming** (ERROR)
    - File names must be lowercase-with-dashes
    - Exceptions: README.md, GETTING-STARTED.md, SUMMARY.md
    - Can auto-fix by converting to lowercase
 
-3. **no-mixed-case** (ERROR)
+1. **no-mixed-case** (ERROR)
    - Prevents camelCase, PascalCase
    - Use either ALL-CAPS (special) or lowercase-with-dashes (content)
 
-4. **blog-numbering** (ERROR)
+1. **blog-numbering** (ERROR)
    - Blog posts must be numbered: `##-title.md`
    - Ensures proper ordering
 
@@ -84,7 +83,7 @@ docs/
 
 Files that need to move:
 
-```
+```text
 docs/CODE-QUALITY-FIXES.md       → docs/architecture/code-quality-fixes.md
 docs/QUALITY-GATES-GAPS.md       → docs/architecture/quality-gates-gaps.md
 docs/custom-coding-agents.md     → docs/guides/custom-coding-agents.md
@@ -94,8 +93,7 @@ docs/quality-gates-implementation.md → docs/architecture/quality-gates-impleme
 docs/quality-gates.md            → docs/architecture/quality-gates.md
 docs/test-decision-tree.md       → docs/architecture/test-decision-tree.md
 docs/blog/IMPLEMENTATION-SUMMARY.md → Remove or convert to blog post
-```
-
+```text
 ---
 
 ## Implementation Status
@@ -130,26 +128,22 @@ docs/blog/IMPLEMENTATION-SUMMARY.md → Remove or convert to blog post
 
 ```bash
 node scripts/docs-conventions.js
-```
-
+```text
 ### Check with Warnings
 
 ```bash
 node scripts/docs-conventions.js --warnings
-```
-
+```text
 ### Check Only Staged Files (Pre-commit)
 
 ```bash
 node scripts/docs-conventions.js --staged
-```
-
+```text
 ### Auto-fix Issues (Future)
 
 ```bash
 node scripts/docs-conventions.js --fix
-```
-
+```text
 ---
 
 ## Agent Instructions
@@ -163,12 +157,12 @@ When creating documentation:
    - Blog posts → `docs/blog/`
    - Agent specs → `docs/agents/`
 
-2. **Name the file**:
+1. **Name the file**:
    - Use lowercase-with-dashes: `my-document.md`
    - Never camelCase or PascalCase
    - Only use ALL-CAPS for special docs (README, GETTING-STARTED, SUMMARY)
 
-3. **Check conventions**:
+1. **Check conventions**:
    - Run `node scripts/docs-conventions.js` before committing
    - Fix any violations
    - Pre-commit hook will catch issues
@@ -182,16 +176,14 @@ Added as 4th quality check:
 ```javascript
 4️⃣ Checking documentation conventions...
 ✅ All documentation follows conventions
-```
-
+```text
 Or:
 
 ```javascript
 4️⃣ Checking documentation conventions...
 ❌ 8 files violate conventions
    Run: node scripts/docs-conventions.js --fix
-```
-
+```text
 ---
 
 ## Benefits
@@ -237,8 +229,7 @@ Or:
     "autofix": { "interactive": true }
   }
 }
-```
-
+```text
 ---
 
 **Result**: Repository that self-documents its conventions and prevents agents from violating them through automated quality gates.

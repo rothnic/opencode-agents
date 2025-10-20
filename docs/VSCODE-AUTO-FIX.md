@@ -9,9 +9,9 @@ This project is configured to automatically fix common linting issues on save in
    - `DavidAnson.vscode-markdownlint` - Markdown linter with auto-fix
    - `vitest.explorer` - Test runner integration
 
-2. **Reload VS Code** - Settings apply automatically from `.vscode/settings.json`
+1. **Reload VS Code** - Settings apply automatically from `.vscode/settings.json`
 
-3. **Test it** - Open any `.md` file, remove blank lines around lists, save → auto-fixed!
+1. **Test it** - Open any `.md` file, remove blank lines around lists, save → auto-fixed!
 
 ## What Gets Auto-Fixed
 
@@ -52,8 +52,7 @@ npm run lint:fix
 # Check without fixing
 npm run lint
 npm run lint:md
-```
-
+```text
 ## Configuration Files
 
 ### `.vscode/settings.json`
@@ -73,8 +72,7 @@ npm run lint:md
     }
   }
 }
-```
-
+```text
 ### `.markdownlint.json`
 
 Defines which markdown rules are enabled:
@@ -86,8 +84,7 @@ Defines which markdown rules are enabled:
   "MD033": false,  // HTML allowed
   "MD041": false   // First line doesn't need to be H1
 }
-```
-
+```text
 ## Benefits for AI Agents
 
 1. **Saves tokens** - Agents don't waste time fixing trivial formatting
@@ -113,8 +110,7 @@ Add to `.markdownlint.json`:
 {
   "ignores": ["node_modules/**", "CHANGELOG.md"]
 }
-```
-
+```text
 ## Integration with CI/CD
 
 The same rules run in CI to ensure consistency:
@@ -125,8 +121,7 @@ npm run lint:staged  # Only staged files
 
 # CI pipeline
 npm run ci  # Full check (fails on violations)
-```
-
+```text
 ## Future Enhancements
 
 - [ ] Git hook to auto-fix on commit

@@ -69,8 +69,7 @@ last_updated: "2025-10-18"
     "branch": "main"
   }
 }
-```
-
+```text
 ### Recording Evidence
 
 [TODO: Add real examples from Phase 1.1 execution]
@@ -78,8 +77,7 @@ last_updated: "2025-10-18"
 ```bash
 $ npm test && node scripts/test-evidence.js phase-1.1
 # Real output will go here
-```
-
+```text
 ### Verifying Evidence
 
 [TODO: Add verification examples]
@@ -87,8 +85,7 @@ $ npm test && node scripts/test-evidence.js phase-1.1
 ```bash
 $ node scripts/test-evidence.js --verify phase-1.1
 # Real output will go here
-```
-
+```text
 ---
 
 ## Real-World Results

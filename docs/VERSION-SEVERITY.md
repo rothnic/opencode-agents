@@ -12,8 +12,7 @@ This project uses **version-based severity escalation** to automatically increas
 
 ```bash
 npm run version:check
-```
-
+```text
 **Output**:
 
 ```text
@@ -35,8 +34,7 @@ npm run version:check
    Escalations:
      - uncommittedChanges → error
      - requiredFiles → error
-```
-
+```text
 ## Milestone Definitions
 
 ### v0.1.0 - Development (CURRENT)
@@ -126,8 +124,7 @@ Milestones are defined in `.opencode/validation-rules.json`:
     }
   }
 }
-```
-
+```text
 ## How It Works
 
 1. **Check current version** from `package.json`
@@ -146,8 +143,7 @@ npm run version:apply
 
 # Run audit with version-based severity
 npm run audit-repository
-```
-
+```text
 ## Benefits
 
 ### For Early Development (0.1.0)
@@ -184,8 +180,7 @@ npm version minor  # 0.1.0 → 0.2.0
 
 # Breaking changes, major milestones
 npm version major  # 0.1.0 → 1.0.0
-```
-
+```text
 **Pre-release approach**:
 
 ```bash
@@ -197,8 +192,7 @@ npm version 0.5.0  # ESCALATION: Some rules → errors
 # Approaching 1.0.0 milestone
 npm version 0.9.0  # Last chance to clean up
 npm version 1.0.0  # ESCALATION: All rules → errors
-```
-
+```text
 ## Override Mechanism
 
 If you need to commit despite errors:
@@ -208,8 +202,7 @@ If you need to commit despite errors:
 ```typescript
 // biome-ignore lint/rule: reason
 // TODO(2025-11-01): Remove this workaround
-```
-
+```text
 ### 2. Temporarily disable rule
 
 Edit `.opencode/validation-rules.json`:
@@ -222,14 +215,12 @@ Edit `.opencode/validation-rules.json`:
     }
   }
 }
-```
-
+```text
 ### 3. Force commit (last resort)
 
 ```bash
 git commit --no-verify
-```
-
+```text
 **Always**:
 
 - Document WHY in commit message
@@ -275,8 +266,7 @@ Add your own milestones:
     }
   }
 }
-```
-
+```text
 ## Philosophy
 
 **Goal**: Create configurable guardrails that grow with your project.

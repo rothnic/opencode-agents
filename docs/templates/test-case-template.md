@@ -77,8 +77,7 @@ describe('Phase [N].[M]: [Test Description]', () => {
   });
   
 });
-```
-
+```text
 ## Test Design Guidelines
 
 ### 1. Clear Test Structure
@@ -122,40 +121,35 @@ Use star ratings to indicate complexity:
 ```javascript
 expect(result.filesCreated).toContain('path/to/file.js');
 expect(fs.existsSync('path/to/file.js')).toBe(true);
-```
-
+```text
 ### Code Functionality
 
 ```javascript
 const module = require('../src/module.js');
 expect(module.function(input)).toBe(expectedOutput);
-```
-
+```text
 ### Test Execution
 
 ```javascript
 expect(result.testsPass).toBe(true);
 expect(result.testCoverage).toBeGreaterThanOrEqual(80);
-```
-
+```text
 ### Code Quality
 
 ```javascript
 expect(result.lintErrors).toBe(0);
 expect(result.securityIssues.critical).toHaveLength(0);
-```
-
+```text
 ### Performance
 
 ```javascript
 expect(result.metrics.tokenCount).toBeLessThan(5000);
 expect(result.metrics.executionTime).toBeLessThan(120000);
-```
-
+```text
 ### Agent Delegation
 
 ```javascript
 expect(result.agentInvocations).toContainEqual(
   expect.objectContaining({ agent: 'codeimplementer' })
 );
-```
+```text

@@ -8,8 +8,7 @@ The `npm run status` command provides a comprehensive dashboard of your project'
 
 ```bash
 npm run status
-```
-
+```text
 ## What It Shows
 
 ### 📦 Project Information
@@ -207,8 +206,7 @@ Future CLI flags:
 
 💡 RECOMMENDATIONS
    ✅ Repository is clean. Ready to start next objective!
-```
-
+```text
 ### Needs Attention
 
 ```text
@@ -222,8 +220,7 @@ Future CLI flags:
 💡 RECOMMENDATIONS
    ⚠️  CRITICAL: 87 uncommitted files. Make incremental commits!
    ❌ 3 test(s) failing. Fix before moving forward.
-```
-
+```text
 ## Related Documentation
 
 - [VSCODE-AUTO-FIX.md](./VSCODE-AUTO-FIX.md) - Auto-fix configuration

@@ -29,7 +29,7 @@ import path from 'node:path';
 // CONFIGURATION
 // ============================================================================
 
-const SIZE_LIMITS = {
+const SIZE_LIMITS: { [k: string]: number } = {
   '.json': 500,
   '.md': 800,
   '.js': 600,
@@ -52,7 +52,7 @@ const EXCEPTIONS = [
 // FILE DISCOVERY
 // ============================================================================
 
-function getAllFiles(stagedOnly = false) {
+function getAllFiles(stagedOnly = false): string[] {
   if (stagedOnly) {
     try {
       const output = execSync('git diff --staged --name-only --diff-filter=ACM', {
@@ -74,8 +74,8 @@ function getAllFiles(stagedOnly = false) {
   }
 }
 
-function scanDirectory(dir) {
-  const files = [];
+function scanDirectory(dir: string): string[] {
+  const files: string[] = [];
   const items = fs.readdirSync(dir);
 
   for (const item of items) {
@@ -98,7 +98,7 @@ function scanDirectory(dir) {
   return files;
 }
 
-function isException(file) {
+function isException(file: string): boolean {
   return EXCEPTIONS.some(pattern => {
     // Simple glob matching
     const regex = pattern.replace(/\./g, '\\.').replace(/\*\*/g, '.*').replace(/\*/g, '[^/]*');
@@ -110,7 +110,7 @@ function isException(file) {
 // SIZE CHECKING
 // ============================================================================
 
-function countLines(file) {
+function countLines(file: string): number {
   try {
     const content = fs.readFileSync(file, 'utf8');
     return content.split('\n').length;
@@ -119,12 +119,18 @@ function countLines(file) {
   }
 }
 
-function getSizeLimit(file) {
+function getSizeLimit(file: string): number {
   const ext = path.extname(file);
-  return SIZE_LIMITS[ext] || SIZE_LIMITS.default;
+  const maybe = SIZE_LIMITS[ext];
+  if (typeof maybe === 'number') {
+    return maybe;
+  }
+
+  const def = SIZE_LIMITS['default'];
+  return typeof def === 'number' ? def : 1000;
 }
 
-function getSplitSuggestions(file) {
+function getSplitSuggestions(file: string): string[] {
   const ext = path.extname(file);
 
   if (ext === '.json') {
@@ -169,12 +175,21 @@ function getSplitSuggestions(file) {
 // ============================================================================
 
 class Results {
+  violations: Array<{
+    file: string;
+    lines: number;
+    limit: number;
+    excess: number;
+    suggestions: string[];
+  }>;
+  checked: number;
+
   constructor() {
     this.violations = [];
     this.checked = 0;
   }
 
-  addViolation(file, lines, limit) {
+  addViolation(file: string, lines: number, limit: number): void {
     this.violations.push({
       file,
       lines,
@@ -184,11 +199,11 @@ class Results {
     });
   }
 
-  hasViolations() {
+  hasViolations(): boolean {
     return this.violations.length > 0;
   }
 
-  print() {
+  print(): void {
     console.log('═══════════════════════════════════════════════════════');
     console.log('  File Size Check');
     console.log('═══════════════════════════════════════════════════════');

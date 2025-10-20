@@ -39,12 +39,11 @@ Created **46 passing tests** across 3 test files:
 
 **Before:**
 
-```
+```text
 expect(received).toMatch(expected)
 Expected pattern: /FAILED|Failed|❌/i
 Received string:  ""
-```
-
+```text
 **After:**
 
 ```javascript
@@ -54,8 +53,7 @@ throw new Error(
   `Actual output (first 500 chars):\n${output.substring(0, 500)}\n` +
   `Output length: ${output.length} chars, Exit code: ${exitCode}`
 );
-```
-
+```text
 This makes debugging test failures **10x easier** - you immediately see what went wrong!
 
 ### 3. Critical Gap Analysis ✅
@@ -67,25 +65,25 @@ Documented **6 major gaps** in our quality system:
    - Moved to correct location: `docs/phases/phase-0.2/`
    - All gates now pass
 
-2. **No blog automation** ⚠️
+1. **No blog automation** ⚠️
    - 16 blog posts, 14 are stubs
    - No agent to update them when phases complete
    - Manual process prone to forgetting
 
-3. **Missing agent definitions** ⚠️ → ✅ (Specified!)
+1. **Missing agent definitions** ⚠️ → ✅ (Specified!)
    - Created `docs/agents/README.md`
    - Defined 4 core agents with full specs
    - Designed agent coordination system
 
-4. **No freshness checks** ⚠️
+1. **No freshness checks** ⚠️
    - Except test evidence (< 10 min)
    - Need staleness detection for docs, blogs, diagrams
 
-5. **No metrics dashboard** ⚠️
+1. **No metrics dashboard** ⚠️
    - Collecting metrics but not visualizing
    - No trend analysis
 
-6. **Poor test error messages** ❌ → ✅ (Fixed!)
+1. **Poor test error messages** ❌ → ✅ (Fixed!)
 
 ### 4. Agent System Architecture ✅
 
@@ -157,20 +155,18 @@ By asking "How do we know when blog posts need updating?", we discovered:
 
 Bad error message:
 
-```
+```text
 Expected pattern not found
-```
-
+```text
 Good error message:
 
-```
+```text
 Gate check output should contain failure indicator.
 Expected pattern: /FAILED|Failed|❌/i
 Actual output (first 500 chars):
 [shows actual output]
 Output length: 0 chars, Exit code: undefined
-```
-
+```text
 The second tells you **exactly** what to investigate!
 
 ## What Changed

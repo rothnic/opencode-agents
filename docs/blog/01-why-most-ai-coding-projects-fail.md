@@ -108,8 +108,7 @@ Agent: Fixing issue...
 System: Running verification tests...
 System: ✓ All tests pass
 System: ✓ Test evidence recorded at 2025-10-18T10:23:45Z
-```
-
+```text
 **Every capability has a test.** No exceptions.
 
 ### Principle 2: Measurable Progress
@@ -125,8 +124,7 @@ expect(result.testCoverage).toBeGreaterThanOrEqual(80);
 // Performance metrics
 expect(result.tokenCount).toBeLessThan(5000);
 expect(result.executionTime).toBeLessThan(120000);
-```
-
+```text
 ### Principle 3: Specialized Agents
 
 Single "god agent" → Multiple specialized agents
@@ -152,8 +150,7 @@ Gate Check: FAILED
   ✗ Tests must be executed and pass
   
 Commit blocked. Run tests first.
-```
-
+```text
 Multiple enforcement layers:
 
 1. Documentation (educate)
@@ -207,8 +204,7 @@ test('agent generates working code', async () => {
   // Metrics collected
   expect(result.tokenCount).toBeLessThan(500);
 });
-```
-
+```text
 **Metrics Collected**:
 
 - Token count: 342
@@ -246,8 +242,7 @@ test('multi-agent creates code AND tests', async () => {
   expect(result.testsPass).toBe(true);
   expect(result.testCoverage).toBeGreaterThanOrEqual(80);
 });
-```
-
+```text
 **Comparison to Baseline**:
 
 - Token efficiency: 112% of single agent (acceptable overhead)
@@ -301,8 +296,7 @@ Missing test evidence
 Run: npm test && node scripts/test-evidence.js phase-X
 
 Commit blocked.
-```
-
+```text
 **Impact**: Impossible to commit incomplete work
 
 ### File Organization Rules ✅
@@ -323,8 +317,7 @@ $ git add SESSION-NOTES.md
 Correct location: docs/phases/phase-X/
 
 Commit blocked.
-```
-
+```text
 **Impact**: Clean repository structure maintained automatically
 
 ### Test Evidence System ✅
@@ -341,8 +334,7 @@ Commit blocked.
   "testResults": { ... },
   "gitCommit": "abc123..."
 }
-```
-
+```text
 **Verification**: Evidence must be < 10 minutes old for phase completion
 
 **Impact**: Provable test execution, not just claims
@@ -405,11 +397,11 @@ Commit blocked.
 
 1. **Quality Gates Deep Dive**: How we built the multi-layer defense system (and why it works)
 
-2. **The Orchestrator Pattern**: Measured results from task decomposition
+1. **The Orchestrator Pattern**: Measured results from task decomposition
 
-3. **Two-Agent Collaboration**: Real metrics from Code + Test agent pairing
+1. **Two-Agent Collaboration**: Real metrics from Code + Test agent pairing
 
-4. **Memory Systems**: Making agents that actually learn
+1. **Memory Systems**: Making agents that actually learn
 
 ---
 
@@ -427,8 +419,7 @@ node scripts/gate-check.js
 
 # See the verification system in action
 cat docs/quality-gates.md
-```
-
+```text
 ---
 
 ## The Bottom Line
@@ -454,4 +445,4 @@ This isn't theoretical. The quality gates system described here is **working tod
 
 ---
 
-*Questions? Comments? Find me on [GitHub](https://github.com/rothnic/opencode-agents/issues).*
+## Questions? Comments? Find me on [GitHub](https://github.com/rothnic/opencode-agents/issues).

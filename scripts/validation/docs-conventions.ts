@@ -22,6 +22,30 @@
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
+import {
+  parseConventionsFromFile,
+  type Conventions as SchemaConventions,
+  type Rule as SchemaRule,
+} from '../schemas/conventions-schema.js';
+
+// ============================================================================
+// TYPES
+// ============================================================================
+
+type Conventions = SchemaConventions;
+
+interface ValidationIssue {
+  file: string;
+  rule: string;
+  message: string;
+  severity?: string;
+  fix?: string | null;
+}
+
+// (ValidationResult class below provides the runtime structure)
+
+// Lightweight rule type (conventions JSON is dynamic; keep minimal known fields)
+type Rule = SchemaRule;
 
 // ============================================================================
 // CONFIGURATION
@@ -34,16 +58,11 @@ const DOCS_DIR = 'docs';
 // LOAD CONVENTIONS
 // ============================================================================
 
-function loadConventions() {
-  if (!fs.existsSync(CONVENTIONS_FILE)) {
-    console.error(`❌ Conventions file not found: ${CONVENTIONS_FILE}`);
-    process.exit(1);
-  }
-
+function loadConventions(): Conventions {
   try {
-    return JSON.parse(fs.readFileSync(CONVENTIONS_FILE, 'utf8'));
-  } catch (error) {
-    console.error(`❌ Invalid conventions file: ${error.message}`);
+    return parseConventionsFromFile(CONVENTIONS_FILE);
+  } catch (err) {
+    console.error(`❌ Failed to load conventions: ${String(err)}`);
     process.exit(1);
   }
 }
@@ -52,10 +71,10 @@ function loadConventions() {
 // FILE DISCOVERY
 // ============================================================================
 
-function getAllDocFiles() {
-  const files = [];
+function getAllDocFiles(): string[] {
+  const files: string[] = [];
 
-  function scan(dir) {
+  function scan(dir: string): void {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
 
     for (const entry of entries) {
@@ -92,39 +111,59 @@ function getStagedDocFiles() {
 // VALIDATION
 // ============================================================================
 
+function getRuleString(rule: Rule, key: string): string | undefined {
+  const val = (rule as Record<string, unknown>)[key];
+  return typeof val === 'string' ? val : undefined;
+}
+
 class ValidationResult {
+  errors: ValidationIssue[];
+  warnings: ValidationIssue[];
+  fixes: string[];
+
   constructor() {
     this.errors = [];
     this.warnings = [];
     this.fixes = [];
   }
 
-  addError(file, rule, message, fix = null) {
+  addError(file: string, rule: string, message: string, fix: string | null = null): void {
     this.errors.push({ file, rule, message, fix });
   }
 
-  addWarning(file, rule, message, fix = null) {
+  addWarning(file: string, rule: string, message: string, fix: string | null = null): void {
     this.warnings.push({ file, rule, message, fix });
   }
 
-  hasIssues() {
+  hasIssues(): boolean {
     return this.errors.length > 0;
   }
 }
 
-function validateFile(file, conventions, results) {
-  const rules = conventions.documentation.fileOrganization.rules;
+// Conventions JSON is dynamic; assert minimal shape for fileOrganization
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: File validation logic requires multiple checks for rules, exclusions, patterns, and error levels
+function validateFile(file: string, conventions: Conventions, results: ValidationResult): void {
+  // `conventions.documentation` comes from a dynamic JSON file. Access
+  // `fileOrganization` via indexer to satisfy the index-signature typing.
+  const fo = (conventions.documentation as Record<string, unknown> | undefined)
+    ? ((conventions.documentation as Record<string, unknown>)['fileOrganization'] as unknown as
+        | { rules?: Rule[] }
+        | undefined)
+    : undefined;
+  const rules = fo?.rules || [];
 
   for (const rule of rules) {
     // Check if file matches rule pattern
-    const pattern = new RegExp(rule.pattern);
+    const rulePattern = getRuleString(rule, 'pattern');
+    if (!rulePattern) continue;
+    const pattern = new RegExp(rulePattern);
     if (!pattern.test(file)) {
       continue;
     }
 
     // Check if file is excluded
     if (rule.exclude) {
-      const excluded = rule.exclude.some(ex => new RegExp(ex).test(file));
+      const excluded = rule.exclude.some((ex: string) => new RegExp(ex).test(file));
       if (excluded) {
         continue;
       }
@@ -135,17 +174,21 @@ function validateFile(file, conventions, results) {
 
     if (!isValid) {
       const fix = generateFix(file, rule);
+      const fixStr = fix ? JSON.stringify(fix) : null;
+      const ruleId = typeof rule.id === 'string' ? rule.id : 'unknown';
+      const ruleMsg = typeof rule.message === 'string' ? rule.message : '';
 
       if (rule.level === 'error') {
-        results.addError(file, rule.id, rule.message, fix);
+        results.addError(file, ruleId, ruleMsg, fixStr);
       } else if (rule.level === 'warning') {
-        results.addWarning(file, rule.id, rule.message, fix);
+        results.addWarning(file, ruleId, ruleMsg, fixStr);
       }
     }
   }
 }
 
-function applyRule(file, rule) {
+// Rule structure is dynamic from JSON, use lightweight Rule type
+function applyRule(file: string, rule: Rule): boolean {
   switch (rule.id) {
     case 'docs-root-limited': {
       // Check if file is in docs root
@@ -155,31 +198,43 @@ function applyRule(file, rule) {
       }
 
       const basename = path.basename(file);
-      return rule.allowed.includes(basename);
+      const allowedVal = (rule as Record<string, unknown>)['allowed'];
+      if (Array.isArray(allowedVal)) {
+        return (allowedVal as string[]).includes(basename);
+      }
+      return true;
     }
 
     case 'consistent-naming':
     case 'no-mixed-case': {
       const basename = path.basename(file);
-      const validator = new RegExp(rule.validator);
+      const validatorStr = getRuleString(rule, 'validator');
+      if (!validatorStr) return true;
+      const validator = new RegExp(validatorStr);
       return validator.test(basename);
     }
 
     case 'blog-numbering': {
       const basename = path.basename(file);
-      const validator = new RegExp(rule.validator);
+      const validatorStr = getRuleString(rule, 'validator');
+      if (!validatorStr) return true;
+      const validator = new RegExp(validatorStr);
       return validator.test(basename);
     }
 
     case 'phase-structure': {
       const dirname = path.basename(path.dirname(file));
-      const validator = new RegExp(rule.validator);
+      const validatorStr = getRuleString(rule, 'validator');
+      if (!validatorStr) return true;
+      const validator = new RegExp(validatorStr);
       return validator.test(dirname);
     }
 
     case 'template-suffix': {
       const basename = path.basename(file);
-      const validator = new RegExp(rule.validator);
+      const validatorStr = getRuleString(rule, 'validator');
+      if (!validatorStr) return true;
+      const validator = new RegExp(validatorStr);
       return validator.test(basename);
     }
 
@@ -188,8 +243,11 @@ function applyRule(file, rule) {
   }
 }
 
-function generateFix(file, rule) {
-  if (!rule.autofix || !rule.autofix.enabled) {
+function generateFix(
+  file: string,
+  rule: Rule,
+): { type: string; from: string; to: string; reason?: string } | null {
+  if (!rule?.autofix || !rule.autofix.enabled) {
     return null;
   }
 
@@ -240,7 +298,10 @@ function generateFix(file, rule) {
   }
 }
 
-function suggestDirectory(content, basename) {
+function suggestDirectory(
+  content: string,
+  basename: string,
+): { dir: string; name: string; reason: string } {
   const lower = content.toLowerCase();
 
   // Check for architecture keywords
@@ -254,7 +315,7 @@ function suggestDirectory(content, basename) {
       dir: 'architecture',
       name: basename
         .toLowerCase()
-        .replace(/[A-Z-]/g, m => (m === '-' ? '-' : `-${m.toLowerCase()}`)),
+        .replace(/[A-Z-]/g, (m: string) => (m === '-' ? '-' : `-${m.toLowerCase()}`)),
       reason: 'Contains architecture/design content',
     };
   }
@@ -294,7 +355,8 @@ function suggestDirectory(content, basename) {
 // REPORTING
 // ============================================================================
 
-function printResults(results, showWarnings = false) {
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Reporting function is intentionally multi-branch
+function printResults(results: ValidationResult, showWarnings = false): void {
   console.log('═══════════════════════════════════════════════════════');
   console.log('  Documentation Conventions Validator');
   console.log('═══════════════════════════════════════════════════════');
@@ -314,8 +376,18 @@ function printResults(results, showWarnings = false) {
       console.log(`   ${error.message}`);
 
       if (error.fix) {
-        console.log(`   Fix: ${error.fix.type} -> ${error.fix.to}`);
-        console.log(`   Reason: ${error.fix.reason}`);
+        // fixes were stringified when recorded; try to parse
+        try {
+          const parsed = JSON.parse(error.fix);
+          if (parsed && typeof parsed === 'object') {
+            console.log(`   Fix: ${parsed.type} -> ${parsed.to}`);
+            if (parsed.reason) console.log(`   Reason: ${parsed.reason}`);
+          } else {
+            console.log(`   Fix: ${String(error.fix)}`);
+          }
+        } catch {
+          console.log(`   Fix: ${String(error.fix)}`);
+        }
       }
 
       console.log('');
@@ -331,7 +403,16 @@ function printResults(results, showWarnings = false) {
       console.log(`   ${warning.message}`);
 
       if (warning.fix) {
-        console.log(`   Fix: ${warning.fix.type} -> ${warning.fix.to}`);
+        try {
+          const parsed = JSON.parse(warning.fix);
+          if (parsed && typeof parsed === 'object') {
+            console.log(`   Fix: ${parsed.type} -> ${parsed.to}`);
+          } else {
+            console.log(`   Fix: ${String(warning.fix)}`);
+          }
+        } catch {
+          console.log(`   Fix: ${String(warning.fix)}`);
+        }
       }
 
       console.log('');

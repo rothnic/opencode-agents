@@ -43,8 +43,7 @@
 node scripts/file-location-check.js           # Check all files
 node scripts/file-location-check.js --staged  # Check staged only
 node scripts/file-location-check.js --fix     # Show move commands
-```
-
+```text
 **Test**: ✅ Working (detected SESSION-SUMMARY.md in root)
 
 ---
@@ -74,8 +73,7 @@ node scripts/test-evidence.js --verify phase-X.Y
 
 # Force record even if tests failed (emergency)
 node scripts/test-evidence.js phase-X.Y --force
-```
-
+```text
 **Test**: ⏳ Pending (requires actual tests to run)
 
 ---
@@ -102,8 +100,7 @@ node scripts/gate-check.js                    # Auto-detect from commit
 node scripts/gate-check.js --phase=phase-X.Y  # Specify phase
 node scripts/gate-check.js --skip-tests       # Skip test validation
 node scripts/gate-check.js --skip-files       # Skip file validation
-```
-
+```text
 **Test**: ✅ Working (comprehensive validation)
 
 ---
@@ -216,7 +213,7 @@ node scripts/gate-check.js --skip-files       # Skip file validation
 
 ## System Architecture
 
-```
+```text
 Defense-in-Depth Layers:
 
 Layer 1: Documentation
@@ -234,8 +231,7 @@ Layer 3: Git Hooks
 
 Layer 4: .gitignore
   └── Filter session files at root
-```
-
+```text
 ---
 
 ## Failure Modes Addressed
@@ -334,16 +330,14 @@ $ node scripts/file-location-check.js
 ✅ Detected SESSION-SUMMARY.md in root
 ✅ Suggested correct location
 ✅ Exit code 1 (failure) as expected
-```
-
+```text
 **Test 2: Pre-commit Hook**
 
 ```bash
 $ ls -la .git/hooks/pre-commit
 ✅ Exists
 ✅ Executable permissions set
-```
-
+```text
 **Test 3: Gate Check (without phase)**
 
 ```bash
@@ -351,8 +345,7 @@ $ node scripts/gate-check.js
 ✅ Runs without errors
 ✅ Validates file locations
 ✅ Skips phase-specific checks appropriately
-```
-
+```text
 ### Automated Tests Needed
 
 1. Unit tests for each script
@@ -387,8 +380,7 @@ node scripts/test-evidence.js phase-0.2
 node scripts/gate-check.js --phase=phase-0.2
 git add -A
 git commit -m "feat: phase-0.2-project-structure"
-```
-
+```text
 ### Phase 1.1 → Phase 1.2
 
 **Before marking Phase 1.1 complete**:
@@ -410,8 +402,7 @@ node scripts/test-evidence.js phase-1.1
 node scripts/gate-check.js --phase=phase-1.1
 git add -A
 git commit -m "feat: phase-1.1-hello-world-baseline"
-```
-
+```text
 ### General Pattern for All Phases
 
 ```bash
@@ -439,8 +430,7 @@ git commit -m "feat: phase-X.Y-description"
 # 8. Tag and push
 git tag phase-X.Y
 git push origin main --tags
-```
-
+```text
 ---
 
 ## System Boundaries

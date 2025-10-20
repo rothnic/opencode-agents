@@ -203,6 +203,7 @@ function stringSimilarity(str1: string, str2: string): number {
   return (longer.length - distance) / longer.length;
 }
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Levenshtein distance algorithm requires nested loops
 function levenshteinDistance(str1: string, str2: string): number {
   // Initialize matrix with proper dimensions
   const matrix: number[][] = Array.from({ length: str2.length + 1 }, (_, i) => {
@@ -213,25 +214,31 @@ function levenshteinDistance(str1: string, str2: string): number {
 
   // Initialize first row
   for (let j = 0; j <= str1.length; j++) {
-    matrix[0]![j] = j;
+    const firstRow = matrix[0];
+    if (firstRow) firstRow[j] = j;
   }
 
   // Calculate distances
   for (let i = 1; i <= str2.length; i++) {
     for (let j = 1; j <= str1.length; j++) {
+      const currentRow = matrix[i];
+      const prevRow = matrix[i - 1];
+      if (!currentRow || !prevRow) continue;
+
       if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
-        matrix[i]![j] = matrix[i - 1]?.[j - 1]!;
+        currentRow[j] = prevRow[j - 1] ?? 0;
       } else {
-        matrix[i]![j] = Math.min(
-          matrix[i - 1]?.[j - 1]! + 1,
-          matrix[i]?.[j - 1]! + 1,
-          matrix[i - 1]?.[j]! + 1,
+        currentRow[j] = Math.min(
+          (prevRow[j - 1] ?? 0) + 1,
+          (currentRow[j - 1] ?? 0) + 1,
+          (prevRow[j] ?? 0) + 1,
         );
       }
     }
   }
 
-  return matrix[str2.length]?.[str1.length]!;
+  const lastRow = matrix[str2.length];
+  return lastRow?.[str1.length] ?? 0;
 }
 
 function setOverlap(set1: string[], set2: string[]): number {

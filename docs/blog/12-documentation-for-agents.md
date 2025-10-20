@@ -58,8 +58,7 @@ You MUST:
 You MUST NOT:
 - [Restriction]
 - [Restriction]
-```
-
+```text
 ### Test Templates
 
 [TODO: Examples]

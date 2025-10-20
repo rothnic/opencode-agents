@@ -26,7 +26,7 @@
 
 ### ✅ Repository Structure
 
-```
+```text
 opencode-agents/
 ├── STATUS.md                    # ← Start here every session
 ├── README.md                    # Project overview
@@ -43,8 +43,7 @@ opencode-agents/
 │       ├── phase-1.1/
 │       ├── phase-1.2/
 │       └── phase-1.3/
-```
-
+```text
 ### ✅ Git Repository
 
 - **Commits**: 6 total
@@ -165,15 +164,14 @@ Verify and commit:
 
 ## Git History
 
-```
+```text
 e634580 docs: add concise STATUS.md and phase organization system
 5d6a6e1 fix: remove markdown fences from .mmd files
 1e7a60d docs: add roadmap timeline diagram
 95e93d2 docs: add project summary
 6f3a93d docs: comprehensive project plan with test-driven approach
 61295dc Initial commit: Project documentation and architecture
-```
-
+```text
 ---
 
 ## Todo List Status

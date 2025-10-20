@@ -43,7 +43,7 @@ Each failure mode has **multiple independent controls** working in layers.
 
 ## System Architecture
 
-```
+```text
 ┌─────────────────────────────────────┐
 │       Developer / Agent             │
 └───────────────┬─────────────────────┘
@@ -92,8 +92,7 @@ Each failure mode has **multiple independent controls** working in layers.
     ┌──────────┐      ┌──────────┐
     │ BLOCKED  │      │ ALLOWED  │
     └──────────┘      └──────────┘
-```
-
+```text
 ---
 
 ## Defense Layer 1: Documentation (Educate)
@@ -122,8 +121,7 @@ Each failure mode has **multiple independent controls** working in layers.
 - [ ] No session files in root
 - [ ] All working files in phase directory
 - [ ] File locations validated
-```
-
+```text
 **When it fails**: Developer/agent doesn't read documentation
 
 **Why it's included**: First line of defense, sets expectations
@@ -156,8 +154,7 @@ const FORBIDDEN_ROOT_PATTERNS = [
   /PROGRESS.*\.md$/i,
   /DRAFT.*\.md$/i
 ];
-```
-
+```text
 **Usage**:
 
 ```bash
@@ -173,11 +170,10 @@ $ node scripts/file-location-check.js --staged
 # Show move commands
 $ node scripts/file-location-check.js --fix
 git mv SESSION-SUMMARY.md docs/phases/phase-X.Y/
-```
-
+```text
 **Real output** (tested):
 
-```
+```text
 ═══════════════════════════════════════════
   File Location Validator
 ═══════════════════════════════════════════
@@ -191,8 +187,7 @@ git mv SESSION-SUMMARY.md docs/phases/phase-X.Y/
 💡 Run with --fix flag to see move commands.
 
 ❌ File location check failed
-```
-
+```text
 **Exit code**: 1 (failure) allows scripts to chain
 
 ---
@@ -223,8 +218,7 @@ Summary:
   Status: PASSED
   Time: 2025-10-18T10:23:45.123Z
   Tests: 5 passed, 0 failed
-```
-
+```text
 **Evidence file contents**:
 
 ```json
@@ -249,8 +243,7 @@ Summary:
     "platform": "darwin"
   }
 }
-```
-
+```text
 **Verifying evidence**:
 
 ```bash
@@ -262,8 +255,7 @@ $ node scripts/test-evidence.js --verify phase-1.1
    Status: PASSED
    Age: 2 minute(s) old
    Timestamp: 2025-10-18T10:23:45.123Z
-```
-
+```text
 **If evidence is too old**:
 
 ```bash
@@ -273,8 +265,7 @@ $ node scripts/test-evidence.js --verify phase-1.1
    Evidence must be < 10 minutes old
 
    Run: npm test && node scripts/test-evidence.js phase-1.1
-```
-
+```text
 **Key insight**: Recency requirement (< 10 minutes) prevents "I ran tests yesterday" problem
 
 ---
@@ -293,8 +284,7 @@ if (commitMsg.match(PHASE_COMMIT_PATTERN)) {
   checkTestEvidence();
   checkPhaseRequirements();
 }
-```
-
+```text
 **Validation sequence**:
 
 ```bash
@@ -332,8 +322,7 @@ Total checks: 4
 ═══════════════════════════════════════════
 ✅ ALL GATES PASSED - Ready to commit
 ═══════════════════════════════════════════
-```
-
+```text
 **If any check fails**:
 
 ```bash
@@ -346,14 +335,13 @@ Failed checks:
 1. test-evidence
    Test evidence missing or invalid for phase-1.1
    
-2. phase-requirements
+1. phase-requirements
    Missing 2 deliverable(s)
    - opencode.json
    - .opencode/agent/orchestrator.md
 
 Fix issues before committing.
-```
-
+```text
 **Skip flags for non-phase commits**:
 
 ```bash
@@ -362,8 +350,7 @@ $ node scripts/gate-check.js --skip-tests
 
 # Emergency bypass (still validates files)
 $ node scripts/gate-check.js --skip-tests --skip-files
-```
-
+```text
 ---
 
 ## Defense Layer 3: Git Hooks (Prevent)
@@ -387,14 +374,12 @@ node scripts/gate-check.js
 
 # If we get here, all checks passed
 exit 0
-```
-
+```text
 **Made executable**:
 
 ```bash
 chmod +x .git/hooks/pre-commit
-```
-
+```text
 **In action**:
 
 ```bash
@@ -411,16 +396,14 @@ $ git commit -m "feat: phase-1.1-complete"
 ❌ GATE CHECK FAILED
 
 Commit blocked automatically.
-```
-
+```text
 **Emergency bypass** (documented but discouraged):
 
 ```bash
 $ git commit --no-verify -m "emergency: critical hotfix"
 
 # Must document reason and fix within 24 hours
-```
-
+```text
 **Why bypass is needed**: Infrastructure changes, control system updates, genuine emergencies
 
 **Audit trail**:
@@ -429,8 +412,7 @@ $ git commit --no-verify -m "emergency: critical hotfix"
 # Find all bypassed commits
 $ git log --grep="--no-verify"
 $ git log --grep="emergency:"
-```
-
+```text
 ---
 
 ## Defense Layer 4: `.gitignore` (Filter)
@@ -452,8 +434,7 @@ $ git log --grep="emergency:"
 !docs/phases/**/SESSION*.md
 !docs/phases/**/NOTES*.md
 !docs/phases/**/PROGRESS*.md
-```
-
+```text
 **Result**:
 
 ```bash
@@ -463,8 +444,7 @@ $ git add SESSION-SUMMARY.md
 
 $ git status
 # Does not show SESSION-SUMMARY.md
-```
-
+```text
 **Combined with Layer 2**:
 
 - .gitignore prevents accidental staging
@@ -501,8 +481,7 @@ $ git commit -m "feat: phase-1.1-complete"
 ❌ GATE CHECK FAILED
 
 Commit blocked.
-```
-
+```text
 **Result**: Impossible to complete phase without test evidence
 
 ---
@@ -541,8 +520,7 @@ $ git commit -m "docs: session notes"
 ❌ GATE CHECK FAILED
 
 Commit blocked.
-```
-
+```text
 **Result**: Clean repository root maintained automatically
 
 ---
@@ -569,8 +547,7 @@ $ node scripts/gate-check.js --phase=phase-0.2
    - .opencode/agent/orchestrator.md
 
 ❌ GATE CHECK FAILED
-```
-
+```text
 **Deliverables extracted from README**:
 
 ```markdown
@@ -579,8 +556,7 @@ $ node scripts/gate-check.js --phase=phase-0.2
 - `/opencode.json` - Main configuration
 - `/.opencode/agent/orchestrator.md` - Orchestrator config
 - `/AGENTS.md` - Project conventions
-```
-
+```text
 **Result**: All specified files must exist before completion
 
 ---
@@ -616,8 +592,7 @@ $ node scripts/test-evidence.js --verify phase-1.1
 $ npm test
 $ node scripts/test-evidence.js phase-1.1
 ✅ Test evidence recorded
-```
-
+```text
 **Result**: Proof of execution, not just file existence
 
 ---
@@ -693,8 +668,7 @@ Humans forget. Git hooks don't.
 ❌ Missing test evidence
 
 Run: npm test && node scripts/test-evidence.js phase-1.1
-```
-
+```text
 Tells you exactly what to do.
 
 ### What Could Be Better
@@ -789,15 +763,13 @@ git clone https://github.com/rothnic/opencode-agents
 # Copy control scripts
 cp -r opencode-agents/scripts your-project/
 cp opencode-agents/.gitignore your-project/
-```
-
+```text
 ### 2. Install the Hook
 
 ```bash
 cp .git/hooks/pre-commit .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
-```
-
+```text
 ### 3. Customize Rules
 
 Edit `scripts/file-location-check.js`:
@@ -807,8 +779,7 @@ const ALLOWED_ROOT_FILES = [
   'README.md',
   // Add your files here
 ];
-```
-
+```text
 ### 4. Test It
 
 ```bash
@@ -824,8 +795,7 @@ git commit -m "test: violation"
 rm SESSION-TEST.md
 git commit -m "test: clean"
 # Should succeed
-```
-
+```text
 ---
 
 ## Future Enhancements

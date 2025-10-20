@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://opencode.ai/validation-rules.schema.json",
+  "title": "OpenCode Validation Rules",
+  "description": "Validation rules for OpenCode project quality gates",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Schema version"
+    },
+    "rules": {
+      "type": "object",
+      "description": "Validation rules organized by category",
+      "properties": {
+        "outdatedReferences": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "patterns": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "replacement": { "type": "string" },
+                  "message": { "type": "string" },
+                  "searchIn": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  },
+                  "exceptions": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                },
+                "required": ["replacement", "message", "searchIn"]
+              }
+            }
+          }
+        },
+        "backupFiles": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "patterns": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "searchIn": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "staleStatus": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "maxAgeHours": { "type": "number" },
+            "file": { "type": "string" }
+          }
+        },
+        "uncommittedChanges": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "maxCount": { "type": "number" }
+          }
+        },
+        "missingFiles": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "requiredFiles": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "versionMilestones": {
+      "type": "object",
+      "properties": {
+        "preRelease": { "type": "string" },
+        "production": { "type": "string" }
+      },
+      "required": ["preRelease", "production"]
+    }
+  },
+  "required": ["version", "rules", "versionMilestones"]
+}

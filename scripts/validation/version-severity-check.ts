@@ -69,13 +69,13 @@ function getEffectiveSeverity(
       const milestone = milestones[milestoneVersion];
 
       // Check if this milestone sets initial severity
-      if (milestone.severity && milestone.rules?.includes(ruleName)) {
-        effectiveSeverity = milestone.severity;
+      if (milestone?.severity && milestone.rules?.includes(ruleName)) {
+        effectiveSeverity = milestone?.severity ?? effectiveSeverity;
       }
 
       // Check if this milestone has escalations
-      if (milestone.escalations?.[ruleName]) {
-        effectiveSeverity = milestone.escalations[ruleName];
+      if (milestone?.escalations?.[ruleName]) {
+        effectiveSeverity = milestone?.escalations?.[ruleName] ?? effectiveSeverity;
       }
     }
   }
@@ -161,7 +161,7 @@ function checkMilestones(): void {
     console.log(`${status}`);
     console.log(`   ${milestone.description}`);
 
-    if (milestone.escalations) {
+    if (milestone?.escalations) {
       console.log('   Escalations:');
       for (const [rule, severity] of Object.entries(milestone.escalations)) {
         console.log(`     - ${rule} → ${severity}`);

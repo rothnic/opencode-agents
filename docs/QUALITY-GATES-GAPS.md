@@ -61,17 +61,17 @@ We've successfully implemented a 4-layer defense-in-depth quality gate system:
    - Action: Update corresponding blog post with real data
    - Validation: Check post has actual content vs. stub markers
 
-2. **Project Health Agent**
+1. **Project Health Agent**
    - Trigger: Daily / on-commit
    - Action: Check for violations, stale docs, missing tests
    - Validation: All checks pass, report generated
 
-3. **Test Coverage Agent**
+1. **Test Coverage Agent**
    - Trigger: Code changes
    - Action: Ensure tests exist for modified code
    - Validation: Coverage thresholds met
 
-4. **Documentation Sync Agent**
+1. **Documentation Sync Agent**
    - Trigger: Code structure changes
    - Action: Update architecture diagrams, API docs
    - Validation: Docs reflect current code
@@ -91,8 +91,7 @@ if (!output.match(/FAILED/i)) {
     `Exit code: ${exitCode}`
   );
 }
-```
-
+```text
 ### 5. **No Freshness Checks** ⚠️
 
 **Problem:** No way to detect when artifacts become stale

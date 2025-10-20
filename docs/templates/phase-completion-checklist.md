@@ -108,8 +108,7 @@ git tag {PHASE_ID}
 
 # 5. Push everything
 git push origin main --tags
-```
-
+```text
 ---
 
 ## Post-Completion
@@ -130,32 +129,28 @@ git push origin main --tags
 # Solution: Re-run tests and record evidence
 npm test
 node scripts/test-evidence.js {PHASE_ID}
-```
-
+```text
 ### Issue: File location violations
 
 ```bash
 # Solution: Check violations and move files
 node scripts/file-location-check.js --fix
 git mv {wrong-location} {correct-location}
-```
-
+```text
 ### Issue: Missing deliverables
 
 ```bash
 # Solution: Check phase README for requirements
 cat docs/phases/{PHASE_ID}/README.md
 # Create missing files or update checklist if requirements changed
-```
-
+```text
 ### Issue: Gate check fails
 
 ```bash
 # Solution: Run detailed check and fix issues
 node scripts/gate-check.js --phase={PHASE_ID}
 # Fix each reported issue, then re-run
-```
-
+```text
 ### Issue: Session files in root
 
 ```bash
@@ -163,8 +158,7 @@ node scripts/gate-check.js --phase={PHASE_ID}
 git mv SESSION-SUMMARY.md docs/phases/{PHASE_ID}/session-summary.md
 # Or delete if not needed
 git rm SESSION-SUMMARY.md
-```
-
+```text
 ---
 
 ## Emergency Bypass
@@ -175,8 +169,7 @@ If you absolutely must commit without passing gates:
 
 ```bash
 git commit --no-verify -m "emergency: {reason}"
-```
-
+```text
 **Requirements for emergency bypass:**
 
 1. Document reason in commit message
@@ -208,8 +201,7 @@ cat docs/phases/{PHASE_ID}/test-evidence/latest-run.json
 
 # List deliverables
 cat docs/phases/{PHASE_ID}/README.md | grep "^\- \`"
-```
-
+```text
 ---
 
 ## Notes

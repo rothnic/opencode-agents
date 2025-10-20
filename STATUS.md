@@ -22,14 +22,14 @@
    - ✅ Configured coverage thresholds (80% minimum)
    - ✅ Set up madge for circular dependency detection
 
-2. **Configuration & Standards**
+1. **Configuration & Standards**
    - ✅ Created `.opencode/validation-rules.json` - Configurable quality rules
    - ✅ Created `docs/CODE-STANDARDS.md` - Comprehensive coding standards
    - ✅ Created `AGENTS.md` - Ultra-concise AI agent guidelines
    - ✅ Updated `package.json` with modern scripts
    - ✅ Configured `tsconfig.json` with strict mode and path aliases
 
-3. **Automated Validation Scripts**
+1. **Automated Validation Scripts**
    - ✅ Created `scripts/audit-repository-state.ts` - Detects outdated refs, backup files, stale docs
    - ✅ Created `scripts/verify-tools.ts` - Verifies all CLI tools installed
    - ✅ TypeScript errors fixed in audit script
@@ -43,7 +43,7 @@
    - ⏳ Update opencode.json (testingFramework, model)
    - ⏳ Make incremental commits (currently 47 uncommitted files)
 
-2. **Testing**
+1. **Testing**
    - ⏳ Fix 3 remaining test failures (42/45 passing)
    - ✅ Vitest configuration working
 

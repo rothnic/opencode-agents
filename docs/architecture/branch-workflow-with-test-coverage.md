@@ -22,36 +22,34 @@ Current issues with direct-to-main commits:
 
 ### Workflow
 
-```
+```text
 1. Start Work
    ├─ Create feature branch: feature/[work-item]
    ├─ Record work objectives in branch metadata
    └─ Commit work + tests to branch
 
-2. Before Merge
+1. Before Merge
    ├─ Run test coverage validator
    ├─ Verify tests exist for work completed
    ├─ Require work verification document
    └─ Check test organization
 
-3. Merge
+1. Merge
    ├─ All checks pass → merge to main
    └─ Any check fails → blocked until fixed
-```
-
+```text
 ---
 
 ## Branch Naming Convention
 
-```
+```text
 feature/[descriptive-name]     # New features
 fix/[bug-description]          # Bug fixes
 refactor/[component]           # Code refactoring
 docs/[topic]                   # Documentation only
 test/[coverage-improvement]    # Test additions
 chore/[maintenance-task]       # Maintenance work
-```
-
+```text
 **Examples:**
 
 - `feature/documentation-conventions`
@@ -120,8 +118,7 @@ Steps to manually verify (if applicable):
 
 Tests are organized as follows:
 
-```
-
+```text
 tests/
 ├── feature/
 │   └── test-documentation-conventions.test.js
@@ -131,8 +128,7 @@ tests/
 │       │   └── suggests fixes (4 tests)
 │       └── Total: 12 tests
 
-```
-
+```text
 ---
 
 ## Completion Checklist
@@ -144,8 +140,7 @@ tests/
 - [ ] Documentation updated
 - [ ] WORK-VERIFICATION.md complete
 - [ ] Ready to merge
-```
-
+```text
 ---
 
 ## Pre-Merge Validation Script
@@ -168,8 +163,7 @@ tests/
  */
 
 // Validation logic
-```
-
+```text
 **Usage:**
 
 ```bash
@@ -183,15 +177,14 @@ node scripts/pre-merge-check.js
 ✅ All 12 tests passing
 ✅ Test organization documented
 🎉 Ready to merge!
-```
-
+```text
 ---
 
 ## Agent Prompts for Test Creation
 
 ### Prompt 1: Work Reflection
 
-```
+```text
 Before committing your work, step back and reflect:
 
 1. What were you asked to build?
@@ -200,11 +193,10 @@ Before committing your work, step back and reflect:
 4. What edge cases might break it?
 
 Create WORK-VERIFICATION.md documenting your answers.
-```
-
+```text
 ### Prompt 2: Test Strategy
 
-```
+```text
 For each objective you completed:
 
 1. Identify the expected behavior
@@ -215,11 +207,10 @@ For each objective you completed:
    - Error cases (invalid inputs, failures)
 
 Organize tests by feature/objective, not by file.
-```
-
+```text
 ### Prompt 3: Test Organization
 
-```
+```text
 Your test file should be organized like:
 
 describe('Feature: [Feature Name]', () => {
@@ -235,8 +226,7 @@ describe('Feature: [Feature Name]', () => {
 });
 
 This makes it clear what each test verifies.
-```
-
+```text
 ---
 
 ## Git Hooks Integration
@@ -264,8 +254,7 @@ if [ $? -ne 0 ]; then
 fi
 
 exit 0
-```
-
+```text
 ### `.github/workflows/pr-validation.yml` (if using GitHub)
 
 ```yaml
@@ -289,15 +278,14 @@ jobs:
         
       - name: Check test coverage
         run: npm run test:coverage
-```
-
+```text
 ---
 
 ## Test Organization Standards
 
 ### Directory Structure
 
-```
+```text
 tests/
 ├── feature/                    # Feature-specific tests
 │   ├── test-conventions.test.js
@@ -310,8 +298,7 @@ tests/
 │   └── test-known-bugs.test.js
 └── phase-[X]/                  # Phase-specific tests
     └── test-[phase-work].test.js
-```
-
+```text
 ### Naming Conventions
 
 **Test Files:**
@@ -335,8 +322,7 @@ describe('Feature: Documentation Conventions', () => {
     test('blocks content docs in root', ...);
   });
 });
-```
-
+```text
 **Benefits:**
 
 - Clear hierarchy (Feature → Capability → Test)
@@ -349,37 +335,34 @@ describe('Feature: Documentation Conventions', () => {
 
 ### Level 1: Warning (Soft Block)
 
-```
+```text
 ⚠️ WORK-VERIFICATION.md missing
    Tests may exist but aren't documented
    Run: node scripts/init-work-verification.js
-```
-
+```text
 **Action**: Warn but allow merge
 
 ### Level 2: Error (Hard Block)
 
-```
+```text
 ❌ No tests found for branch work
    Work objectives: 3
    Test files: 0
    
    All feature work must include tests.
    See: docs/architecture/branch-workflow.md
-```
-
+```text
 **Action**: Block merge until fixed
 
 ### Level 3: Coverage Threshold
 
-```
+```text
 ❌ Test coverage below threshold
    Current: 65%
    Required: 80%
    
    Add tests to increase coverage.
-```
-
+```text
 **Action**: Block merge until threshold met
 
 ---
@@ -409,8 +392,7 @@ describe('Feature: Documentation Conventions', () => {
     }
   }
 }
-```
-
+```text
 ---
 
 ## Workflow Examples
@@ -443,8 +425,7 @@ git push origin feature/documentation-conventions
 
 # 8. Create PR (if using GitHub)
 # 9. Merge after validation passes
-```
-
+```text
 ### Example 2: Test-Only Branch
 
 ```bash
@@ -463,8 +444,7 @@ npm test
 # 5. Merge
 git checkout main
 git merge test/add-validator-coverage
-```
-
+```text
 ---
 
 ## Benefits
@@ -548,28 +528,24 @@ git merge test/add-validator-coverage
 ```bash
 # Fix: Initialize verification document
 node scripts/init-work-verification.js
-```
-
+```text
 ### Error: "No tests referenced in verification"
 
 ```bash
 # Fix: Add test files and update verification
 # 1. Write tests
 # 2. Update WORK-VERIFICATION.md with test references
-```
-
+```text
 ### Error: "Test file referenced but doesn't exist"
 
 ```bash
 # Fix: Create the test file or fix the reference
-```
-
+```text
 ### Error: "Objectives don't map to tests"
 
 ```bash
 # Fix: Add tests for uncovered objectives or remove objectives
-```
-
+```text
 ---
 
 ## Success Metrics

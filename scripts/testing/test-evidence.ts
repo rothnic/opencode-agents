@@ -23,6 +23,39 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 // ============================================================================
+// TYPES
+// ============================================================================
+
+interface TestEvidence {
+  phase: string;
+  timestamp: string;
+  passed: boolean;
+  testResults: TestResults | null;
+  gitCommit: { commit: string; branch: string };
+  environment: {
+    node: string;
+    platform: string;
+    cwd: string;
+  };
+}
+
+interface TestResults {
+  success: boolean;
+  summary?: {
+    passed?: number;
+    failed?: number;
+    message?: string;
+  };
+  metrics?: Record<string, unknown>;
+  note?: string;
+}
+
+interface RecordOptions {
+  testFile?: string;
+  force?: boolean;
+}
+
+// ============================================================================
 // CONFIGURATION
 // ============================================================================
 
@@ -33,44 +66,30 @@ const METRICS_DIR = 'docs/metrics';
 // MAIN LOGIC
 // ============================================================================
 
-function recordTestEvidence(phase, options = {}) {
-  console.log('📋 Recording test evidence...\n');
-  console.log(`Phase: ${phase}\n`);
-
-  const evidenceDir = EVIDENCE_DIR_TEMPLATE.replace('{PHASE}', phase);
-
-  // Create evidence directory if it doesn't exist
+function createEvidenceDirectory(evidenceDir: string): void {
   if (!fs.existsSync(evidenceDir)) {
     fs.mkdirSync(evidenceDir, { recursive: true });
     console.log(`✓ Created evidence directory: ${evidenceDir}`);
   }
+}
 
-  // Read test results
-  let testResults;
+function loadTestResults(options: RecordOptions): TestResults | null {
   if (options.testFile) {
     try {
-      testResults = JSON.parse(fs.readFileSync(options.testFile, 'utf8'));
+      return JSON.parse(fs.readFileSync(options.testFile, 'utf8')) as TestResults;
     } catch (error) {
-      console.error(`❌ Error reading test file: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error(`❌ Error reading test file: ${errorMessage}`);
       process.exit(1);
     }
-  } else {
-    // Try to find test results from npm test output or common locations
-    testResults = detectTestResults();
   }
+  return detectTestResults();
+}
 
-  // Check if tests passed
+function createEvidence(phase: string, testResults: TestResults | null): TestEvidence {
   const passed = testResults ? testResults.success : false;
-
-  if (!passed && !options.force) {
-    console.error('❌ Tests did not pass. Cannot record evidence.');
-    console.error('   Run tests and ensure they pass, or use --force flag.');
-    process.exit(1);
-  }
-
-  // Create evidence record
   const timestamp = new Date().toISOString();
-  const evidence = {
+  return {
     phase,
     timestamp,
     passed,
@@ -82,6 +101,10 @@ function recordTestEvidence(phase, options = {}) {
       cwd: process.cwd(),
     },
   };
+}
+
+function writeEvidenceFiles(evidenceDir: string, evidence: TestEvidence, phase: string): void {
+  const { timestamp, passed, testResults } = evidence;
 
   // Write timestamped evidence file
   const timestampFile = path.join(evidenceDir, `results-${Date.now()}.json`);
@@ -108,9 +131,13 @@ function recordTestEvidence(phase, options = {}) {
     fs.writeFileSync(metricsFile, JSON.stringify(testResults.metrics, null, 2));
     console.log(`✓ Saved metrics: ${metricsFile}`);
   }
-  console.log('\n✅ Test evidence recorded successfully\n');
+}
 
-  // Print summary
+function printEvidenceSummary(evidence: TestEvidence): void {
+  const { timestamp, passed, testResults } = evidence;
+  const status = passed ? 'PASSED' : 'FAILED';
+
+  console.log('\n✅ Test evidence recorded successfully\n');
   console.log('Summary:');
   console.log(`  Status: ${status}`);
   console.log(`  Time: ${timestamp}`);
@@ -120,18 +147,39 @@ function recordTestEvidence(phase, options = {}) {
     );
   }
   console.log('');
+}
+
+function recordTestEvidence(phase: string, options: RecordOptions = {}): TestEvidence {
+  console.log('📋 Recording test evidence...\n');
+  console.log(`Phase: ${phase}\n`);
+
+  const evidenceDir = EVIDENCE_DIR_TEMPLATE.replace('{PHASE}', phase);
+  createEvidenceDirectory(evidenceDir);
+
+  const testResults = loadTestResults(options);
+  const passed = testResults ? testResults.success : false;
+
+  if (!passed && !options.force) {
+    console.error('❌ Tests did not pass. Cannot record evidence.');
+    console.error('   Run tests and ensure they pass, or use --force flag.');
+    process.exit(1);
+  }
+
+  const evidence = createEvidence(phase, testResults);
+  writeEvidenceFiles(evidenceDir, evidence, phase);
+  printEvidenceSummary(evidence);
 
   return evidence;
 }
 
-function detectTestResults() {
+function detectTestResults(): TestResults {
   // Try to detect test results from common locations
   const commonPaths = ['test-results.json', 'coverage/test-results.json', 'junit.xml'];
 
   for (const testPath of commonPaths) {
     if (fs.existsSync(testPath)) {
       try {
-        return JSON.parse(fs.readFileSync(testPath, 'utf8'));
+        return JSON.parse(fs.readFileSync(testPath, 'utf8')) as TestResults;
       } catch {
         // Not JSON or invalid, continue
       }
@@ -165,7 +213,7 @@ function getGitCommit() {
 // VERIFICATION: Check if evidence exists for a phase
 // ============================================================================
 
-function verifyTestEvidence(phase, maxAgeMinutes = 10) {
+function verifyTestEvidence(phase: string, maxAgeMinutes = 10): boolean {
   console.log(`🔍 Verifying test evidence for ${phase}...\n`);
 
   const evidenceDir = EVIDENCE_DIR_TEMPLATE.replace('{PHASE}', phase);
@@ -180,7 +228,7 @@ function verifyTestEvidence(phase, maxAgeMinutes = 10) {
   }
 
   // Read evidence
-  const evidence = JSON.parse(fs.readFileSync(latestFile, 'utf8'));
+  const evidence = JSON.parse(fs.readFileSync(latestFile, 'utf8')) as TestEvidence;
 
   // Check if tests passed
   if (!evidence.passed) {
@@ -237,7 +285,8 @@ function main() {
   const force = args.includes('--force');
   const phase = args.find(a => a.startsWith('phase-'));
   const testFile = args.find(a => a.startsWith('--test-file='))?.split('=')[1];
-  const maxAge = parseInt(args.find(a => a.startsWith('--max-age='))?.split('=')[1], 10) || 10;
+  const maxAgeArg = args.find(a => a.startsWith('--max-age='))?.split('=')[1];
+  const maxAge = maxAgeArg ? Number.parseInt(maxAgeArg, 10) : 10;
 
   if (!phase) {
     console.error('❌ Error: Phase identifier required (e.g., phase-1.1)');
@@ -256,7 +305,8 @@ function main() {
       recordTestEvidence(phase, { testFile, force });
       process.exit(0);
     } catch (error) {
-      console.error(`❌ Error: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error(`❌ Error: ${errorMessage}`);
       process.exit(1);
     }
   }

@@ -9,7 +9,7 @@
 
 Before moving to the next step in ANY phase:
 
-```
+```text
 ✓ Current step's code/config exists
 ✓ Current step's tests exist
 ✓ Tests have been executed (not just written)
@@ -18,8 +18,7 @@ Before moving to the next step in ANY phase:
 ✓ No session files in root
 ✓ File locations validated
 ✓ Changes committed to git
-```
-
+```text
 ---
 
 ## Phase 0.2: Project Structure Setup
@@ -37,8 +36,7 @@ Before moving to the next step in ANY phase:
 
 # Automated test
 ✓ npm test tests/verify-config.test.js
-```
-
+```text
 ### Step 2: Create .opencode/ directory structure
 
 **Test Before Moving to Step 3**:
@@ -51,8 +49,7 @@ Before moving to the next step in ANY phase:
 
 # Automated test
 ✓ npm test tests/verify-structure.test.js
-```
-
+```text
 ### Step 3: Create agent configurations
 
 **Test Before Moving to Step 4**:
@@ -66,8 +63,7 @@ Before moving to the next step in ANY phase:
 
 # Automated test
 ✓ npm test tests/verify-agents.test.js
-```
-
+```text
 ### Step 4: Create AGENTS.md
 
 **Test Before Moving to Step 5**:
@@ -80,8 +76,7 @@ Before moving to the next step in ANY phase:
 
 # Automated test
 ✓ npm test tests/verify-conventions.test.js
-```
-
+```text
 ### Step 5: Create test structure
 
 **Test Before Moving to Phase Completion**:
@@ -95,8 +90,7 @@ Before moving to the next step in ANY phase:
 
 # Automated test
 ✓ npm test tests/verify-test-framework.test.js
-```
-
+```text
 ### Phase 0.2 Completion Gate
 
 **Test Before Marking Phase Complete**:
@@ -120,8 +114,7 @@ Before moving to the next step in ANY phase:
 
 # Commit
 ✓ git commit -m "feat: phase-0.2-project-structure"
-```
-
+```text
 ---
 
 ## Phase 1.1: Hello World Baseline
@@ -139,8 +132,7 @@ Before moving to the next step in ANY phase:
 
 # Syntax check
 ✓ node -c tests/phase-1/test-1.1-hello-world.js
-```
-
+```text
 ### Step 2: Run baseline test
 
 **Test Before Moving to Step 3**:
@@ -157,8 +149,7 @@ Before moving to the next step in ANY phase:
 # Manual verification
 ✓ node -e "console.log(require('./src/hello.js')())"
 # Should output: "Hello, World!"
-```
-
+```text
 ### Step 3: Collect metrics
 
 **Test Before Phase Completion**:
@@ -173,8 +164,7 @@ Before moving to the next step in ANY phase:
 # Verify metrics are reasonable
 ✓ tokenCount < 1000 (baseline should be simple)
 ✓ executionTime < 60000 (1 minute)
-```
-
+```text
 ### Phase 1.1 Completion Gate
 
 **Test Before Marking Phase Complete**:
@@ -195,8 +185,7 @@ Before moving to the next step in ANY phase:
 
 # Commit
 ✓ git commit -m "feat: phase-1.1-hello-world-baseline"
-```
-
+```text
 ---
 
 ## Phase 1.2: Orchestrator Pattern
@@ -215,8 +204,7 @@ Before moving to the next step in ANY phase:
 # Validation
 ✓ Front matter is valid YAML
 ✓ Instructions are clear
-```
-
+```text
 ### Step 2: Create orchestrator test
 
 **Test Before Moving to Step 3**:
@@ -230,8 +218,7 @@ Before moving to the next step in ANY phase:
 
 # Syntax check
 ✓ node -c tests/phase-1/test-1.2-orchestrator.js
-```
-
+```text
 ### Step 3: Run orchestrator test
 
 **Test Before Phase Completion**:
@@ -245,8 +232,7 @@ Before moving to the next step in ANY phase:
 ✓ Orchestrator created TODO list
 ✓ TODO list has > 1 item
 ✓ Tasks are logical decomposition
-```
-
+```text
 ### Phase 1.2 Completion Gate
 
 **Test Before Marking Phase Complete**:
@@ -266,8 +252,7 @@ Before moving to the next step in ANY phase:
 
 # Commit
 ✓ git commit -m "feat: phase-1.2-orchestrator-pattern"
-```
-
+```text
 ---
 
 ## Phase 2.1: Two-Agent Collaboration
@@ -286,8 +271,7 @@ Before moving to the next step in ANY phase:
 # Validation
 ✓ Agent can be invoked
 ✓ Agent config is valid
-```
-
+```text
 ### Step 2: Create TestWriter agent
 
 **Test Before Moving to Step 3**:
@@ -302,8 +286,7 @@ Before moving to the next step in ANY phase:
 # Validation
 ✓ Agent can be invoked
 ✓ Agent config is valid
-```
-
+```text
 ### Step 3: Create collaboration test
 
 **Test Before Moving to Step 4**:
@@ -318,8 +301,7 @@ Before moving to the next step in ANY phase:
 
 # Syntax check
 ✓ node -c tests/phase-2/test-2.1-code-test-collaboration.js
-```
-
+```text
 ### Step 4: Run collaboration test
 
 **Test Before Phase Completion**:
@@ -336,8 +318,7 @@ Before moving to the next step in ANY phase:
 ✓ Implementation works: require('./src/StringUtils').reverse('hello') === 'olleh'
 ✓ Tests pass: npm test tests/StringUtils.test.js
 ✓ Test coverage >= 80%
-```
-
+```text
 ### Phase 2.1 Completion Gate
 
 **Test Before Marking Phase Complete**:
@@ -357,13 +338,12 @@ Before moving to the next step in ANY phase:
 
 # Commit
 ✓ git commit -m "feat: phase-2.1-two-agent-collaboration"
-```
-
+```text
 ---
 
 ## Decision Tree Diagram
 
-```
+```text
 ┌─────────────────────────┐
 │   Start Step/Phase       │
 └────────────┬─────────────┘
@@ -471,8 +451,7 @@ Before moving to the next step in ANY phase:
 ┌─────────────────────────────────┐
 │  Next Step/Phase                │
 └─────────────────────────────────┘
-```
-
+```text
 ---
 
 ## Quick Reference Card
@@ -483,8 +462,7 @@ Before moving to the next step in ANY phase:
 # 1. Understand requirements
 # 2. Write code
 # 3. Write tests
-```
-
+```text
 ### Before Every Commit
 
 ```bash
@@ -496,8 +474,7 @@ npm test
 
 # 3. Check file locations
 node scripts/file-location-check.js --staged
-```
-
+```text
 ### Before Every Phase Completion
 
 ```bash
@@ -512,8 +489,7 @@ node scripts/gate-check.js --phase=phase-X.Y
 
 # 4. If all pass, commit
 git commit -m "feat: phase-X.Y-description"
-```
-
+```text
 ### If Gate Check Fails
 
 ```bash
@@ -521,8 +497,7 @@ git commit -m "feat: phase-X.Y-description"
 # Fix reported issues
 # Re-run gate check
 # Repeat until pass
-```
-
+```text
 ### Emergency Bypass (RARE!)
 
 ```bash
@@ -531,8 +506,7 @@ git commit --no-verify -m "emergency: {reason}"
 
 # Create follow-up issue
 # Fix within 24 hours
-```
-
+```text
 ---
 
 ## Red Flags (Things That Should Never Happen)
@@ -620,8 +594,7 @@ git commit -m "feat: phase-1.1-hello-world-baseline"
 git tag phase-1.1
 git push origin main --tags
 # Result: Phase 1.1 complete ✓
-```
-
+```text
 ---
 
 ## When in Doubt

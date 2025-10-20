@@ -17,12 +17,11 @@ last_updated: "2025-10-19"
 
 **Architecture**:
 
-```
+```text
 Orchestrator
   ├─> CodeImplementer (writes src/StringUtils.js)
   └─> TestWriter (writes tests/StringUtils.test.js, runs tests)
-```
-
+```text
 ---
 
 ## Measured Results

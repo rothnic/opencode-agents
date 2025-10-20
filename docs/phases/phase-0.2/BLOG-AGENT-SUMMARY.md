@@ -59,8 +59,7 @@ word_count: 1152
 phase: phase-X.Y
 last_updated: 2025-10-18
 ---
-```
-
+```text
 ### 3. Blog Post System ✅
 
 **All 16 posts now have metadata:**
@@ -72,7 +71,7 @@ last_updated: 2025-10-18
 
 **Example:**
 
-```
+```text
 ✅ PUBLISHED 01-why-most-ai-coding-projects-fail.md
   Phase: unassigned | Words: 1152
   Title: Why Most Ai Coding Projects Fail
@@ -80,8 +79,7 @@ last_updated: 2025-10-18
 🟡 STUB 02-quality-gates-defense-in-depth.md
   Phase: unassigned | Words: 1389
   Title: Quality Gates Defense In Depth
-```
-
+```text
 ### 4. Integrated Quality Gates ✅
 
 **Gate Check now includes 3 checks:**
@@ -209,19 +207,17 @@ When you use your own tools, you find the gaps immediately.
 
 Before:
 
-```
+```text
 Expected pattern not found
-```
-
+```text
 After:
 
-```
+```text
 Gate check output should contain failure indicator.
 Expected pattern: /FAILED|Failed|❌/i
 Actual output (first 500 chars): [actual output]
 Output length: 0 chars, Exit code: undefined
-```
-
+```text
 The second tells you EXACTLY what to look at. Invest in good error messages!
 
 ### 3. Metadata First, Features Later

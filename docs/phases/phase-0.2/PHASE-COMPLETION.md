@@ -38,12 +38,11 @@
 
 **Test Results:**
 
-```
+```text
 Test Suites: 4 passed, 4 total
 Tests:       69 passed, 9 skipped, 78 total
 Success Rate: 100% (of non-skipped tests)
-```
-
+```text
 ### 2. Blog Maintenance Agent ✅
 
 **Fully operational agent with 3 commands:**
@@ -57,8 +56,7 @@ node scripts/agents/blog-maintenance-agent.js validate
 
 # Initialize metadata for all posts
 node scripts/agents/blog-maintenance-agent.js init
-```
-
+```text
 **Features:**
 
 - Detects stubs (< 500 words OR contains "Coming soon"/"TODO"/"TBD")
@@ -76,8 +74,7 @@ word_count: 1152
 phase: phase-X.Y
 last_updated: 2025-10-18
 ---
-```
-
+```text
 ### 3. Blog Post System ✅
 
 **All 16 posts now have structured metadata:**
@@ -104,7 +101,7 @@ last_updated: 2025-10-18
 
 **3 automated checks run on every commit:**
 
-```
+```text
 1️⃣  File Location Check
    - Validates session files in docs/phases/
    - Allows specific root files only
@@ -118,18 +115,16 @@ last_updated: 2025-10-18
    - No stubs for completed phases
    - All posts have required metadata
    - Posts aren't stale (< 30 days)
-```
-
+```text
 **Current Status:**
 
-```
+```text
 ✅ ALL GATES PASSED - Ready to commit
 
 Total checks: 3
 ✅ Passed: 3
 ❌ Failed: 0
-```
-
+```text
 ### 5. Agent System Architecture ✅
 
 **Designed 4 core agents (1 implemented):**
@@ -139,17 +134,17 @@ Total checks: 3
    - Actions: Update stubs, extract metrics, sync metadata
    - Validation: No stubs for completed phases
 
-2. **Project Health Monitor Agent** 📋 SPECIFIED
+1. **Project Health Monitor Agent** 📋 SPECIFIED
    - Triggers: Daily 9 AM, pre-commit, manual
    - Actions: Run all gates, detect violations, generate reports
    - Validation: All gates pass, no critical violations
 
-3. **Test Evidence Recorder Agent** 📋 SPECIFIED  
+1. **Test Evidence Recorder Agent** 📋 SPECIFIED  
    - Triggers: Test suite completion
    - Actions: Capture results, store metrics, validate freshness
    - Validation: Evidence < 10 min old for phase completion
 
-4. **Documentation Sync Agent** 📋 FUTURE
+1. **Documentation Sync Agent** 📋 FUTURE
    - Triggers: API/architecture changes
    - Actions: Update docs, refresh diagrams, update examples
    - Validation: All APIs documented, diagrams current
@@ -236,19 +231,17 @@ Adding structured frontmatter to blog posts enables:
 
 **Bad:**
 
-```
+```text
 Expected pattern not found
-```
-
+```text
 **Good:**
 
-```
+```text
 Gate check output should contain failure indicator.
 Expected pattern: /FAILED|Failed|❌/i
 Actual output (first 500 chars): [shows actual output]
 Output length: 0 chars, Exit code: undefined
-```
-
+```text
 The second tells you **exactly** what to investigate. **We invested time making error messages helpful, and it paid off during debugging.**
 
 ### 5. Agents Need Single Responsibilities
@@ -284,8 +277,7 @@ $ node scripts/agents/blog-maintenance-agent.js list
 
 ✅ PUBLISHED 02-quality-gates-defense-in-depth.md
   Phase: phase-0.2 | Words: 1389
-```
-
+```text
 **Now we know exactly what needs attention!**
 
 ---
@@ -305,8 +297,7 @@ throw new Error(
   `Actual output (first 500 chars):\n${output.substring(0, 500)}\n` +
   `Output length: ${output.length} chars, Exit code: ${exitCode}`
 );
-```
-
+```text
 ### 2. SESSION-SUMMARY.md in Wrong Location ❌ → ✅
 
 **Problem:** File violated our own file-location rules
@@ -480,8 +471,7 @@ describe('Phase 1.1: Simple Code Generation', () => {
     expect(result.exports.hello('World')).toBe('Hello, World!');
   });
 });
-```
-
+```text
 **Success Metrics:**
 
 - Token Count: < 500 tokens

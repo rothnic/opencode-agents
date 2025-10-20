@@ -19,7 +19,7 @@ This project uses a **defense-in-depth** approach to ensure quality and prevent 
 
 ## System Architecture
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │              Developer / Agent                   │
 └────────────────┬────────────────────────────────┘
@@ -71,8 +71,7 @@ This project uses a **defense-in-depth** approach to ensure quality and prevent 
   │ (Fix &  │      │ Commit   │
   │  Retry) │      │ Success  │
   └─────────┘      └──────────┘
-```
-
+```text
 ---
 
 ## Control Layers
@@ -107,8 +106,7 @@ node scripts/file-location-check.js --staged
 
 # Show move commands for violations
 node scripts/file-location-check.js --fix
-```
-
+```text
 #### `scripts/test-evidence.js`
 
 Records and verifies test execution
@@ -122,8 +120,7 @@ node scripts/test-evidence.js --verify phase-1.1
 
 # Record even if tests failed (emergency)
 node scripts/test-evidence.js phase-1.1 --force
-```
-
+```text
 #### `scripts/gate-check.js`
 
 Comprehensive pre-commit validation
@@ -140,8 +137,7 @@ node scripts/gate-check.js --skip-tests
 
 # Skip file validation
 node scripts/gate-check.js --skip-files
-```
-
+```text
 **When it fails**: Developer forgets to run scripts
 
 ### Layer 3: Git Hooks (Prevent)
@@ -156,14 +152,12 @@ Runs automatically before every commit
 ```bash
 # Calls: node scripts/gate-check.js
 # Result: Blocks commit if any gate fails
-```
-
+```text
 **Bypass (emergency only)**:
 
 ```bash
 git commit --no-verify -m "emergency: {reason}"
-```
-
+```text
 **When it fails**: Developer bypasses with `--no-verify`
 
 ### Layer 4: `.gitignore` Rules (Filter)
@@ -181,8 +175,7 @@ git commit --no-verify -m "emergency: {reason}"
 # But allowed in phase directories
 !docs/phases/**/SESSION*.md
 !docs/phases/**/NOTES*.md
-```
-
+```text
 **When it fails**: Developer forces add with `git add -f`
 
 ---
@@ -224,8 +217,7 @@ $ git commit -m "feat: phase-1.1-complete"
 ═══════════════════════════════════════════════════════
 
 # Commit blocked!
-```
-
+```text
 ### Failure Mode 2: Session Files in Root Directory
 
 **Scenario**: `SESSION-SUMMARY.md` created in root and committed
@@ -255,8 +247,7 @@ $ git commit -m "docs: add session summary"
 ═══════════════════════════════════════════════════════
 
 # Commit blocked!
-```
-
+```text
 ### Failure Mode 3: Missing Phase Deliverables
 
 **Scenario**: Phase marked complete but deliverables not created
@@ -282,8 +273,7 @@ $ node scripts/gate-check.js --phase=phase-0.2
 ═══════════════════════════════════════════════════════
 ❌ GATE CHECK FAILED
 ═══════════════════════════════════════════════════════
-```
-
+```text
 ### Failure Mode 4: Tests Exist But Haven't Been Executed
 
 **Scenario**: Test files created but never run
@@ -306,8 +296,7 @@ $ node scripts/test-evidence.js --verify phase-1.1
    Evidence must be < 10 minutes old
 
    Run: npm test && node scripts/test-evidence.js phase-1.1
-```
-
+```text
 ---
 
 ## Concrete Requirements for Each Phase Transition
@@ -342,8 +331,7 @@ git tag phase-X.Y
 
 # 8. Push
 git push origin main --tags
-```
-
+```text
 ### Phase-Specific Gate Tests
 
 Each phase should have a gate test:
@@ -355,14 +343,12 @@ tests/
     test-phase-1.1-gate.js
     test-phase-1.2-gate.js
     ...
-```
-
+```text
 Run before marking phase complete:
 
 ```bash
 npm test tests/gates/test-phase-X.Y-gate.js
-```
-
+```text
 ---
 
 ## File Organization Rules
@@ -406,7 +392,7 @@ Any file matching these patterns:
 
 ### Working Files Structure
 
-```
+```text
 docs/phases/phase-X.Y/
   ├── README.md                # Phase overview & requirements
   ├── notes.md                 # Design decisions
@@ -417,8 +403,7 @@ docs/phases/phase-X.Y/
       ├── latest-run.json
       ├── results-{timestamp}.json
       └── test-status.txt
-```
-
+```text
 ---
 
 ## Testing Requirements
@@ -454,8 +439,7 @@ docs/phases/phase-X.Y/
     "platform": "darwin"
   }
 }
-```
-
+```text
 ### Test Recency Rules
 
 - **Phase Completion**: Evidence must be < 10 minutes old
@@ -478,8 +462,7 @@ node scripts/test-evidence.js --verify phase-X.Y
 
 # 6. Proceed with commit
 git commit -m "feat: phase-X.Y-description"
-```
-
+```text
 ---
 
 ## Bypassing Controls (Emergency Use Only)
@@ -498,8 +481,7 @@ git commit --no-verify -m "emergency: {reason}"
 
 # Skip specific gate checks
 node scripts/gate-check.js --skip-tests --skip-files
-```
-
+```text
 ### Requirements for Bypass
 
 1. **Document reason** in commit message
@@ -517,8 +499,7 @@ git log --grep="--no-verify"
 git log --grep="emergency:"
 
 # Review and create remediation issues
-```
-
+```text
 ---
 
 ## Maintenance & Updates
@@ -558,8 +539,7 @@ node scripts/test-evidence.js --verify phase-test
 
 # Test gate check
 node scripts/gate-check.js --phase=phase-test
-```
-
+```text
 ---
 
 ## Troubleshooting
@@ -576,8 +556,7 @@ chmod +x .git/hooks/pre-commit
 
 # Test hook manually
 .git/hooks/pre-commit
-```
-
+```text
 ### Test Evidence Won't Verify
 
 ```bash
@@ -590,8 +569,7 @@ date -u +"%Y-%m-%dT%H:%M:%S"
 
 # Re-run tests and record
 npm test && node scripts/test-evidence.js phase-X.Y
-```
-
+```text
 ### File Location Check Fails
 
 ```bash
@@ -603,8 +581,7 @@ node scripts/file-location-check.js --fix
 
 # Move files as suggested
 git mv {wrong-location} {correct-location}
-```
-
+```text
 ### Gate Check Fails
 
 ```bash
@@ -613,8 +590,7 @@ node scripts/gate-check.js --phase=phase-X.Y
 
 # Fix each reported issue
 # Then re-run until all pass
-```
-
+```text
 ---
 
 ## Metrics & Monitoring
@@ -644,8 +620,7 @@ for phase in docs/phases/phase-*; do
     echo "✗ $phase_id - no evidence"
   fi
 done
-```
-
+```text
 ---
 
 ## Future Enhancements

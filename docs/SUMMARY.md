@@ -51,7 +51,7 @@ Each with **precisely scoped permissions** to prevent unintended actions.
 
 ## Project Structure
 
-```
+```text
 opencode-agents/
 ├── README.md                      # Project overview
 ├── docs/
@@ -71,8 +71,7 @@ opencode-agents/
     ├── tests/                    # Test suite
     ├── scripts/                  # Metrics collection
     └── opencode.json             # Main configuration
-```
-
+```text
 ## Test Examples
 
 ### Phase 1.1: Hello World (⭐ Baseline)
@@ -87,8 +86,7 @@ it('should generate a valid hello function', async () => {
   expect(result.exports.hello('World')).toBe('Hello, World!');
   expect(result.metrics.tokenCount).toBeLessThan(500);
 });
-```
-
+```text
 ### Phase 2.3: Full Team Integration (⭐⭐⭐⭐)
 
 ```javascript
@@ -108,8 +106,7 @@ it('should create UserService with CRUD, tests, and docs', async () => {
   expect(result.testsPass).toBe(true);
   expect(result.testCoverage).toBeGreaterThanOrEqual(80);
 });
-```
-
+```text
 ### Phase 4.2: The Gauntlet (⭐⭐⭐⭐⭐)
 
 Complete authentication system with:
@@ -203,17 +200,17 @@ From the research documents:
    - Tool access control
    - Bash command whitelisting
 
-2. **Orchestrator Pattern** (custom-coding-agents.md)
+1. **Orchestrator Pattern** (custom-coding-agents.md)
    - Hub-and-spoke model
    - Dependency management
    - Discretionary dispatch for simple tasks
 
-3. **Memory Architecture**
+1. **Memory Architecture**
    - Procedural (AGENTS.md)
    - Episodic (session history)
    - Semantic (vector DB)
 
-4. **Test-Driven Development**
+1. **Test-Driven Development**
    - Boolean verification
    - Performance baselines
    - Comparative metrics
