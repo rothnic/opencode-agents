@@ -59,7 +59,7 @@
     "types": ["vitest/globals", "node"]
   },
 
-  "include": ["scripts/**/*", "tests/**/*", ".opencode/**/*"],
+  "include": ["src/**/*", "scripts/**/*", "tests/**/*", ".opencode/**/*"],
 
   "exclude": ["node_modules", "dist", "build", "docs", "coverage"]
 }

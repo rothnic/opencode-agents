@@ -1,57 +1,12 @@
 {
-  "version": "1.0.0",
-  "project": {
-    "name": "opencode-agents",
-    "description": "Test-driven multi-agent development system",
-    "type": "multi-agent-experiment"
-  },
-  "agents": {
-    "directory": ".opencode/agents",
-    "defaultModel": "gpt-4o-mini",
-    "orchestrator": {
-      "enabled": false,
-      "agent": "orchestrator"
-    }
-  },
-  "testing": {
-    "framework": "vitest",
-    "testDir": "tests",
-    "evidenceDir": ".evidence",
-    "requireEvidence": true,
-    "maxEvidenceAge": 600
-  },
-  "qualityGates": {
-    "enabled": true,
-    "preCommit": true,
-    "checks": ["file-location", "git-status", "blog-health", "test-evidence"]
-  },
-  "metrics": {
-    "enabled": true,
-    "track": ["tokenCount", "stepCount", "executionTime", "successRate"],
-    "outputDir": "metrics"
-  },
-  "git": {
-    "hooks": {
-      "preCommit": "scripts/gate-check.js"
-    }
-  },
-  "conventions": {
-    "sessionFiles": {
-      "patterns": [
-        "SESSION-*.md",
-        "PROGRESS-*.md",
-        "DRAFT-*.md",
-        "WIP-*.md",
-        "TEMP-*.md",
-        "NOTES-*.md"
-      ],
-      "location": "docs/phases/phase-*/"
-    },
-    "blogPosts": {
-      "directory": "docs/blog",
-      "minWordCount": 500,
-      "maxStalenessDays": 30,
-      "metadata": ["title", "status", "word_count", "phase", "last_updated"]
+  "$schema": "https://opencode.ai/config.json",
+  "model": "github-copilot/gpt-5-mini",
+  "mcp": {
+    "container-use": {
+      "type": "local",
+      "command": ["container-use", "stdio"],
+      "environment": {},
+      "enabled": true
     }
   }
 }
