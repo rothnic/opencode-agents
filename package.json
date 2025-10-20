@@ -18,7 +18,7 @@
     "// Linting & Formatting": "",
     "lint": "biome check . && markdownlint-cli2 '**/*.md' '#node_modules'",
     "lint:fix": "biome check --write . && markdownlint-cli2 --fix '**/*.md' '#node_modules'",
-    "lint:staged": "biome check --staged --write",
+    "lint:staged": "biome check --staged --write --files-ignore-unknown=true --no-errors-on-unmatched",
     "lint:md": "markdownlint-cli2 '**/*.md' '#node_modules'",
     "lint:md:fix": "markdownlint-cli2 --fix '**/*.md' '#node_modules'",
     "format": "biome format --write .",

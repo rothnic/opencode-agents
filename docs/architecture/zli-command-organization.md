@@ -244,7 +244,7 @@ processConfig(config);
 
 1. **Group related schemas by domain**
 
-   ```
+   ```bash
    schemas/gates/
    schemas/validation/
    schemas/utils/
